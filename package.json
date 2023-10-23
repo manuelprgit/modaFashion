@@ -1,0 +1,31 @@
+{
+  "name": "salessystem",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon .",
+    "sass": "sass --watch ./public/sass/main.scss:./public/css/main.css",
+    "sass-var": "sass --watch ./public/sass/variables.scss:./public/css/variables.css",
+    "sass-fac": "sass --watch ./public/sass/factura.scss:./public/css/factura.css",
+    "sass-inv": "sass --watch ./public/sass/inventario.scss:./public/css/inventario.css"
+  },
+  "nodemonConfig": {
+    "ext": "js,json,hbs,html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "hbs": "^4.2.0",
+    "mssql": "^9.2.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.0.1",
+    "open": "^9.1.0",
+    "sass": "^1.66.1"
+  }
+}

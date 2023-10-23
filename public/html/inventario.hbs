@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {{> head_links}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css" />
+
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+    <div class="general-content">
+        {{> side_menu}}
+        <div class="main-content">
+            {{> head}}
+
+            <main>
+                <div class="option-content">
+                    <h2>Opciones</h2>
+                    <div class="options">
+
+                        <a href="/creacion-articulos" class="option">
+                            <div class="option-icon-content">
+                                <i class="fa-solid fa-box"></i>
+                            </div>
+                            <div class="option-detail">
+                                <h3>Creacion de Articulos</h3>
+                                <p>Mantenimiento de articulos</p>
+                            </div>
+                        </a>
+
+                        <a href="/categoria" class="option">
+                            <div class="option-icon-content">
+                                <i class="fa-solid fa-tags"></i>
+                            </div>
+                            <div class="option-detail">
+                                <h3>Categoria</h3>
+                                <p>Creacion de categoria</p>
+                            </div>
+                        </a>
+
+                        <a href="/creacion-cliente" class="option option-disabled">
+                            <div class="option-icon-content">
+                                <i class="fa-solid fa-user-tie"></i>
+                            </div>
+                            <div class="option-detail">
+                                <h3>Autorizadores inventario</h3>
+                                <p>Mantenimineto de autorizadores</p>
+                            </div>
+                        </a>
+
+                        <a href="/familia" class="option option-disabled">
+                            <div class="option-icon-content">
+                                <i class="fa-solid fa-sitemap"></i>
+                            </div>
+                            <div class="option-detail">
+                                <h3>Familia</h3>
+                                <p>Creacion de familia</p>
+                            </div>
+                        </a>
+
+                        <a href="" class="option option-disabled">
+                            <div class="option-icon-content">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                            </div>
+                            <div class="option-detail">
+                                <h3>Inventario</h3>
+                                <p>Mantenimiento de inventario</p>
+                            </div>
+                        </a>
+
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script>
+        document.querySelector('a[href="/inventario"]').classList.add('active')
+    </script>
+</body>
+
+</html>

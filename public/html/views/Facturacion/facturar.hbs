@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {{> head_links}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css" />
+    <link rel="stylesheet" href="./css/factura.css">
+</head>
+
+<body>
+    {{> tools}}
+
+    <div class="modal-user-content collect-modal" id="modalCollect">
+        <div class="modal-user">
+            <div class="collect-content">
+
+                <div class="input-content" id="inputsContent">
+
+                    <label for="">
+                        <span>Efectivo</span>
+                        <div class="input-form-icon">
+                            <input type="number" id='txtEfectivo' class="input-form text-right">
+                        </div>
+                    </label>
+
+                    <label for="">
+                        <span>Tarjeta</span>
+                        <div class="input-form-icon">
+                            <input type="number" id='txtTarjeta' class="input-form text-right">
+                        </div>
+                    </label>
+
+                    <label for="">
+                        <span>Cheque</span>
+                        <div class="input-form-icon">
+                            <input type="number" id='txtCheque' class="input-form text-right">
+                        </div>
+                    </label>
+
+                    <label for="">
+                        <span>Credito</span>
+                        <div class="input-form-icon">
+                            <input type="number" id='txtCredito' class="input-form text-right">
+                        </div>
+                    </label>
+
+                </div>
+                <div class="total-collect-content">
+                    <div class="collect art">
+                        <p>Total de articulos</p>
+                        <p id="totalOfArtCollect">0</p>
+                    </div>
+                    <div class="collect sub">
+                        <p>Sub Total</p>
+                        <p id="subTotalCollect">$00.00</p>
+                    </div>
+
+                    <div class="collect total">
+                        <p>Total</p>
+                        <p id="totalCollect">$00.00</p>
+                    </div>
+                    <div class="collect rest">
+                        <p>Restante</p>
+                        <p id="totalRestCollect">$00.00</p>
+                    </div>
+                    <div class="collect grand">
+                        <p>Total a Facturar</p>
+                        <p id="grandTotalCollect">$00.00</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-content">
+                <button id="btnCobrar" class="btn btn-success">Cobrar</button>
+                <button id="btnClose" class="btn btn-danger">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="general-content">
+        {{> side_menu}}
+        <div class="main-content">
+            {{> head}}
+
+            <main class="invoice-main" id="mainContent">
+                <div class="button-content">
+                    {{!-- <button class="btn btn-info" id="searchCategories">
+                        Buscar categoria
+                        <div class="icon-content">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                    </button> --}}
+                    <button class="btn btn-info" id="clean">
+                        Limpiar
+                        <div class="icon-content">
+                            <i class="fa-solid fa-eraser"></i>
+                        </div>
+                    </button>
+                    <button class="btn btn-success" id="saveCategory">
+                        Guardar
+                        <div class="icon-content">
+                            <i class="fa-regular fa-floppy-disk"></i>
+                        </div>
+                    </button>
+                </div>
+                <div class="section-body">
+                    <div class="articles-section">
+                        <div class="input-content">
+
+                            <div class="input-form">
+                                <label for="bar_code_input">Codigo de barra</label>
+                                <input type="text" class="input" placeholder="0123456789" id="bar_code_input"
+                                    autocomplete="off">
+                                <span>Digite el codigo de barra</span>
+                            </div>
+
+                            <div class="input-form">
+                                <label for="inpCustomerData">Código del cliente</label>
+                                <input list="slCustomers" type="text" id="inpCustomerData" autocomplete="off">
+                                <datalist id="slCustomers">
+                                    <div id="optionContainer">
+                                    </div>
+                                </datalist>
+                                <span id="customerName"></span>
+                                <button class="search-customers" id="searchCustomers" title="Buscar clientes">
+                                    <i class="fa-solid fa-search"></i>
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <div class="table-article" id="tableArticle">
+
+                            <div class="table">
+                                <div class="thead">
+                                    <div class="tr">
+                                        <div class="th">Descripción</div>
+                                        <div class="th text-right">Cantidad</div>
+                                        <div class="th text-right">Valor</div>
+                                    </div>
+                                </div>
+                                <div class="tbody" id="tableArticleBody">
+
+                                </div>
+                                <div class="tfoot">
+                                    <div class="tr">
+                                        <div class="tf">total</div>
+                                        <div class="tf text-right" id="totalArticles">0</div>
+                                        <div class="tf text-right" id="totalPrice">$0.00</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="control-section">
+
+                        <div class="input-form">
+                            <label for="cedu_client">Cédula</label>
+                            <input type="text" id="cedu_client" autocomplete="off">
+                            <span>Cédula del cliente (OPCIONAL)</span>
+                        </div>
+                        <div class="actions-button" id="controlActions">
+
+                            <button id="btnDelete" class="disabled">
+                                <i class="fa-solid fa-trash-can"></i>
+                                <span>Eliminar</span>
+                            </button>
+
+                            <button id="btnCollect" class="disabled">
+                                <i class="fa-solid fa-money-bill-1-wave"></i>
+                                <span>Cobrar</span>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <div class="modal-content customers-modal" id="customersModal">
+        <div class="modal">
+            <div class="close-modal" id="closeModal">
+                <p>X</p>
+            </div>
+            <div class="table" id="customersTable">
+                <div class="thead">
+                    <div class="tr">
+                        <div class="th text-center">Código</div>
+                        <div class="th text-left">Nombre</div>
+                        <div class="th text-left">Apellido</div>
+                        <div class="th text-left">Cédula</div>
+                    </div>
+                </div>
+                <div class="tbody" id="tbodyCustomers">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/sales/invoicing.js" type="module"></script>
+    <script>
+        document.querySelector('a[href="/facturacion"]').classList.add('active')
+    </script>
+</body>
+
+</html>

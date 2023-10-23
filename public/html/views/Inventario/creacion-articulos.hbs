@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {{> head_links}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css" />
+    <link rel="stylesheet" href="./css/inventario.css"> 
+    <link rel="stylesheet" href="./css/main.css">
+
+</head>
+
+<body>
+    {{> tools}}
+    <div class="general-content">
+        {{> side_menu}}
+        <div class="main-content">
+            {{> head}}
+
+            <main>
+                <div class="button-content">
+                    <button class="btn btn-info" id="searchProduct">
+                        Buscar producto
+                        <div class="icon-content">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                    </button>
+                    <button class="btn btn-info" id="clearInputs">
+                        Limpiar
+                        <div class="icon-content">
+                            <i class="fa-solid fa-eraser"></i>
+                        </div>
+                    </button>
+                    <button class="btn btn-success" id="saveProduct">
+                        Guardar
+                        <div class="icon-content">
+                            <i class="fa-regular fa-floppy-disk"></i>
+                        </div>
+                    </button>
+                </div>
+                <div class="articles-form-content" id="articleForm">
+
+                    <div class="input-form-content image-form">
+                        <label for="productCode">Imagen</label>
+                        <label for="imageSelector" class="product-img-content" id="productImg">
+                            <figure>
+                                <img src="./src/img-product/ring.jpeg" alt="" id="productImg">
+                            </figure>
+                        </label>
+                        <input type="file" accept="image/*" id="imageSelector" class="image-selector">
+                        <span>Imagen del producto</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="productCode">Código</label>
+                        <input class="input-form rerquired" type="text" value="Nuevo" id="productCode" disabled>
+                        <span>Codigo del Articulo</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="productBarcode">Codigo de barra</label>
+                        <input class="input-form required" type="text" id="productBarcode">
+                        <span>Etiqueta de producto</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="productName">Nombre</label>
+                        <input class="input-form required" type="text" id="productName">
+                        <span>Nombre del articulo</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="productPrice">Precio</label>
+                        <input class="input-form" type="text" id="productPrice">
+                        <span>Valor de venta</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="productCost">Costo</label>
+                        <input class="input-form" type="text" id="productCost">
+                        <span>Precio de compra</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="productQuantity">Cantidad</label>
+                        <input class="input-form" disabled type="text" id="productQuantity">
+                        <span>Existencia en inventario</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="productSuplier">Suplidor</label>
+                        <select class="input-form" name="" id="productSuplier">
+                            <option value="">Seleccionar opción</option>
+                        </select>
+                        <span>Suplidor del articulo</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="productFamily">Familia</label>
+                        <select class="input-form required" name="" id="productFamily">
+                            <option value="">Seleccionar opción</option>
+                        </select>
+                        <span>Grupo de productos</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="productCategory">Categoria</label>
+                        <select class="input-form required" name="" id="productCategory">
+                            <option value="">Seleccionar opción</option>
+                        </select>
+                        <span>Clasificador de productos</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="productStatus">Estatus</label>
+                        <select class="input-form required" name="" id="productStatus">
+                            <option value="">Seleccionar opción</option>
+                        </select>
+                        <span>Clasificador de productos</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="productDescription">Descripcion</label>
+                        <textarea name="" id="productDescription" class="input-form text-area"></textarea>
+                        <span>Detalle del articulo</span>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="modal-content product-modal" id="productModal">
+        <div class="modal">
+            <div class="close-modal" id="closeModal">
+                <p>X</p>
+            </div>
+            <div class="table" id="productTable">
+                {{!-- <div class="thead">
+                    <div class="tr">
+                        <div class="th text-center">Codigo del producto</div>
+                        <div class="th text-left">Descripcion del producto</div>
+                        <div class="th text-center">Codigo de barra</div>
+                        <div class="th text-right">Precio</div>
+                        <div class="th text-right">Costo</div>
+                    </div>
+                </div>
+                <div class="tbody" id="tbodyProduct">
+                </div> --}}
+            </div>
+        </div>
+    </div>
+    <script src="./js/inventory/articles.js" type="module"></script>
+    <script>
+        document.querySelector('a[href="/inventario"]').classList.add('active')
+    </script>
+</body>
+
+</html>

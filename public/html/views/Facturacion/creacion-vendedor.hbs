@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {{> head_links}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css" />
+    <link rel="stylesheet" href="./css/inventario.css">
+    <link rel="stylesheet" href="./css/main.css">
+
+</head>
+
+<body>
+    {{> tools}}
+    <div class="general-content">
+        {{> side_menu}}
+        <div class="main-content">
+            {{> head}}
+
+            <main>
+                <div class="button-content">
+                    <button class="btn btn-info" id="searchSalesman">
+                        Buscar vendedor
+                        <div class="icon-content">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                    </button>
+                    <button class="btn btn-info" id="clearInputs">
+                        Limpiar
+                        <div class="icon-content">
+                            <i class="fa-solid fa-eraser"></i>
+                        </div>
+                    </button>
+                    <button class="btn btn-success" id="saveSalesman">
+                        Guardar
+                        <div class="icon-content">
+                            <i class="fa-regular fa-floppy-disk"></i>
+                        </div>
+                    </button>
+                </div>
+                <div class="articles-form-content" id="salesmanForm">
+
+                    <div class="input-form-content image-form">
+                        <label for="cusrtomerPhoto">Imagen</label>
+                        <label for="imageSelector" class="img-content" id="salesmanImg">
+                            <figure>
+                                <img src="./src/img/user-icon.jpeg" alt="" id="salesmanImage">
+                            </figure>
+                        </label>
+                        <input type="file" accept="image/*" id="imageSelector" class="image-selector">
+                        <span>Foto del vendedor</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="salesmanCode">Código</label>
+                        <input class="input-form" type="text" value="Nuevo" id="salesmanCode" disabled>
+                        <span>Codigo del vendedor</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="salesmanName">Nombre</label>
+                        <input class="input-form required" type="text" id="salesmanName">
+                        <span></span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="salesmanLastName">Apellido</label>
+                        <input class="input-form" type="text" id="salesmanLastName">
+                        <span> </span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="salesManUserName">Usuario</label>
+                        <input class="input-form required" type="text" id="salesManUserName">
+                        <span> </span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="salesPassword">Contraseña</label>
+                        <input class="input-form required" type="password" id="salesPassword">
+                        <span></span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="confirmPassword">Confirmar contraseña</label>
+                        <input class="input-form required" type="password" id="confirmPassword">
+                        <span></span>
+                    </div>
+
+
+                    <div class="input-form-content">
+                        <label for="phoneNumber">Telefono</label>
+                        <input class="input-form" type="text" id="phoneNumber">
+                        <span>Numero de telefono recidencial</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="cellPhone">Celular</label>
+                        <input class="input-form" type="text" id="cellPhone">
+                        <span>Numero de celular</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="salesmanIdentifycation">Cédula</label>
+                        <input formtarget="off" class="input-form" type="text" id="salesmanIdentifycation">
+                        <span>Numero de identificación</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="salesmanCreationDate">Fecha</label>
+                        <input class="input-form" type="date" id="salesmanCreationDate" disabled>
+                        <span>Fecha de creación</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="salesmanStatus">Estatus</label>
+                        <select class="input-form required" name="" id="salesmanStatus">
+                            <option value="">Seleccionar opción</option>
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
+                        </select>
+                        <span>Estatus del vendedor</span>
+                    </div>
+
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="modal-content sales-modal" id="salesModal">
+        <div class="modal">
+            <div class="close-modal" id="closeModal">
+                <p>X</p>
+            </div>
+            <div class="table" id="salesmanTable">
+
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/sales/salesman.js" type="module"></script>
+
+    <script>
+        document.querySelector('a[href="/facturacion"]').classList.add('active')
+    </script>
+</body>
+
+</html>

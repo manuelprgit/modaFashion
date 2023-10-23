@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {{> head_links}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css" />
+    <link rel="stylesheet" href="./css/inventario.css"> 
+    <link rel="stylesheet" href="./css/main.css">
+
+</head>
+
+<body>
+    {{> tools}}
+    <div class="general-content">
+        {{> side_menu}}
+        <div class="main-content">
+            {{> head}}
+
+            <main>
+                <div class="button-content">
+                    <button class="btn btn-info" id="searchCustomer">
+                        Buscar cliente
+                        <div class="icon-content">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                    </button>
+                    <button class="btn btn-info" id="clearInputs">
+                        Limpiar
+                        <div class="icon-content">
+                            <i class="fa-solid fa-eraser"></i>
+                        </div>
+                    </button>
+                    <button class="btn btn-success" id="saveCustomer">
+                        Guardar
+                        <div class="icon-content">
+                            <i class="fa-regular fa-floppy-disk"></i>
+                        </div>
+                    </button>
+                </div>
+                <div class="articles-form-content" id="articleForm">
+
+                    <div class="input-form-content">
+                        <label for="customerCode">Código</label>
+                        <input class="input-form rerquired" type="text" value="Nuevo" id="supplierId" disabled>
+                        <span>Codigo del suplidor</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="customerName">Nombre</label>
+                        <input class="input-form required" type="text" id="supplierName">
+                        <span></span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="customerLastName">Apellido</label>
+                        <input class="input-form" type="text" id="customerLastName">
+                        <span> </span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="customerLastName">Compañia</label>
+                        <input class="input-form" type="text" id="supplierCompanyName">
+                        <span>Nombre de la empresa</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="identifyCustomer">Direccion</label>
+                        <input class="input-form" type="text" id="supplierAddress">
+                        <span>Ubicacion del suplidor</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="customerCreationDate">Telefono Personal</label>
+                        <input class="input-form" type="text" id="supplierPhone">
+                        <span></span>
+                    </div> 
+
+                    <div class="input-form-content">
+                        <label for="customerCreationDate">Telefono Empresa</label>
+                        <input class="input-form" type="text" id="supplierCompanyPhone">
+                        <span></span>
+                    </div> 
+
+                    <div class="input-form-content">
+                        <label for="customerCreationDate">RNC</label>
+                        <input class="input-form" type="text" id="supplierRNC">
+                        <span>Numero de identificación</span>
+                    </div> 
+
+                    <div class="input-form-content">
+                        <label for="customerStatus">Estatus</label>
+                        <select class="input-form required" name="" id="supplierStatus">
+                            <option value="">Seleccionar opción</option>
+                            <option value="1">Activo</option>
+                            <option value="0">Inactivo</option>
+                        </select>
+                        <span>Estatus del suplidor</span>
+                    </div>
+ 
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="modal-content customers-modal" id="customerModal">
+        <div class="modal">
+            <div class="close-modal" id="closeModal">
+                <p>X</p>
+            </div>
+            <div class="table" id="customerTable">
+                <div class="thead">
+                    <div class="tr">
+                        <div class="th text-center">Código del cliente</div>
+                        <div class="th text-left">Nombre</div>
+                        <div class="th text-left">Apellido</div>
+                        <div class="th text-left">Cédula</div>
+                        <div class="th text-center">Estatus</div>
+                    </div>
+                </div>
+                <div class="tbody" id="tbodyCustomer">
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <script src="./js/purchase/supplier.js" type="module"></script>
+
+    <script>
+        document.querySelector('a[href="/compras"]').classList.add('active')
+    </script>
+</body>
+
+</html>

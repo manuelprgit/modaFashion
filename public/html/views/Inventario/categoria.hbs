@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {{> head_links}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css" />
+    <link rel="stylesheet" href="./css/inventario.css">
+    <link rel="stylesheet" href="./css/factura.css">
+    <link rel="stylesheet" href="./css/main.css">
+
+</head>
+
+<body>
+    
+    {{> tools}}
+    <div class="general-content">
+        {{> side_menu}}
+        <div class="main-content">
+            {{> head}}
+
+            <main>
+                <div class="button-content">
+                    <button class="btn btn-info" id="searchCategories">
+                        Buscar categoria
+                        <div class="icon-content">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                    </button>
+                    <button class="btn btn-info" id="clean">
+                        Limpiar
+                        <div class="icon-content">
+                            <i class="fa-solid fa-eraser"></i>
+                        </div>
+                    </button>
+                    <button class="btn btn-success" id="saveCategory">
+                        Guardar
+                        <div class="icon-content">
+                            <i class="fa-regular fa-floppy-disk"></i>
+                        </div>
+                    </button>
+                </div>
+                <div class="articles-form-content" id="categoryContext">
+
+                    <div class="input-form-content">
+                        <label for="categoryId">Código</label>
+                        <input class="input-form" type="text" value="0" id="categoryId" disabled>
+                        <span>Codigo de la categoria</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="categoryDescription">Descripción</label>
+                        <input class="input-form required" type="text" id="categoryDescription">
+                        <span>Descripcion de la categoria</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="categoryStatus">Estatus</label>
+                        <select class="input-form" name="" id="categoryStatus">
+                            <option value="">Seleccionar opción</option>
+                            <option value="1">Activo</option>
+                            <option value="2">Inactivo</option>
+                            {{!-- TODO: estas opciones estan hardcore --}}
+                        </select>
+                        <span>Suplidor del articulo</span>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="modal-content category-modal" id="categoryModal">
+        <div class="modal">
+            <div class="close-modal" id="closeModal">
+                <p>X</p>
+            </div>
+            <div class="table" id="categoryTable">
+                <div class="thead">
+                    <div class="tr">
+                        <div class="th text-center">Codigo de la categoria</div>
+                        <div class="th text-left">Descripcion</div>
+                        <div class="th text-left">Estatus</div>
+                    </div>
+                </div>
+                <div class="tbody" id="tbodyCategory">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/inventory/category.js" type="module"></script>
+
+    <script>
+        document.querySelector('a[href="/inventario"]').classList.add('active')
+    </script>
+</body>
+
+</html>

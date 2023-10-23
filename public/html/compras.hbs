@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {{> head_links}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css" />
+
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+    <div class="general-content">
+        {{> side_menu}}
+        <div class="main-content">
+            {{> head}}
+
+            <main>
+                <div class="option-content">
+                    <h2>Opciones</h2>
+                    <div class="options">
+
+                        <a href="/mantenimiento-suplidor" class="option">
+                            <div class="option-icon-content">
+                                <i class="fa-solid fa-dolly"></i>
+                            </div>
+                            <div class="option-detail">
+                                <h3>Suplidores</h3>
+                                <p>Mantenimiento de suplidores</p>
+                            </div>
+                        </a>
+
+                        <a href="" class="option option-disabled">
+                            <div class="option-icon-content">
+                                <i class="fa-solid fa-user-tie"></i>
+                            </div>
+                            <div class="option-detail">
+                                <h3>Autorizador de venta</h3>
+                                <p>Mantenimineto de autorizadores</p>
+                            </div>
+                        </a>
+
+                        <a href="" class="option option-disabled">
+                            <div class="option-icon-content">
+                                <i class="fa-solid fa-cart-flatbed"></i>
+                            </div>
+                            <div class="option-detail">
+                                <h3>Registro de compra</h3>
+                                <p>Damos entrada a los articulos</p>
+                            </div>
+                        </a>
+
+                        <a href="" class="option option-disabled">
+                            <div class="option-icon-content">
+                               <i class="fa-solid fa-person-military-to-person"></i>
+                            </div>
+                            <div class="option-detail">
+                                <h3>Devolución a suplidores</h3>
+                                <p>--</p>
+                            </div>
+                        </a>
+
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script>
+        document.querySelector('a[href="/clientes"]').classList.add('active')
+    </script>
+</body>
+
+</html>

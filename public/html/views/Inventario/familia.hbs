@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {{> head_links}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css" />
+    <link rel="stylesheet" href="./css/inventario.css">
+    <link rel="stylesheet" href="./css/factura.css">
+    <link rel="stylesheet" href="./css/main.css">
+
+</head>
+
+<body>
+    <div class="general-content">
+        {{> side_menu}}
+        <div class="main-content">
+            {{> head}}
+
+            <main>
+                <div class="button-content">
+                    <button class="btn btn-info">
+                        Buscar categoria
+                        <div class="icon-content">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                    </button>
+                    <button class="btn btn-info">
+                        Limpiar
+                        <div class="icon-content">
+                            <i class="fa-solid fa-eraser"></i>
+                        </div>
+                    </button>
+                    <button class="btn btn-success">
+                        Guardar
+                        <div class="icon-content">
+                            <i class="fa-regular fa-floppy-disk"></i>
+                        </div>
+                    </button>
+                </div>
+                <div class="articles-form-content">
+
+                    <div class="input-form-content">
+                        <label for="productCode">Código</label>
+                        <input class="input-form" type="text" value="Nuevo" id="productCode" disabled>
+                        <span>Codigo de la familia</span>
+                    </div>
+
+                    <div class="input-form-content">
+                        <label for="productBarcode">Descripción</label>
+                        <input class="input-form" type="text" id="productBarcode">
+                        <span>Descripcion de la familia</span>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+    <script>
+        document.querySelector('a[href="/inventario"]').classList.add('active')
+    </script>
+</body>
+
+</html>
