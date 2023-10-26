@@ -1,16 +1,4 @@
-
-let prueba = {
-    productId: {
-        className: 'text-center',
-        headDescription: 'Código del producto'
-    },
-    productName: {
-        className: 'text-left',
-        headDescription: 'Descripción'
-    }
-}
-
-
+ 
 let createTableData = (data, key, props) => {
     return `<div class="td ${props.className}">${data[key]}</div>`;
 }

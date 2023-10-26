@@ -4,7 +4,6 @@ import showConfirmationModal from '../helpers/confirmationModal.js';
 import { mainFunctions } from '../main.js';
 import createTable from '../helpers/createTables.js';
 
-
 (async () => {
 
     loaderController.enable();
@@ -23,10 +22,11 @@ import createTable from '../helpers/createTables.js';
     let productModal = document.getElementById('productModal');
     let closeModal = document.getElementById('closeModal');
     let articleForm = document.getElementById('articleForm');
+    let linkUrl = document.getElementById('linkUrl');
 
     let productTable = document.getElementById('productTable');
     let tbodyProduct = productTable.querySelector('.tbody');
-    
+
     let searchProduct = document.getElementById('searchProduct');
     let clearInputs = document.getElementById('clearInputs');
     let saveProduct = document.getElementById('saveProduct');
@@ -82,6 +82,7 @@ import createTable from '../helpers/createTables.js';
             categoryId: productCategory.value,
             familyId: productFamily.value,
             status: productStatus.value,
+            linkUrl: linkUrl.value,
             description: productDescription.value,
         }
     }
@@ -97,6 +98,7 @@ import createTable from '../helpers/createTables.js';
         productStatus.value = article.productStatusId;
         productDescription.value = article.productDetail;
         productPrice.value = article.productPrice;
+        linkUrl.value = article.linkUrl;
         // productQuantity.value = article.product
         // productSuplier.value = article.product
         productBarcode.disabled = true;
@@ -119,9 +121,15 @@ import createTable from '../helpers/createTables.js';
         if (!wasAccepted) return;
 
         let productData = getDataForRequest();
+        let resultRequest
+        //TODO: no se estan tomando en cuenta los errores
         if (productData.productId == 0) {
-            let resultRequest = await mainFunctions.sendDataByRequest('POST', productData, `${baseUrl}product`);
+            resultRequest = await mainFunctions.sendDataByRequest('POST', productData, `${baseUrl}product`);
             resultRequest = JSON.parse(resultRequest)
+            if (resultRequest.error == 405) {
+                showAlertBanner('warning', 'El codigo de barra ya existe');
+                return;
+            } 
             resultRequest = await resultRequest.json();
             showAlertBanner('success', `Se ha creado el articulo numero ${resultRequest.productId} con éxito!`)
             clearAllMyInputs(articleForm);
@@ -129,12 +137,7 @@ import createTable from '../helpers/createTables.js';
             await mainFunctions.sendDataByRequest('PUT', productData, `${baseUrl}product`, productData.productId);
             console.log(productData);
             showAlertBanner('success', `Se ha modificado el articulo ${productData.name} con éxito!`)
-            clearAllMyInputs(articleForm);
-            console.log(resultRequest);
-        }
-        if (resultRequest.error == 405) {
-            showAlertBanner('warning', 'El codigo de barra ya existe')
-            return;
+            clearAllMyInputs(articleForm); 
         }
     })
 
@@ -190,8 +193,8 @@ import createTable from '../helpers/createTables.js';
             headDescription: 'Costo'
         }
     }
- 
-    productTable.append(createTable(getProducts, objectProduct));
+
+    productTable.append(createTable(getProducts, objectProduct)); 
 
     mainFunctions.fillSelectElement(productCategory, getCategories, 'categoryDescription', 'categoryId');
     mainFunctions.fillSelectElement(productFamily, getFamilies, 'familyDescription', 'familyId');

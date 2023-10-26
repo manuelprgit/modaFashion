@@ -2,7 +2,7 @@ import express from 'express'
 const app = express();
 import dotenv from 'dotenv'
 import open from 'open';
-dotenv.config()
+dotenv.config();
 const port = process.env.PORT;
 import path from 'path';
 import hbs from 'hbs';

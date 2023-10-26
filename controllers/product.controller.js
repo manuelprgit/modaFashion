@@ -10,7 +10,7 @@ const getAllProducts = async (_, res) => {
 }
 
 const getProductByBarcode = async (req, res) => {
-    const { barcode } = req.params; 
+    const { barcode } = req.params;
     let pool = await getConnection();
     let products = await pool.query(`
         select * from inventory.products 
@@ -35,6 +35,7 @@ const createPorduct = async (req, res) => {
         cost,
         suplierId, //TODO: crear el suplidor
         familyId,
+        linkUrl,
         categoryId,
         status,
         description
@@ -66,6 +67,7 @@ const createPorduct = async (req, res) => {
                 ,productFamily
                 ,productCategory
                 ,productStatusId
+                ,linkURL
             )
             values (
                  '${name}'
@@ -76,6 +78,7 @@ const createPorduct = async (req, res) => {
                 , ${familyId}
                 , ${categoryId}
                 , ${status}
+                , ${linkUrl}
             )
          `);
 
@@ -106,10 +109,11 @@ const updateProduct = async (req, res) => {
         familyId,
         categoryId,
         status,
+        linkUrl,
         description
     } = req.body;
 
-    const {productId} = req.params;
+    const { productId } = req.params;
 
     try {
         let pool = await getConnection();
@@ -125,9 +129,10 @@ const updateProduct = async (req, res) => {
                 ,productFamily = ${familyId}
                 ,productCategory = ${categoryId}
                 ,productStatusId = ${status}
+                ,linkURL = ${linkUrl}
             where productId = ${productId}
          `);
- 
+
 
         res.status(201).json({});
 
