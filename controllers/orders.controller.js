@@ -13,20 +13,55 @@ const getOrders = async (req,res) => {
                 ,2458 pendingDebt
             from  invoice.orders a
             left join invoice.customers b
-            on a.customerId = b.idCustomer 
+            on a.customerId = b.idCustomer
     `);
     res.json(orders.recordset);
 }
 
-const getOrdersById = (req,res) => {
-  
+const getOrdersById = async (req,res) => { 
+
+    let orderId = req.params.orderId;
+
+    let pool = await getConnection();
+    let orders = await  pool.query(`
+        select 
+            *
+        from invoice.orders
+        where orderId = ${orderId}
+    `);
+    
+    orders = orders.recordset[0]; 
+
+    let orderDetail = await  pool.query(`
+        select 
+            a.orderId,
+            b.orderDetailId,
+            c.productId,
+            c.productBarCode,
+            c.productDetail,
+            15 quantity,
+            c.productPrice,
+            c.productCost
+        from invoice.orders a
+        inner join invoice.orderDetails b
+        on a.orderId = b.orderId
+        left join inventory.products c
+        on b.productId = c.productId
+        where a.orderId = ${orderId}
+    `);
+    
+    orderDetail = orderDetail.recordset 
+    // console.log(orderDetail);
+
+    let orderById = {...orderDetail,...orderId}
+    // console.log(orderById);
+    res.json(orderById);
+
 }
 
 const createOrders = async (req, res) => {
     const {
         customerId,
-        orderStatusId,
-        orderCreationDate,
         orderDetails
     } = req.body; 
 
@@ -38,14 +73,10 @@ const createOrders = async (req, res) => {
         let pool = await getConnection();
         let idOrderInserted = await pool.query(`
         insert into invoice.orders(
-            customerId,
-            orderStatusId,
-            orderCreationDate
+            customerId
         )
         values(
-            ${customerId},
-            ${orderStatusId},
-            '${orderCreationDate}'
+            ${customerId}
         )
         
         DECLARE @orderId INT;
