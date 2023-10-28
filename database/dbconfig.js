@@ -3,7 +3,7 @@ import sql from 'mssql';
 const dbSettings = {
     user: 'sa',
     password: '123',
-    server: 'MANUELP',
+    server: 'localhost',
     port: 1433,
     database: 'sistemaVentas',
     options: {

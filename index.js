@@ -45,6 +45,10 @@ app.get('/creacion-cliente', (req, res) => {
 app.get('/creacion-vendedor', (req, res) => {
   res.render(path.join('./views/Facturacion/creacion-vendedor'),billingProps);
 })
+
+app.get('/creacion-ordenes', (req, res) => {
+  res.render(path.join('./views/Facturacion/creacion-ordenes'),billingProps);
+})
 //#endregion Facturacion
 
 //#region Inventario

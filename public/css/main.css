@@ -359,7 +359,9 @@ body {
 .option-disabled:hover {
   background-color: none;
 }
-.option-disabled i, .option-disabled h3, .option-disabled p {
+.option-disabled i,
+.option-disabled h3,
+.option-disabled p {
   color: #626262;
 }
 
@@ -379,6 +381,7 @@ body {
   border-radius: 12px;
   opacity: 0;
   position: relative;
+  max-width: 90vw;
 }
 .modal-content .modal .close-modal {
   position: absolute;
@@ -427,6 +430,27 @@ body {
 }
 .modal-content .modal .table .tbody .tr .td {
   font-size: 1.8rem;
+}
+.modal-content .modal .content-button {
+  margin-top: 24px;
+  display: flex;
+  justify-content: end;
+}
+.modal-content .modal .content-button button {
+  background-color: #2ea667;
+  color: #EEEEEE;
+  height: 50px;
+  width: 150px;
+  border-radius: 8px;
+  outline: none;
+  font-size: 1.6rem;
+  font-weight: 700;
+  border: 0;
+  transition: 0.2s;
+  cursor: pointer;
+}
+.modal-content .modal .content-button button:hover {
+  background-color: #1f8d54;
 }
 
 .modal-content.show {

@@ -1,10 +1,9 @@
 @import 'variables';
 
-@mixin flex(
-        $justify: null, 
-        $align: null, 
-        $direction: null,
-        $gap: null){
+@mixin flex($justify: null,
+    $align: null,
+    $direction: null,
+    $gap: null) {
     display: flex;
     justify-content: $justify;
     align-items: $align;
@@ -12,14 +11,13 @@
     gap: $gap;
 }
 
-@mixin grid(
-        $numCol: 1,
-        $columns: null,
-        $numRow: 1,
-        $rows: null){
+@mixin grid($numCol: 1,
+    $columns: null,
+    $numRow: 1,
+    $rows: null) {
     display: grid;
-    grid-template-columns: repeat($numCol,$columns);
-    grid-template-rows: repeat($numRow,$rows);
+    grid-template-columns: repeat($numCol, $columns);
+    grid-template-rows: repeat($numRow, $rows);
 }
 
 // @mixin setTablePropierty(
@@ -41,12 +39,12 @@
 //     } 
 // }
 
-body{
+body {
     @include flex(center);
     position: relative;
 }
 
-.general-content{ 
+.general-content {
     border-radius: 8px;
     background-color: $main-purple;
     width: 100%;
@@ -57,163 +55,188 @@ body{
     box-shadow: $main-content;
     padding: 20px;
     @include flex();
-    .side-menu{ 
-        background-color: $main-purple;  
+
+    .side-menu {
+        background-color: $main-purple;
         overflow-y: scroll;
-        min-width: 325px; 
+        min-width: 325px;
         width: 325px;
         padding: 0 20px 0 0;
         position: sticky;
         top: 0;
-        
-       
-        .head-content-menu{
-            .logo-content{
+
+
+        .head-content-menu {
+            .logo-content {
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 height: 100px;
                 margin: 20px;
-                figure{
+
+                figure {
                     width: 50%;
                     height: 80px;
-                    img{
-                        object-fit: contain;    
+
+                    img {
+                        object-fit: contain;
                     }
                 }
             }
         }
-        .main-content-menu{
+
+        .main-content-menu {
             display: flex;
             flex-direction: column;
             gap: 12px;
-    
-            .menu-title{
+
+            .menu-title {
                 font-size: 1.4rem;
                 color: $black;
                 margin-left: 26px;
                 font-weight: 600;
                 margin: 20px;
             }
-            
-            .option{
+
+            .option {
                 display: grid;
                 grid-template-columns: 50px auto;
                 align-items: center;
                 height: 60px;
                 border-radius: 8px;
-                padding: 0px 32px;   
+                padding: 0px 32px;
                 transition: 0.2s;
                 border-radius: 50px;
-                i{
+
+                i {
                     font-size: 32px;
                     color: $white;
                 }
-                p{
+
+                p {
                     font-size: 1.8rem;
                     font-weight: 700;
                     color: $white;
                 }
             }
-            .option:hover{
+
+            .option:hover {
                 background-color: $smooth-purple;
-                i{
-                    color:$main-purple;
+
+                i {
+                    color: $main-purple;
                 }
-                p{
-                    color:$main-purple;
+
+                p {
+                    color: $main-purple;
                 }
             }
-            .option:active{
+
+            .option:active {
                 background-color: $smooth-purple-active;
-                i{
-                    color:$main-purple;
+
+                i {
+                    color: $main-purple;
                 }
-                p{
-                    color:$main-purple;
+
+                p {
+                    color: $main-purple;
                 }
             }
         }
-        .active{
+
+        .active {
             background-color: $smooth-purple;
 
-            i{
-                color:$main-purple !important; 
+            i {
+                color: $main-purple !important;
             }
-            p{
-                color:$main-purple !important;  
+
+            p {
+                color: $main-purple !important;
             }
         }
     }
-    .main-content{
+
+    .main-content {
         background-color: $soft-purple;
         border-radius: 8px;
-        width: 80%; 
-        @include flex(null,null,column);
+        width: 80%;
+        @include flex(null, null, column);
         overflow: hidden;
-        .head-content{
+
+        .head-content {
             box-shadow: $shadow-line;
             height: 110px;
             min-height: 110px;
             width: 100%;
             display: grid;
             grid-template-columns: 70% 30%;
-            .info-section{
+
+            .info-section {
                 grid-area: 1 / 1 / 2 / 2;
                 margin-left: 70px;
-                @include flex(null,center,null,16px);
+                @include flex(null, center, null, 16px);
 
-                .icon-module{
-                    i{
+                .icon-module {
+                    i {
                         font-size: 4rem;
                     }
                 }
-                .detail-module{
-                    h2{
+
+                .detail-module {
+                    h2 {
                         font-size: 3.6rem;
                         font-weight: 600;
                     }
                 }
             }
-            .profile-section{
+
+            .profile-section {
                 grid-area: 1 / 2 / 2 / 2;
-                @include flex(center,center);
-                .profile-content{
+                @include flex(center, center);
+
+                .profile-content {
                     width: 70%;
                     min-width: 250px;
-                    height: 80px; 
+                    height: 80px;
                     cursor: pointer;
                     transition: 0.2s;
                     box-shadow: $shadow-button;
                     border-radius: $radius-8;
                     padding: 10px;
-                    @include flex(null,null,null,12px);
-                    &:hover{
+                    @include flex(null, null, null, 12px);
+
+                    &:hover {
                         background-color: #00000010;
                     }
-                    &:active{
+
+                    &:active {
                         background-color: #00000020;
                     }
 
-                    .profile-info{
+                    .profile-info {
                         width: 60%;
                         @include flex(center, center);
-                        p{
+
+                        p {
                             font-size: 1.6rem;
                             text-align: center;
                         }
                     }
-                    
-                    .profile-img{
-                        @include flex(center, center); 
+
+                    .profile-img {
+                        @include flex(center, center);
                         width: 40%;
                         min-width: 80px;
-                        figure{
+
+                        figure {
                             width: 60px;
                             height: 60px;
                             border-radius: 50px;
                             overflow: hidden;
-                            img{
+
+                            img {
                                 font-size: 1.6rem;
                             }
                         }
@@ -222,28 +245,32 @@ body{
                 }
             }
         }
-        main{ 
+
+        main {
             padding: 30px;
-            @include flex(null,null,column);
+            @include flex(null, null, column);
             height: 100%;
             overflow-y: auto;
-            .option-content{
+
+            .option-content {
                 width: 95%;
                 height: 100%;
 
-                h2{
+                h2 {
                     font-size: 3rem;
                 }
-                .options{ 
+
+                .options {
                     padding: 10px;
                     display: grid;
-                    grid-template-columns: repeat(3,minmax(300px,1fr));
+                    grid-template-columns: repeat(3, minmax(300px, 1fr));
                     grid-auto-rows: 150px;
                     height: 100%;
                     overflow-y: auto;
-                    .option{
+
+                    .option {
                         display: flex;
-                        height: 130px;        
+                        height: 130px;
                         box-shadow: $shadow-button;
                         border-radius: 12px;
                         justify-content: center;
@@ -253,33 +280,39 @@ body{
                         cursor: pointer;
                         transition: 0.1s;
                         color: $black;
-                        &:hover{
+
+                        &:hover {
                             background-color: $smooth-purple;
                         }
-                        &:active{
+
+                        &:active {
                             background-color: $smooth-purple-active;
                         }
 
-                        .option-icon-content{ 
+                        .option-icon-content {
                             width: 50px;
                             height: 50px;
                             display: grid;
                             place-content: center;
-                            i{
+
+                            i {
                                 font-size: 40px;
                                 color: $dark-purple;
 
                             }
                         }
-                        .option-detail{
-                            @include flex(null,null,column,6px);
+
+                        .option-detail {
+                            @include flex(null, null, column, 6px);
                             color: black;
-                            h3{
+
+                            h3 {
                                 font-size: 2rem;
                                 font-weight: 500;
                                 color: $dark-purple;
                             }
-                            p{
+
+                            p {
                                 width: 200px;
                                 font-size: 1.6rem;
                                 font-weight: 600;
@@ -294,64 +327,70 @@ body{
     }
 }
 
-.button-content{
-    @include flex(end,null,null,12px);
-    .btn{
+.button-content {
+    @include flex(end, null, null, 12px);
+
+    .btn {
         width: auto;
         padding: 10px 20px;
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 12px; 
+        gap: 12px;
         border: none;
         font-size: 1.8rem;
         cursor: pointer;
 
-        .icon-content{
-            i{
-                font-size: 2rem; 
+        .icon-content {
+            i {
+                font-size: 2rem;
             }
         }
     }
-    .btn-success{
+
+    .btn-success {
         background-color: $success;
         color: #EEEEEE;
         height: 50px;
         width: 150px;
-        border-radius: 8px; 
-    
-        &:hover{
-            background-color: $success-hover   
+        border-radius: 8px;
+
+        &:hover {
+            background-color: $success-hover
         }
-        &:active{
-            background-color: $success-active   
+
+        &:active {
+            background-color: $success-active
         }
     }
-    .btn-info{
+
+    .btn-info {
         background-color: $info;
         color: #EEEEEE;
         height: 50px;
         width: 150px;
-        border-radius: 8px; 
-    
-        &:hover{
+        border-radius: 8px;
+
+        &:hover {
             background-color: $info-hover
         }
-        &:active{
+
+        &:active {
             background-color: $info-active
         }
     }
 }
 
-.input-form-content{
-    @include flex(null,null , column, 8px); 
+.input-form-content {
+    @include flex(null, null, column, 8px);
     margin-bottom: 12px;
-    label{
+
+    label {
         font-weight: 500;
         font-size: 1.8rem;
     }
 
-    .input-form{
+    .input-form {
         height: 48px;
         padding: 12px;
         border: none;
@@ -360,17 +399,21 @@ body{
         font-size: 1.8rem;
         outline: none;
     }
-    .input-form.text-area{
+
+    .input-form.text-area {
         height: 80px;
     }
-    span{
+
+    span {
         font-size: 1.4rem;
         color: $grey;
     }
 }
-.image-form{
+
+.image-form {
     grid-area: 1 / 1 / 3 / 2;
-    .img-content{
+
+    .img-content {
         height: 100%;
         padding: 12px;
         border: none;
@@ -380,33 +423,42 @@ body{
         outline: none;
         cursor: pointer;
         display: flex;
-        justify-content: center; 
+        justify-content: center;
         align-items: center;
-        figure{
+
+        figure {
             width: 150px;
             height: 150px;
-            img{
+
+            img {
                 object-fit: contain
-            };
+            }
+
+            ;
         }
     }
-    .image-selector{
+
+    .image-selector {
         display: none;
     }
-} 
+}
 
-.option-disabled{
+.option-disabled {
     background-color: #d5d5d5;
     pointer-events: none;
-    &:hover{
+
+    &:hover {
         background-color: none;
     }
-    i,h3,p{
+
+    i,
+    h3,
+    p {
         color: #626262;
     }
 }
 
-.modal-content{
+.modal-content {
     position: fixed;
     width: 100%;
     height: 100%;
@@ -414,14 +466,17 @@ body{
     display: grid;
     place-content: center;
     pointer-events: none;
-    .modal{
+
+    .modal {
         padding: 40px;
         background-color: $white;
         width: auto;
         border-radius: 12px;
         opacity: 0;
         position: relative;
-        .close-modal{
+        max-width: 90vw;
+
+        .close-modal {
             position: absolute;
             top: 10px;
             right: 10px;
@@ -432,60 +487,92 @@ body{
             cursor: pointer;
             transition: 0.2s;
             border-radius: 25px;
-            &:hover{
+
+            &:hover {
                 background-color: #00000030;
             }
-            &:active{
+
+            &:active {
                 background-color: #00000060;
             }
-            p{
+
+            p {
                 font-size: 1.8rem;
                 font-weight: 800;
             }
         }
-        .table{
-            .thead{ 
+
+        .table {
+            .thead {
                 background-color: #ccc;
                 border-radius: 6px;
-                .tr{
+
+                .tr {
                     display: grid;
                     gap: 10px;
                     padding: 8px;
-                    .th{
-                        font-size:1.8rem;
+
+                    .th {
+                        font-size: 1.8rem;
                     }
                 }
             }
-            .tbody{
-                .tr{
+
+            .tbody {
+                .tr {
                     display: grid;
                     gap: 10px;
                     padding: 8px;
                     transition: background-color 0.2s;
                     border-radius: 6px;
                     cursor: pointer;
-                    &:hover{
+
+                    &:hover {
                         background-color: #00000010;
                     }
-                    .td{
-                        font-size:1.8rem;
+
+                    .td {
+                        font-size: 1.8rem;
                     }
                 }
+            }
+        }
+
+        .content-button {
+            margin-top: 24px;
+            display: flex;
+            justify-content: end;
+            button{
+                background-color: #2ea667;
+                color: #EEEEEE;
+                height: 50px;
+                width: 150px;
+                border-radius: 8px;
+                outline: none;
+                font-size: 1.6rem;
+                font-weight: 700;
+                border: 0;
+                transition: 0.2s;
+                cursor: pointer;
+            }
+            button:hover{
+                background-color: #1f8d54;
             }
         }
     }
 }
 
-.modal-content.show{
+.modal-content.show {
     background-color: #00000035;
     pointer-events: initial;
-    .modal{
+
+    .modal {
         opacity: 1;
     }
 }
 
 // CONFIRMATION MODAL
-.accept-reject-content{
+.accept-reject-content {
     position: fixed;
     z-index: -1;
     height: 100%;
@@ -495,156 +582,173 @@ body{
     align-items: center;
     transition: 0.4s;
 
-    .accept-content-modal{
+    .accept-content-modal {
         height: 0px;
         width: 750px;
         background-color: white;
         border-radius: 25px;
         overflow: hidden;
         transition: 0.4s;
-        
-        .text-content{
-                width: 100%;
-                padding: 20px;
-                height: 170px; 
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center; 
-                h1{
-                    font-size: 4.4rem;
-                    color: #7d7d7d;
-                    margin-bottom: 15px;
-                }
-                p{
-                    font-size: 2.4rem;
-                    color: #7d7d7d;
-                    text-align: center;
-                }
+
+        .text-content {
+            width: 100%;
+            padding: 20px;
+            height: 170px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            h1 {
+                font-size: 4.4rem;
+                color: #7d7d7d;
+                margin-bottom: 15px;
+            }
+
+            p {
+                font-size: 2.4rem;
+                color: #7d7d7d;
+                text-align: center;
+            }
         }
-        .button-content{
+
+        .button-content {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 25px;
-    
-                button.accept-btn{
-                    width: 200px;
-                    height: 60px;
-                    border-radius: 17px;
-                    border: none;
-                    background: $success;
-                    color: white;
-                    font-weight: 600;
-                    font-size: 2rem;
-                    cursor: pointer;
-                }
 
-                button.accept-btn,
-                button.reject-btn{
-                    i{
-                        font-size: 2rem;
-                    }
-                }
-                button.accept-btn:active{
-                    background: $success-hover;
-                }
-                button.reject-btn{
-                    width: 140px;
-                    height: 60px;
-                    border-radius: 17px;
-                    border: none;
-                    background-color: $grey;
-                    color: white;
-                    font-weight: 600;
+            button.accept-btn {
+                width: 200px;
+                height: 60px;
+                border-radius: 17px;
+                border: none;
+                background: $success;
+                color: white;
+                font-weight: 600;
+                font-size: 2rem;
+                cursor: pointer;
+            }
+
+            button.accept-btn,
+            button.reject-btn {
+                i {
                     font-size: 2rem;
-                    cursor: pointer;
                 }
-                button.reject-btn:active{
-                    background-color: #828282;
-                }
+            }
+
+            button.accept-btn:active {
+                background: $success-hover;
+            }
+
+            button.reject-btn {
+                width: 140px;
+                height: 60px;
+                border-radius: 17px;
+                border: none;
+                background-color: $grey;
+                color: white;
+                font-weight: 600;
+                font-size: 2rem;
+                cursor: pointer;
+            }
+
+            button.reject-btn:active {
+                background-color: #828282;
+            }
         }
     }
 }
 
-.accept-reject-content.show{
+.accept-reject-content.show {
     background-color: #33333357;
     z-index: 1000;
-    .accept-content-modal{
+
+    .accept-content-modal {
         height: 250px;
-    }    
+    }
 }
 
 
-.product-modal{
+.product-modal {
+
     .thead,
-    .tbody{
-        .tr{
+    .tbody {
+        .tr {
             grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
         }
     }
-    .tbody{
+
+    .tbody {
         max-height: 400px;
         height: 400px;
         overflow-y: scroll;
     }
 }
 
-.customers-modal{
+.customers-modal {
+
     .thead,
-    .tbody{
-        .tr{
+    .tbody {
+        .tr {
             grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
             gap: 12px;
         }
     }
-    .tbody{
+
+    .tbody {
         max-height: 400px;
         height: 400px;
         overflow-y: scroll;
     }
 }
 
-.sales-modal{
+.sales-modal {
+
     .thead,
-    .tbody{
-        .tr{
+    .tbody {
+        .tr {
             grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
             gap: 12px;
         }
     }
-    .tbody{
+
+    .tbody {
         max-height: 400px;
         height: 400px;
         overflow-y: scroll;
     }
 }
 
-.category-modal{
+.category-modal {
+
     .thead,
-    .tbody{
-        .tr{
+    .tbody {
+        .tr {
             grid-template-columns: 1fr 2fr 1fr;
         }
     }
-    .tbody{
+
+    .tbody {
         max-height: 400px;
         height: 400px;
         overflow-y: scroll;
     }
 }
 
-.text-center{
+.text-center {
     text-align: center !important;
 }
-.text-left{
+
+.text-left {
     text-align: left !important;
 }
-.text-right{
+
+.text-right {
     text-align: right !important;
 }
 
-.input-danger{
+.input-danger {
     box-shadow: 0px 1px 6px 2px rgba(255, 0, 0, 0.414) !important;
     border: solid 2px red !important;
 }
@@ -652,7 +756,7 @@ body{
 
 
 /*Alert Banner*/
-.alert-banner{
+.alert-banner {
     z-index: 5000;
     transition: right 0.5s;
     border-radius: 5px;
@@ -664,26 +768,31 @@ body{
     width: 500px;
     background-color: $alert-banner-bckgrnd;
     overflow: hidden;
-    &.show{
+
+    &.show {
         right: 60px;
     }
-    .object-content{
+
+    .object-content {
         display: flex;
         height: 94%;
         align-items: center;
         padding: 0 20px;
-        .content-icon{
+
+        .content-icon {
             width: 40px;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            i{
+
+            i {
                 font-size: 3rem;
                 color: white;
             }
         }
-        .message-content{
+
+        .message-content {
             position: relative;
             height: 100%;
             width: 390px;
@@ -691,35 +800,39 @@ body{
             align-items: center;
             padding: 0 15px;
             text-align: justify;
-            .message-alert{
-                p{
+
+            .message-alert {
+                p {
                     font-size: 1.8rem;
                 }
             }
         }
-        .exit-content{ 
+
+        .exit-content {
             height: 100%;
             position: relative;
-            p{
+
+            p {
                 font-size: 2rem;
                 font-weight: 600;
                 position: absolute;
                 top: 8px;
                 left: 8px;
-                cursor: pointer; 
-            
+                cursor: pointer;
+
             }
         }
     }
-} 
+}
 
-.icon-container{
+.icon-container {
     background: $warning;
 }
+
 .icon-container-warning,
 .icon-container-danger,
 .icon-container-success,
-.icon-container-info{
+.icon-container-info {
     height: 40px;
     width: 40px;
     display: flex;
@@ -728,49 +841,58 @@ body{
     border-radius: 25px;
 }
 
-.icon-container-warning{
+.icon-container-warning {
     background: $warning;
 }
-.icon-container-danger{
+
+.icon-container-danger {
     background: $danger;
 }
-.icon-container-success{
+
+.icon-container-success {
     background: $success;
 }
-.icon-container-info{
+
+.icon-container-info {
     background: $info;
 }
+
 .loader-bar-warning,
 .loader-bar-danger,
 .loader-bar-success,
-.loader-bar-info{
+.loader-bar-info {
     width: 100%;
     transition: 0.2s;
 }
-.loader-bar-warning{
+
+.loader-bar-warning {
     border: solid 5px $warning;
 }
-.loader-bar-danger{
+
+.loader-bar-danger {
     border: solid 5px $danger;
 }
-.loader-bar-success{
+
+.loader-bar-success {
     border: solid 5px $success;
 }
-.loader-bar-info{
+
+.loader-bar-info {
     border: solid 5px $info;
 }
+
 /*Fin Alert Banner*/
-.hr{
+.hr {
     width: 90%;
-    border: solid  $smooth-purple;
+    border: solid $smooth-purple;
     border-radius: 50px;
     margin-bottom: 20px;
 }
 
 // loader
 /* HTML: <div class="loader"></div> */
-.loader-content{
-    position: absolute  ;
+.loader-content {
+    position: absolute;
     width: 100%;
     height: 100%;
     display: none;
@@ -779,28 +901,46 @@ body{
     background-color: #00000020;
     transition: 0.3s;
     z-index: 500;
+
     .loader {
         position: absolute;
         background-color: #00000040;
         width: 45px;
         aspect-ratio: 1;
         --c: no-repeat linear-gradient(#000 0 0);
-        background: 
-          var(--c) 0%   50%,
-          var(--c) 50%  50%,
-          var(--c) 100% 50%;
+        background:
+            var(--c) 0% 50%,
+            var(--c) 50% 50%,
+            var(--c) 100% 50%;
         background-size: 20% 100%;
         animation: l1 1s infinite linear;
-      }
-      @keyframes l1 {
-        0%  {background-size: 20% 100%,20% 100%,20% 100%}
-        33% {background-size: 20% 10% ,20% 100%,20% 100%}
-        50% {background-size: 20% 100%,20% 10% ,20% 100%}
-        66% {background-size: 20% 100%,20% 100%,20% 10% }
-        100%{background-size: 20% 100%,20% 100%,20% 100%}
-      }
+    }
+
+    @keyframes l1 {
+        0% {
+            background-size: 20% 100%, 20% 100%, 20% 100%
+        }
+
+        33% {
+            background-size: 20% 10%, 20% 100%, 20% 100%
+        }
+
+        50% {
+            background-size: 20% 100%, 20% 10%, 20% 100%
+        }
+
+        66% {
+            background-size: 20% 100%, 20% 100%, 20% 10%
+        }
+
+        100% {
+            background-size: 20% 100%, 20% 100%, 20% 100%
+        }
+    }
 }
-.loader-content.show{
+
+.loader-content.show {
     display: flex;
 }
+
 // loader
