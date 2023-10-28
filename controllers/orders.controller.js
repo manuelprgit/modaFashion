@@ -1,18 +1,29 @@
 import { getConnection } from "../database/dbconfig.js";
 
 
+const getOrders = async (req,res) => {
+    let pool = await getConnection();
+    let orders = await  pool.query(`select * from invoice.orders`);
+    res.json(orders.recordset);
+}
+
+const getOrdersById = (req,res) => {
+  
+}
+
 const createOrders = async (req, res) => {
     const {
         customerId,
         orderStatusId,
         orderCreationDate,
         orderDetails
-    } = req.body;
-    console.log(req.body);
+    } = req.body; 
+
+    let dateTime = new Date().toISOString().split('T');
+    let time = dateTime[1].substring(0, 7);
+    let date = dateTime[0];
+
     try {
-        let dateTime = new Date().toISOString().split('T');
-        let time = dateTime[1].substring(0, 7);
-        let date = dateTime[0];
         let pool = await getConnection();
         let idOrderInserted = await pool.query(`
         insert into invoice.orders(
@@ -33,8 +44,21 @@ const createOrders = async (req, res) => {
         `);
 
         let orderIdInserted = idOrderInserted.recordset[0];
+        
+        for(let detail of orderDetails){
 
-        insertOrderDetails(orderIdInserted, orderDetails);
+        }
+
+        let orderDetailInserted = await insertOrderDetails(orderIdInserted, orderDetails);
+
+        if(!orderDetailInserted){
+            res.status(400).json({
+                msg: 'Problemas al insertar uno o mas artículos',
+                error: 400,
+                errorType: error
+            });
+            return
+        }
 
         let newOrder = await pool.query(`
             select * from invoice.orders 
@@ -76,11 +100,39 @@ const insertOrderDetails = async (id, orderDetails) => {
             `);
         }
     } catch (error) {
-        console.log(error);
+        return false;
     }
 
 }
 
+// const updateOrder = async (req,res) => {
+//     let {
+//         customerId,
+//         orderStatusId,
+//         orderDetails
+//     } = res.body
+
+//     let orderId = res.param;
+
+//     try {
+//         let pool = await getConnection();
+//         await pool.query(`
+//             update invoice.orders
+//             set customerId = ${customerId},
+//                 orderStatusId = ${orderStatusId},
+//         `);
+
+
+        
+//     } catch (error) {
+//         console.log(error);
+//     }
+
+// }
+
 export {
-    createOrders
+    getOrders,
+    getOrdersById,
+    createOrders,
+    // updateOrder 
 }
