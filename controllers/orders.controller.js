@@ -3,7 +3,18 @@ import { getConnection } from "../database/dbconfig.js";
 
 const getOrders = async (req,res) => {
     let pool = await getConnection();
-    let orders = await  pool.query(`select * from invoice.orders`);
+    let orders = await  pool.query(`
+            select 
+                a.orderId
+                ,b.idCustomer
+                ,b.nameCustomer
+                ,b.lastNameCustomer
+                ,b.customerIdentification
+                ,2458 pendingDebt
+            from  invoice.orders a
+            left join invoice.customers b
+            on a.customerId = b.idCustomer 
+    `);
     res.json(orders.recordset);
 }
 
