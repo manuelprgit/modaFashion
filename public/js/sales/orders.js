@@ -69,11 +69,11 @@ import loaderController from '../helpers/loader.js';
                 listProductCodeSelected.push(Number(productCode))
             }
         })
-
+        let allProduct;
         let dataProduct = await mainFunctions.getDataFromAPI('product');
         for (let key in dataProduct) {
             if (listProductCodeSelected.includes(dataProduct[key].productId)) {
-                let allProduct = dataProduct[key];
+                allProduct = dataProduct[key];
                 let row = document.createElement('div');
                 row.classList.add('tr');
                 row.setAttribute('data-id', allProduct.productId);
@@ -81,10 +81,10 @@ import loaderController from '../helpers/loader.js';
                             <div class="td text-center">${allProduct.productId}</div>
                             <div class="td">${allProduct.productBarCode}</div>
                             <div class="td">${allProduct.productName}</div>
-                            <div class="td"><input type="text" value="${allProduct.productCategory}"></div>
-                            <div class="td"><input type="text" value="${allProduct.productPrice}"></div>
-                            <div class="td">${allProduct.productPrice * 4}</div>
-                            <div class="td"><img src="../../../src/img/trash-regular.png" alt=""></div>
+                            <div class="td text-center"><input type="text" value="${allProduct.productCategory}"></div>
+                            <div class="td text-right"><input type="text" value="${allProduct.productPrice}"></div>
+                            <div class="td text-right">${allProduct.productPrice * 4}</div>
+                            <div class="td text-center"><img src="../../../src/img/trash-regular.png" alt=""></div>
                             `;
                 row.insertAdjacentHTML('beforeend', td);
                 tbodyOrders.insertAdjacentElement('beforeend', row);
