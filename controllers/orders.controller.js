@@ -40,6 +40,7 @@ const getOrdersById = async (req, res) => {
                 c.productDetail,
                 b.productQuantity,
                 b.price,
+                b.price * b.productQuantity total,
                 c.productCost
             from invoice.orders a
             inner join invoice.orderDetails b
@@ -48,7 +49,6 @@ const getOrdersById = async (req, res) => {
             on b.productId = c.productId
             where a.orderId = ${orderId}
         `);
-        //TODO: no estoy devolviendo el total ni el precio
         orderDetail = orderDetail.recordset
         orders['orderDetail'] = orderDetail
         res.json(orders);
@@ -90,7 +90,7 @@ const createOrders = async (req, res) => {
         select @orderId as orderId
         `);
 
-        let orderIdInserted = idOrderInserted.recordset[0]; 
+        let orderIdInserted = idOrderInserted.recordset[0]; //todo: CREO QUE AQUI TENGO QUE PONER ORDERID
 
         let orderDetailInserted = await insertOrderDetails(orderIdInserted, orderDetails);
 
@@ -120,8 +120,13 @@ const createOrders = async (req, res) => {
 }
 
 const insertOrderDetails = async (id, orderDetails) => {
-    console.log({id});
+
     let pool = await getConnection();
+    await pool.query(`
+        delete from invoice.orderDetails
+        where orderId = ${id}
+    `);
+    
     try {
         for (let orderDetail of orderDetails) {
             console.log(orderDetail);
@@ -168,16 +173,16 @@ const updateOrders = async (req, res) => {
         `); 
         
         let newOrdersDetails = [];
-        for (let order of orderDetail) {
-            if (order.orderDetailId == 0) {
-                console.log('Si es igual a cero');
-                newOrdersDetails.push(order);
-            } else {
-                console.log('No es igual a cero');
-                await updateOrderDetail(order)
-            }
-        } 
-        await insertOrderDetails(orderId,newOrdersDetails);
+        // for (let order of orderDetail) {
+        //     if (order.orderDetailId == 0) {
+        //         console.log('Si es igual a cero');
+        //         newOrdersDetails.push(order);
+        //     } else {
+        //         console.log('No es igual a cero');
+        //         await updateOrderDetail(order)
+        //     }
+        // } 
+        await insertOrderDetails(orderId,orderDetail);
 
         res.status(204).json({});
 
@@ -216,6 +221,7 @@ const updateOrderDetail = async (orderDetails) => {
     }
 
 }
+
 
 export {
     getOrders,
