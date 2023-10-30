@@ -1,9 +1,8 @@
 import { getConnection } from "../database/dbconfig.js";
 
-
-const getOrders = async (req,res) => {
+const getOrders = async (req, res) => {
     let pool = await getConnection();
-    let orders = await  pool.query(`
+    let orders = await pool.query(`
             select 
                 a.orderId
                 ,b.idCustomer
@@ -13,22 +12,63 @@ const getOrders = async (req,res) => {
                 ,2458 pendingDebt
             from  invoice.orders a
             left join invoice.customers b
-            on a.customerId = b.idCustomer 
+            on a.customerId = b.idCustomer
     `);
     res.json(orders.recordset);
 }
 
-const getOrdersById = (req,res) => {
-  
+const getOrdersById = async (req, res) => {
+
+    try {
+        let orderId = req.params.orderId;
+
+        let pool = await getConnection();
+        let orders = await pool.query(`
+            select 
+                *
+            from invoice.orders
+            where orderId = ${orderId}
+        `);
+
+        orders = orders.recordset[0];
+        let orderDetail = await pool.query(`
+            select 
+                a.orderId,
+                b.orderDetailId,
+                c.productId,
+                c.productBarCode,
+                c.productDetail,
+                b.productQuantity,
+                b.price,
+                c.productCost
+            from invoice.orders a
+            inner join invoice.orderDetails b
+            on a.orderId = b.orderId
+            left join inventory.products c
+            on b.productId = c.productId
+            where a.orderId = ${orderId}
+        `);
+        //TODO: no estoy devolviendo el total ni el precio
+        orderDetail = orderDetail.recordset
+        orders['orderDetail'] = orderDetail
+        res.json(orders);
+
+    } catch (error) {
+        res.status(400).json({
+            msg: 'Orden inexistente',
+            error: 400,
+            errorType: error
+        });
+        return
+    }
+
 }
 
 const createOrders = async (req, res) => {
     const {
         customerId,
-        orderStatusId,
-        orderCreationDate,
         orderDetails
-    } = req.body; 
+    } = req.body;
 
     let dateTime = new Date().toISOString().split('T');
     let time = dateTime[1].substring(0, 7);
@@ -38,14 +78,10 @@ const createOrders = async (req, res) => {
         let pool = await getConnection();
         let idOrderInserted = await pool.query(`
         insert into invoice.orders(
-            customerId,
-            orderStatusId,
-            orderCreationDate
+            customerId
         )
         values(
-            ${customerId},
-            ${orderStatusId},
-            '${orderCreationDate}'
+            ${customerId}
         )
         
         DECLARE @orderId INT;
@@ -54,15 +90,11 @@ const createOrders = async (req, res) => {
         select @orderId as orderId
         `);
 
-        let orderIdInserted = idOrderInserted.recordset[0];
-        
-        for(let detail of orderDetails){
-
-        }
+        let orderIdInserted = idOrderInserted.recordset[0]; 
 
         let orderDetailInserted = await insertOrderDetails(orderIdInserted, orderDetails);
 
-        if(!orderDetailInserted){
+        if (!orderDetailInserted) {
             res.status(400).json({
                 msg: 'Problemas al insertar uno o mas artículos',
                 error: 400,
@@ -88,62 +120,106 @@ const createOrders = async (req, res) => {
 }
 
 const insertOrderDetails = async (id, orderDetails) => {
-    console.log(id,orderDetails);
+    console.log({id});
     let pool = await getConnection();
     try {
         for (let orderDetail of orderDetails) {
+            console.log(orderDetail);
             await pool.query(`
                 insert into invoice.orderDetails(
                     orderId,
-                    productId,
-                    productBarCode,
+                    productId, 
                     productQuantity,
                     price,
                     total
                 )values(
-                    ${id.orderId},
-                    ${orderDetail.productId},
-                    '${orderDetail.productBarCode}',
+                    ${id},
+                    ${orderDetail.productId}, 
                     ${orderDetail.productQuantity},
                     ${orderDetail.price},
-                    ${orderDetail.total}
+                    ${Number(orderDetail.price) * Number(orderDetail.productQuantity)}
                 )
             `);
         }
     } catch (error) {
-        return false;
+        console.log(error);
+        return error;
     }
 
 }
 
-// const updateOrder = async (req,res) => {
-//     let {
-//         customerId,
-//         orderStatusId,
-//         orderDetails
-//     } = res.body
+const updateOrders = async (req, res) => {
 
-//     let orderId = res.param;
+    let {
+        customerId,
+        orderStatusId,
+        orderDetail
+    } = req.body
+    
+    let orderId = req.params.orderId;
+    try {
 
-//     try {
-//         let pool = await getConnection();
-//         await pool.query(`
-//             update invoice.orders
-//             set customerId = ${customerId},
-//                 orderStatusId = ${orderStatusId},
-//         `);
-
-
+        let pool = await getConnection();
+        await pool.query(`
+            update invoice.orders
+            set customerId = ${customerId},
+                orderStatusId = ${orderStatusId}
+            where orderId = ${orderId} 
+        `); 
         
-//     } catch (error) {
-//         console.log(error);
-//     }
+        let newOrdersDetails = [];
+        for (let order of orderDetail) {
+            if (order.orderDetailId == 0) {
+                console.log('Si es igual a cero');
+                newOrdersDetails.push(order);
+            } else {
+                console.log('No es igual a cero');
+                await updateOrderDetail(order)
+            }
+        } 
+        await insertOrderDetails(orderId,newOrdersDetails);
 
-// }
+        res.status(204).json({});
+
+    } catch (error) {
+        res.status(400).json({
+            msg: 'Problemas al actualizar la orden',
+            error: 400,
+            errorType: error
+        });
+        return
+    }
+
+}
+
+const updateOrderDetail = async (orderDetails) => {
+
+    let {
+        orderDetailId,
+        productId,
+        productQuantity,
+        price
+    } = orderDetails;
+
+    let pool = await getConnection();
+    try {
+        await pool.query(`
+            update invoice.orderDetails
+            set productId = ${productId},
+                productQuantity = ${productQuantity},
+                price = ${price},
+                total = ${Number(price) * Number(productQuantity)}
+            where orderDetailId = ${orderDetailId}
+        `); 
+    } catch (error) { 
+        return error
+    }
+
+}
 
 export {
     getOrders,
     getOrdersById,
     createOrders,
-    // updateOrder 
+    updateOrders
 }
