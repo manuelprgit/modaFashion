@@ -2,6 +2,7 @@ import { showAlertBanner } from "../helpers/alertBanner.js";
 import showConfirmationModal from "../helpers/confirmationModal.js";
 import { mainFunctions } from "../main.js";
 import loaderController from '../helpers/loader.js';
+
 (() => {
     loaderController.disabled();
     //Id de inputs
@@ -11,7 +12,8 @@ import loaderController from '../helpers/loader.js';
     const customerLastName = document.getElementById('customerLastName');
     const identifyCustomer = document.getElementById('identifyCustomer');
     const pendingDebt = document.getElementById('pendingDebt');
-
+    const saveOrder = document.getElementById('saveOrder');
+    
     //Id
     const productsModal = document.getElementById('productsModal');
     const btnSearch = document.getElementById('btnSearch');
@@ -19,7 +21,8 @@ import loaderController from '../helpers/loader.js';
     const tbodyOrders = document.getElementById('tbodyOrders');
     const btnProductModal = document.getElementById('btnProductModal');
 
-
+    //Variables
+    let listObjDataPost = [];
     customerCode.addEventListener('change', async e => {
         let dataCustomer = await mainFunctions.getDataFromAPI(`customer/${customerCode.value}`);
 
@@ -81,16 +84,40 @@ import loaderController from '../helpers/loader.js';
                             <div class="td text-center">${allProduct.productId}</div>
                             <div class="td">${allProduct.productBarCode}</div>
                             <div class="td">${allProduct.productName}</div>
-                            <div class="td text-center"><input type="text" value="${allProduct.productCategory}"></div>
-                            <div class="td text-right"><input type="text" value="${allProduct.productPrice}"></div>
-                            <div class="td text-right">${allProduct.productPrice * 4}</div>
+                            <div class="td text-center"><input type="text" class="quantity" value="${allProduct.productCategory}"></div>
+                            <div class="td text-right"><input type="text" class="price" value="${allProduct.productPrice}"></div>
+                            <div class="td text-right ">${allProduct.productPrice * 4}</div>
                             <div class="td text-center"><img src="../../../src/img/trash-regular.png" alt=""></div>
                             `;
                 row.insertAdjacentHTML('beforeend', td);
                 tbodyOrders.insertAdjacentElement('beforeend', row);
+
+                let objDataProduct = {
+                    'productId': Number(allProduct.productId),
+                    'orderId': 0,
+                    'productQuantity': Number(row.querySelector('input.quantity').value),
+                    'price': Number(row.querySelector('input.price').value),
+                }
+                listObjDataPost.push(objDataProduct)
             }
         }
         mainFunctions.hideModal(productsModal)
+    })
+
+    saveOrder.addEventListener('click', async e=>{
+        let objetSend = {
+            'customerId': Number(customerCode.value),
+            'orderId': 0,
+            'orderDetails': listObjDataPost
+        }
+
+        console.log(objetSend);
+        let resPost = await mainFunctions.sendDataByRequest('POST', objetSend, 'api/orders');
+        console.log(resPost);
+        if(resPost.status >= 400) showAlertBanner('Warning', 'No fue posible agregar esta orden');
+        else{
+            showAlertBanner('success', 'Orden agregada correctamente');
+        }
     })
 
 })()
