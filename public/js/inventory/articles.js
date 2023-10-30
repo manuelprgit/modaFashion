@@ -125,6 +125,7 @@ import createTable from '../helpers/createTables.js';
         //TODO: no se estan tomando en cuenta los errores
         if (productData.productId == 0) {
             resultRequest = await mainFunctions.sendDataByRequest('POST', productData, `${baseUrl}product`);
+            console.log(resultRequest);
             resultRequest = JSON.parse(resultRequest)
             if (resultRequest.error == 405) {
                 showAlertBanner('warning', 'El codigo de barra ya existe');
