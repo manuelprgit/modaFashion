@@ -5,3 +5,107 @@
     gap: 20px;
     padding: 20px;
 }
+
+.content-product{
+    padding: 0 20px;
+    font-size: 1.8rem;
+}
+.content-table{
+   
+    .search{
+        .input-form{
+            width: 200px;
+            position: relative;
+            input{
+                height: 32px;
+                width: 200px;
+                padding: 12px;
+                border: none;
+                box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.25);
+                border-radius: 8px;
+                font-size: 1.8rem;
+                outline: none;
+            }
+            img{
+                width: 24px;
+                height: 24px;
+                position: absolute;
+                right: 8px;
+                top: 4px;
+            }
+        }
+    }
+    .content-button{
+        margin-top: 24px;
+    display: flex;
+    justify-content: end;
+    }
+    .table{
+        background-color: white;
+        box-shadow: 0 0 15px 1px #60606047;
+        padding: 10px;
+        min-height: 433px;
+        margin-top: 24px;
+        margin-top: 20px;
+        display: flex !important;
+        flex-direction: column;
+        gap: 20px;
+        .text-center{
+            display: flex !important;
+            justify-content: center;
+        }
+        .text-right{
+            display: flex !important;
+            justify-content: end;
+        }
+        .thead{
+            background-color: initial !important;
+            .tr{
+                display: flex !important;
+                gap: 14px;
+                height: 40px;
+                .th{
+                    font-size: 1.4rem;
+                    width: 100%;
+                    padding: 8px 2px;
+                    min-width: 95px;
+                    font-weight: 700;
+                }
+            }
+        }
+        .tbody{
+            .tr{
+                display: flex !important;
+                align-items: center;
+                gap: 14px;
+                min-height: 60px;
+                cursor: auto !important;
+                .td{
+                    font-size: 1.4rem;
+                    width: 100%;
+                    padding: 8px 2px;
+                    min-width: 95px;
+                    p, span{
+                        font-size: 1.7rem !important;
+                    }
+                    .input-check{
+                        width: 20px;
+                        height: 20px;
+                        cursor: pointer;
+                    }
+                    input{
+                        font-size: 1.6rem;
+                        width: 68px;
+                        padding: 4px 8px;
+                        border-radius: 8px;
+                        box-shadow: 0 0 2px 1px #00000063;
+                    }
+                    img{
+                        width: 30px;
+                        height: 30px;
+                    }
+                }
+            }
+        }
+    }
+} 

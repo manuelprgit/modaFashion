@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {{> head_links}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css" />
+    <link rel="stylesheet" href="./css/inventario.css">
+    <link rel="stylesheet" href="./css/main.css">
+
+</head>
+
+<body>
+    {{> tools}}
+    <div class="general-content">
+        {{> side_menu}}
+
+        <div class="main-content">
+            <div class="head-content">
+
+                <div class="info-section">
+
+                    <div class="icon-module">
+                        <i id="iconContent" class="fa-solid fa-store"></i>
+                    </div>
+                    <div class="detail-module">
+                        <h2 id="moduleName">Ventas</h2>
+                    </div>
+
+                </div>
+
+                <div class="profile-section">
+                    <div class="profile-content">
+                        <div class="profile-info">
+                            <p id="profileName">Nombre del usuario</p>
+                        </div>
+                        <div class="profile-img">
+                            <figure>
+                                <img src="./src//img/user-icon.jpeg" id="userImage" alt="imagen del usuario">
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <main>
+                <div class="button-content">
+                    <button class="btn btn-info" id="clearInputs">
+                        Limpiar
+                        <div class="icon-content">
+                            <i class="fa-solid fa-eraser"></i>
+                        </div>
+                    </button>
+                    <button class="btn btn-success" id="saveCustomer">
+                        Guardar
+                        <div class="icon-content">
+                            <i class="fa-regular fa-floppy-disk"></i>
+                        </div>
+                    </button>
+                </div>
+                <div class="articles-form-content" id="articleForm">
+                    <div class="input-form-content">
+                        <label for="customerCode">Orden</label>
+                        <input class="input-form rerquired" type="text" value="Nuevo" id="ordersNumber" disabled="">
+                        <span>Numero de orden</span>
+                    </div>
+                    <div class="input-form-content">
+                        <label for="customerCode">Código</label>
+                        <input class="input-form rerquired" type="text" placeholder="No. del cliente" id="customerCode">
+                        <span>Código del cliente</span>
+                    </div>
+                    <div class="input-form-content">
+                        <label for="customerName">Nombre</label>
+                        <input disabled class="input-form required" type="text" id="customerName">
+                        <span></span>
+                    </div>
+                    <div class="input-form-content">
+                        <label for="customerLastName">Apellido</label>
+                        <input disabled class="input-form" type="text" id="customerLastName">
+                        <span> </span>
+                    </div>
+                    <div class="input-form-content">
+                        <label for="identifyCustomer">Cédula</label>
+                        <input disabled class="input-form" type="text" id="identifyCustomer">
+                        <span>Numero de identificación</span>
+                    </div>
+                    <div class="input-form-content">
+                        <label for="customerCreationDate">Deuda pendiente</label>
+                        <input disabled class="input-form" type="text" id="pendingDebt" disabled="">
+                        <span>Fecha de creación</span>
+                    </div>
+                </div>
+
+                <div class="content-product">
+                    <div class="content-table">
+                        <div class="search">
+                            <div class="input-form">
+                                <input type="text">
+                                <img id="btnSearch" src="../../../src/img/search-regular.png" alt="">
+                            </div>
+                        </div>
+                        <div class="table">
+                            <div class="thead">
+                                <div class="tr">
+                                    <div class="th text-center">Código</div>
+                                    <div class="th">Código producto</div>
+                                    <div class="th">Descripción</div>
+                                    <div class="th text-center">Cantidad</div>
+                                    <div class="th text-right">Precio</div>
+                                    <div class="th text-right">Total</div>
+                                    <div class="th"></div>
+                                </div>
+                            </div>
+                            <div class="tbody" id="tbodyOrders">
+                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="modal-content customers-modal" id="productsModal">
+        <div class="modal">
+            <div class="close-modal" id="closeModal">
+                <p>X</p>
+            </div>
+            <div class="content-table">
+                <div class="search">
+                    <div class="input-form">
+                        <input type="text">
+                        <img id="btnSearch" src="../../../src/img/search-regular.png" alt="">
+                    </div>
+                </div>
+                <div class="table">
+                    <div class="thead">
+                        <div class="tr">
+                            <div class="th"></div>
+                            <div class="th text-center">Código</div>
+                            <div class="th text-center">Código shein</div>
+                            <div class="th">Descripción</div>
+                            <div class="th text-center">Existencia</div>
+                            <div class="th text-right">Precio</div>
+                            <div class="th text-right">Costo</div>
+                        </div>
+                    </div>
+                    <div class="tbody" id="tbodyProduct">
+
+                    </div>
+                </div>
+            </div>
+            <div class="content-button">
+                <button class="btn btn-success" id="btnProductModal">
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/sales/orders.js" type="module"></script>
+
+    <script>
+        document.querySelector('a[href="/facturacion"]').classList.add('active')
+    </script>
+</body>
+
+</html>
