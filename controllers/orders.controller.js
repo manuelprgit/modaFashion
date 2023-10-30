@@ -94,15 +94,15 @@ const createOrders = async (req, res) => {
         let orderDetailInserted = await insertOrderDetails(orderIdInserted, orderDetail);
         console.log(orderDetailInserted);
 
-        // if (!orderDetailInserted) {
-        //     console.log('entre a la ordenes que no se insertaron');
-        //     res.status(400).json({
-        //         msg: 'Problemas al insertar uno o mas artículos',
-        //         error: 400,
-        //         errorType: error
-        //     });
-        //     return
-        // }
+        if (!orderDetailInserted) {
+            console.log('entre a la ordenes que no se insertaron');
+            res.status(400).json({
+                msg: 'Problemas al insertar uno o mas artículos',
+                error: 400,
+                errorType: error
+            });
+            return
+        }
 
         let newOrder = await pool.query(`
             select * from invoice.orders 
