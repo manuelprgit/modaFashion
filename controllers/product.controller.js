@@ -78,7 +78,7 @@ const createPorduct = async (req, res) => {
                 , ${familyId}
                 , ${categoryId}
                 , ${status}
-                , ${linkUrl}
+                ,'${linkUrl}'
             )
          `);
 
