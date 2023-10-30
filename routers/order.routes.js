@@ -4,7 +4,7 @@ import {
     getOrders,
     getOrdersById,
     createOrders,
-    // updateOrders
+    updateOrders
 } from '../controllers/orders.controller.js';
 
 const router = Router();
@@ -14,6 +14,6 @@ const mainUrl = '/api/orders/';
 router.get(`${mainUrl}`, getOrders);
 router.get(`${mainUrl}:orderId`, getOrdersById);
 router.post(`${mainUrl}`, express.json(), createOrders);
-// router.post(`${mainUrl}:orderId`, express.json(), updateOrders);
+router.put(`${mainUrl}:orderId`, express.json(), updateOrders);
 
 export default router;
