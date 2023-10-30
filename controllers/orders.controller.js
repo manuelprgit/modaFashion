@@ -49,8 +49,8 @@ const getOrdersById = async (req, res) => {
             on b.productId = c.productId
             where a.orderId = ${orderId}
         `);
-        orderDetail = orderDetail.recordset
-        orders['orderDetail'] = orderDetail
+        orderDetail = orderDetail.recordset;
+        orders['orderDetail'] = orderDetail;
         res.json(orders);
 
     } catch (error) {
@@ -67,7 +67,7 @@ const getOrdersById = async (req, res) => {
 const createOrders = async (req, res) => {
     const {
         customerId,
-        orderDetails
+        orderDetail
     } = req.body;
 
     let dateTime = new Date().toISOString().split('T');
@@ -90,22 +90,23 @@ const createOrders = async (req, res) => {
         select @orderId as orderId
         `);
 
-        let orderIdInserted = idOrderInserted.recordset[0]; //todo: CREO QUE AQUI TENGO QUE PONER ORDERID
+        let orderIdInserted = idOrderInserted.recordset[0].orderId;
+        let orderDetailInserted = await insertOrderDetails(orderIdInserted, orderDetail);
+        console.log(orderDetailInserted);
 
-        let orderDetailInserted = await insertOrderDetails(orderIdInserted, orderDetails);
-
-        if (!orderDetailInserted) {
-            res.status(400).json({
-                msg: 'Problemas al insertar uno o mas artículos',
-                error: 400,
-                errorType: error
-            });
-            return
-        }
+        // if (!orderDetailInserted) {
+        //     console.log('entre a la ordenes que no se insertaron');
+        //     res.status(400).json({
+        //         msg: 'Problemas al insertar uno o mas artículos',
+        //         error: 400,
+        //         errorType: error
+        //     });
+        //     return
+        // }
 
         let newOrder = await pool.query(`
             select * from invoice.orders 
-            where orderId = ${orderIdInserted.orderId}
+            where orderId = ${orderIdInserted}
         `);
 
         res.status(201).json(newOrder.recordset[0]);
@@ -126,10 +127,9 @@ const insertOrderDetails = async (id, orderDetails) => {
         delete from invoice.orderDetails
         where orderId = ${id}
     `);
-    
+
     try {
         for (let orderDetail of orderDetails) {
-            console.log(orderDetail);
             await pool.query(`
                 insert into invoice.orderDetails(
                     orderId,
@@ -160,7 +160,7 @@ const updateOrders = async (req, res) => {
         orderStatusId,
         orderDetail
     } = req.body
-    
+
     let orderId = req.params.orderId;
     try {
 
@@ -170,8 +170,8 @@ const updateOrders = async (req, res) => {
             set customerId = ${customerId},
                 orderStatusId = ${orderStatusId}
             where orderId = ${orderId} 
-        `); 
-        
+        `);
+
         let newOrdersDetails = [];
         // for (let order of orderDetail) {
         //     if (order.orderDetailId == 0) {
@@ -182,7 +182,7 @@ const updateOrders = async (req, res) => {
         //         await updateOrderDetail(order)
         //     }
         // } 
-        await insertOrderDetails(orderId,orderDetail);
+        await insertOrderDetails(orderId, orderDetail);
 
         res.status(204).json({});
 
@@ -215,8 +215,8 @@ const updateOrderDetail = async (orderDetails) => {
                 price = ${price},
                 total = ${Number(price) * Number(productQuantity)}
             where orderDetailId = ${orderDetailId}
-        `); 
-    } catch (error) { 
+        `);
+    } catch (error) {
         return error
     }
 
