@@ -2,19 +2,53 @@ import { getConnection } from "../database/dbconfig.js";
 
 const getOrders = async (req, res) => {
     let pool = await getConnection();
+
     let orders = await pool.query(`
+        select * from invoice.orders
+    `)
+    let ordersStructured = [];
+
+    for (let order of orders.recordset) {
+        let { recordset } = await pool.query(` 
+                select 
+                    a.orderId,
+                    a.orderCreationDate,
+                    a.orderStatusId,
+                    b.idCustomer,
+                    b.nameCustomer,
+                    b.lastNameCustomer,
+                    b.customerIdentification
+                from invoice.orders A
+                left join invoice.customers b
+                on a.customerId = b.idCustomer
+                where a.orderId = ${order.orderId}
+            `);
+        let getOrders = recordset[0];
+
+        let orderDetail = await pool.query(`
             select 
-                a.orderId
-                ,b.idCustomer
-                ,b.nameCustomer
-                ,b.lastNameCustomer
-                ,b.customerIdentification
-                ,2458 pendingDebt
-            from  invoice.orders a
-            left join invoice.customers b
-            on a.customerId = b.idCustomer
-    `);
-    res.json(orders.recordset);
+                a.orderId,
+                b.orderDetailId,
+                c.productId,
+                c.productBarCode,
+                c.productDetail,
+                b.productQuantity,
+                b.price,
+                b.price * b.productQuantity total,
+                c.productCost
+            from invoice.orders a
+            inner join invoice.orderDetails b
+            on a.orderId = b.orderId
+            left join inventory.products c
+            on b.productId = c.productId
+            where a.orderId = ${order.orderId}
+        `);
+        orderDetail = orderDetail.recordset;
+        getOrders['orderDetail'] = orderDetail;
+        ordersStructured.push(getOrders);
+    }
+
+    res.json(ordersStructured);
 }
 
 const getOrdersById = async (req, res) => {
@@ -109,7 +143,11 @@ const createOrders = async (req, res) => {
             where orderId = ${orderIdInserted}
         `);
 
-        res.status(201).json(newOrder.recordset[0]);
+        res.status(201).json({
+            msg: 'Orden creada safistactoriamente',
+            status: 201,
+            data: newOrder.recordset[0]
+        });
 
     } catch (error) {
         res.status(400).json({
@@ -193,31 +231,6 @@ const updateOrders = async (req, res) => {
             errorType: error
         });
         return
-    }
-
-}
-
-const updateOrderDetail = async (orderDetails) => {
-
-    let {
-        orderDetailId,
-        productId,
-        productQuantity,
-        price
-    } = orderDetails;
-
-    let pool = await getConnection();
-    try {
-        await pool.query(`
-            update invoice.orderDetails
-            set productId = ${productId},
-                productQuantity = ${productQuantity},
-                price = ${price},
-                total = ${Number(price) * Number(productQuantity)}
-            where orderDetailId = ${orderDetailId}
-        `);
-    } catch (error) {
-        return error
     }
 
 }
