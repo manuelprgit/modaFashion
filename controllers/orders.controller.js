@@ -13,7 +13,8 @@ const getOrders = async (req, res) => {
                 select 
                     a.orderId,
                     a.orderCreationDate,
-                    a.orderStatusId,
+                    c.orderStatusId,
+                    c.description,
                     b.idCustomer,
                     b.nameCustomer,
                     b.lastNameCustomer,
@@ -21,6 +22,8 @@ const getOrders = async (req, res) => {
                 from invoice.orders A
                 left join invoice.customers b
                 on a.customerId = b.idCustomer
+                left join invoice.orderStatus c
+                on a.orderStatusId = c.orderStatusId
                 where a.orderId = ${order.orderId}
             `);
         let getOrders = recordset[0];
@@ -59,9 +62,20 @@ const getOrdersById = async (req, res) => {
         let pool = await getConnection();
         let orders = await pool.query(`
             select 
-                *
-            from invoice.orders
-            where orderId = ${orderId}
+                a.orderId,
+                a.orderCreationDate,
+                c.orderStatusId,
+                c.description,
+                b.idCustomer,
+                b.nameCustomer,
+                b.lastNameCustomer,
+                b.customerIdentification
+            from invoice.orders A
+            left join invoice.customers b
+            on a.customerId = b.idCustomer
+            left join invoice.orderStatus c
+            on a.orderStatusId = c.orderStatusId
+            where a.orderId = ${orderId}
         `);
 
         orders = orders.recordset[0];
@@ -234,7 +248,6 @@ const updateOrders = async (req, res) => {
     }
 
 }
-
 
 export {
     getOrders,
