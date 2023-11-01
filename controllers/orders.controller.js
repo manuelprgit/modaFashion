@@ -54,6 +54,21 @@ const getOrders = async (req, res) => {
     res.json(ordersStructured);
 }
 
+const getOrdersFiltered = async(req, res) => {
+    
+}
+
+const getOrderStatus = async (req,res) => {
+    let pool = await getConnection();
+
+    let {recordset} = await pool.query(`
+        select * from invoice.orderStatus
+    `)
+    let odersStatus = recordset;
+
+    res.json(odersStatus);
+}
+
 const getOrdersById = async (req, res) => {
 
     try {
@@ -249,9 +264,11 @@ const updateOrders = async (req, res) => {
 
 }
 
+
 export {
     getOrders,
     getOrdersById,
     createOrders,
-    updateOrders
+    updateOrders,
+    getOrderStatus
 }
