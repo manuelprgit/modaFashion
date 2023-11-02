@@ -9,10 +9,12 @@ const getOrders = async (req, res) => {
     let ordersStructured = [];
 
     for (let order of orders.recordset) {
+
         let { recordset } = await pool.query(` 
                 select 
                     a.orderId,
                     a.orderCreationDate,
+                    a.amount,
                     c.orderStatusId,
                     c.description,
                     b.idCustomer,
@@ -54,14 +56,14 @@ const getOrders = async (req, res) => {
     res.json(ordersStructured);
 }
 
-const getOrdersFiltered = async(req, res) => {
-    
+const getOrdersFiltered = async (req, res) => {
+
 }
 
-const getOrderStatus = async (req,res) => {
+const getOrderStatus = async (req, res) => {
     let pool = await getConnection();
 
-    let {recordset} = await pool.query(`
+    let { recordset } = await pool.query(`
         select * from invoice.orderStatus
     `)
     let odersStatus = recordset;
@@ -78,6 +80,7 @@ const getOrdersById = async (req, res) => {
         let orders = await pool.query(`
             select 
                 a.orderId,
+                a.amount,
                 a.orderCreationDate,
                 c.orderStatusId,
                 c.description,
@@ -137,14 +140,24 @@ const createOrders = async (req, res) => {
     let time = dateTime[1].substring(0, 7);
     let date = dateTime[0];
 
+    let totalAmount = orderDetail.reduce((acumulator, currentValue) => {
+        return acumulator + (currentValue.price * currentValue.productQuantity);
+    }, 0);
+
+    console.log(totalAmount);
+
     try {
         let pool = await getConnection();
         let idOrderInserted = await pool.query(`
         insert into invoice.orders(
-            customerId
+            customerId,
+            orderCreationDate,
+            amount
         )
         values(
-            ${customerId}
+            ${customerId},
+            ${new Date().toISOString().substring(0, 10)},
+            ${totalAmount}
         )
         
         DECLARE @orderId INT;
@@ -155,10 +168,8 @@ const createOrders = async (req, res) => {
 
         let orderIdInserted = idOrderInserted.recordset[0].orderId;
         let orderDetailInserted = await insertOrderDetails(orderIdInserted, orderDetail);
-        console.log(orderDetailInserted);
 
-        if (!orderDetailInserted) {
-            console.log('entre a la ordenes que no se insertaron');
+        if (orderDetailInserted) {
             res.status(400).json({
                 msg: 'Problemas al insertar uno o mas artículos',
                 error: 400,
@@ -179,6 +190,7 @@ const createOrders = async (req, res) => {
         });
 
     } catch (error) {
+
         res.status(400).json({
             msg: 'Problema al crear la orden',
             error: 400,
