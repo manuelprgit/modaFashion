@@ -113,11 +113,12 @@ import loaderController from '../helpers/loader.js';
 
         console.log(objetSend);
         let resPost = await mainFunctions.sendDataByRequest('POST', objetSend, 'api/orders');
-        console.log(resPost);
         if(resPost.status >= 400) showAlertBanner('Warning', 'No fue posible agregar esta orden');
         else{
             showAlertBanner('success', 'Orden agregada correctamente');
         }
     })
+
+    btnSearch.addEventListener('click', e=> location.assign('ordenes-creadas'))
 
 })()

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css" />
+    <link rel="stylesheet" href="./css/factura.css">
+    {{> head_links}}
+    <link rel="stylesheet" href="">
+    <title>Ordenes creadas</title>
+</head>
+
+<body>
+    <div class="content-order">
+        <div class="panel-content">
+            <div class="title">
+                <p>
+                    Todas las ordenes creadas
+                </p>
+            </div>
+            <div class="row-head">
+                <div class="search">
+                    <input type="text" placeholder="Buscar orden">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <div class="filter">
+                    <select name="" id="">
+                        <option value="">En proceso</option>
+                        <option value="">Rechazado</option>
+                        <option value="">Entregado</option>
+                    </select>
+                </div>
+            </div>
+            <div class="content-card">
+                
+            </div>
+        </div>
+    </div>
+
+      {{> tools}}
+</body>
+
+<script src="./js/sales/table-order.js" type="module"></script>
+</html>
