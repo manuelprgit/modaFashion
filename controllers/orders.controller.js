@@ -3,32 +3,41 @@ import { getConnection } from "../database/dbconfig.js";
 const getOrders = async (req, res) => {
     let pool = await getConnection();
 
+    let status = req.query;
+
     let orders = await pool.query(`
         select * from invoice.orders
+        ${(status.statusId) ? `where orderStatusId = ${status.statusId}` : ''}
     `)
     let ordersStructured = [];
 
     for (let order of orders.recordset) {
 
-        let { recordset } = await pool.query(` 
-                select 
-                    a.orderId,
-                    a.orderCreationDate,
-                    a.amount,
-                    c.orderStatusId,
-                    c.description statusDescription,
-                    b.idCustomer,
-                    b.nameCustomer,
-                    b.lastNameCustomer,
-                    b.customerIdentification
-                from invoice.orders A
-                left join invoice.customers b
-                on a.customerId = b.idCustomer
-                left join invoice.orderStatus c
-                on a.orderStatusId = c.orderStatusId
-                where a.orderId = ${order.orderId}
-            `);
+        let { recordset } = await pool.query(`
+            select 
+                a.orderId,
+                a.orderCreationDate,
+                a.amount,
+                c.orderStatusId,
+                b.idCustomer,
+                b.nameCustomer,
+                b.lastNameCustomer,
+                b.customerIdentification
+            from invoice.orders A
+            left join invoice.customers b
+            on a.customerId = b.idCustomer
+            left join invoice.orderStatus c
+            on a.orderStatusId = c.orderStatusId
+            where a.orderId = ${order.orderId}
+        `);
         let getOrders = recordset[0];
+
+        let orderStatus = await pool.query(`
+            select * from invoice.orderStatus 
+            where orderStatusId = ${getOrders.orderStatusId} 
+        `)
+
+        getOrders['orderStatus'] = orderStatus.recordset[0];
 
         let orderDetail = await pool.query(`
             select 
@@ -56,21 +65,6 @@ const getOrders = async (req, res) => {
     res.json(ordersStructured);
 }
 
-const getOrdersFiltered = async (req, res) => {
-
-}
-
-const getOrderStatus = async (req, res) => {
-    let pool = await getConnection();
-
-    let { recordset } = await pool.query(`
-        select * from invoice.orderStatus
-    `)
-    let odersStatus = recordset;
-
-    res.json(odersStatus);
-}
-
 const getOrdersById = async (req, res) => {
 
     try {
@@ -83,7 +77,6 @@ const getOrdersById = async (req, res) => {
                 a.amount,
                 a.orderCreationDate,
                 c.orderStatusId,
-                c.description statusDescription,
                 b.idCustomer,
                 b.nameCustomer,
                 b.lastNameCustomer,
@@ -97,6 +90,7 @@ const getOrdersById = async (req, res) => {
         `);
 
         orders = orders.recordset[0];
+
         let orderDetail = await pool.query(`
             select 
                 a.orderId,
@@ -116,6 +110,13 @@ const getOrdersById = async (req, res) => {
             where a.orderId = ${orderId}
         `);
         orderDetail = orderDetail.recordset;
+
+        let orderStatus = await pool.query(`
+            select * from invoice.orderStatus 
+            where orderStatusId = ${orders.orderStatusId} 
+        `)
+
+        orders['orderStatus'] = orderStatus.recordset[0];
         orders['orderDetail'] = orderDetail;
         res.json(orders);
 
@@ -199,6 +200,64 @@ const createOrders = async (req, res) => {
     }
 }
 
+const updateOrders = async (req, res) => {
+
+    let {
+        customerId,
+        orderStatusId,
+        orderDetail
+    } = req.body
+
+    let totalAmount = orderDetail.reduce((acumulator, currentValue) => {
+        return acumulator + (currentValue.price * currentValue.productQuantity);
+    }, 0);
+
+    let orderId = req.params.orderId;
+    try {
+
+        let pool = await getConnection();
+        await pool.query(`
+            update invoice.orders
+            set customerId = ${customerId},
+                orderStatusId = ${orderStatusId},
+                amount = ${totalAmount}
+            where orderId = ${orderId} 
+        `);
+
+        await insertOrderDetails(orderId, orderDetail);
+
+        res.status(204).json({});
+
+    } catch (error) {
+        res.status(400).json({
+            msg: 'Problemas al actualizar la orden',
+            error: 400,
+            errorType: error
+        });
+        return
+    }
+
+}
+
+const getOrderStatus = async (req, res) => {
+    let pool = await getConnection();
+
+    let { recordset } = await pool.query(`
+        select * from invoice.orderStatus
+    `)
+    let odersStatus = recordset;
+
+    res.json(odersStatus);
+}
+ 
+const postOrder = (req, res) => {
+
+}
+
+const rejectOrder = (req, res) => {
+
+}
+
 const insertOrderDetails = async (id, orderDetails) => {
 
     let pool = await getConnection();
@@ -232,54 +291,6 @@ const insertOrderDetails = async (id, orderDetails) => {
 
 }
 
-const updateOrders = async (req, res) => {
-
-    let {
-        customerId,
-        orderStatusId,
-        orderDetail
-    } = req.body
-
-    let totalAmount = orderDetail.reduce((acumulator, currentValue) => {
-        return acumulator + (currentValue.price * currentValue.productQuantity);
-    }, 0);
-
-    let orderId = req.params.orderId;
-    try {
-
-        let pool = await getConnection();
-        await pool.query(`
-            update invoice.orders
-            set customerId = ${customerId},
-                orderStatusId = ${orderStatusId},
-                amount = ${totalAmount}
-            where orderId = ${orderId} 
-        `);
-
-        let newOrdersDetails = [];
-        // for (let order of orderDetail) {
-        //     if (order.orderDetailId == 0) {
-        //         console.log('Si es igual a cero');
-        //         newOrdersDetails.push(order);
-        //     } else {
-        //         console.log('No es igual a cero');
-        //         await updateOrderDetail(order)
-        //     }
-        // } 
-        await insertOrderDetails(orderId, orderDetail);
-
-        res.status(204).json({});
-
-    } catch (error) {
-        res.status(400).json({
-            msg: 'Problemas al actualizar la orden',
-            error: 400,
-            errorType: error
-        });
-        return
-    }
-
-}
 
 export {
     getOrders,
