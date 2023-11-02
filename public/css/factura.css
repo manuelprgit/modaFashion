@@ -24,8 +24,8 @@ body {
 .general-content .side-menu {
   background-color: #57386b;
   overflow-y: scroll;
-  min-width: 325px;
-  width: 325px;
+  min-width: 270px;
+  width: 24%;
   padding: 0 20px 0 0;
   position: sticky;
   top: 0;
@@ -60,19 +60,20 @@ body {
   display: grid;
   grid-template-columns: 50px auto;
   align-items: center;
-  height: 60px;
+  height: 40px;
   border-radius: 8px;
   padding: 0px 32px;
   transition: 0.2s;
   border-radius: 50px;
+  transition: 0.4s;
 }
 .general-content .side-menu .main-content-menu .option i {
-  font-size: 32px;
+  font-size: 18px;
   color: #faf8fc;
 }
 .general-content .side-menu .main-content-menu .option p {
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-size: 1.4rem;
+  font-weight: 300;
   color: #faf8fc;
 }
 .general-content .side-menu .main-content-menu .option:hover {
@@ -82,7 +83,8 @@ body {
   color: #57386b;
 }
 .general-content .side-menu .main-content-menu .option:hover p {
-  color: #57386b;
+  font-weight: 700;
+  color: #faf8fc;
 }
 .general-content .side-menu .main-content-menu .option:active {
   background-color: #a271ce;
@@ -91,7 +93,8 @@ body {
   color: #57386b;
 }
 .general-content .side-menu .main-content-menu .option:active p {
-  color: #57386b;
+  font-weight: 700;
+  color: #faf8fc;
 }
 .general-content .side-menu .active {
   background-color: #c2a3dd;
@@ -100,7 +103,8 @@ body {
   color: #57386b !important;
 }
 .general-content .side-menu .active p {
-  color: #57386b !important;
+  font-weight: 700;
+  color: #faf8fc;
 }
 .general-content .main-content {
   background-color: #ebe0f4;
@@ -126,10 +130,11 @@ body {
   gap: 16px;
 }
 .general-content .main-content .head-content .info-section .icon-module i {
-  font-size: 4rem;
+  font-size: 3rem;
+  color: #57386b;
 }
 .general-content .main-content .head-content .info-section .detail-module h2 {
-  font-size: 3.6rem;
+  font-size: 3rem;
   font-weight: 600;
 }
 .general-content .main-content .head-content .profile-section {
@@ -194,28 +199,31 @@ body {
   height: 100%;
 }
 .general-content .main-content main .option-content h2 {
-  font-size: 3rem;
+  font-size: 2rem;
 }
 .general-content .main-content main .option-content .options {
   padding: 10px;
   display: grid;
-  grid-template-columns: repeat(3, minmax(300px, 1fr));
-  grid-auto-rows: 150px;
+  grid-template-columns: repeat(3, minmax(260px, 1fr));
+  grid-auto-rows: 128px;
   height: 100%;
-  overflow-y: auto;
 }
 .general-content .main-content main .option-content .options .option {
   display: flex;
-  height: 130px;
+  height: 101px;
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.2509803922);
   border-radius: 12px;
   justify-content: center;
   align-items: center;
-  gap: 20px;
-  margin: 10px;
+  gap: 10px;
+  margin: 10px 0;
   cursor: pointer;
   transition: 0.1s;
   color: rgb(29, 26, 26);
+  width: 268px;
+  transition: 0.4s;
+  max-width: 250px;
+  background-color: #faf8fc;
 }
 .general-content .main-content main .option-content .options .option:hover {
   background-color: #c2a3dd;
@@ -230,8 +238,9 @@ body {
   place-content: center;
 }
 .general-content .main-content main .option-content .options .option .option-icon-content i {
-  font-size: 40px;
+  font-size: 24px;
   color: #391f4c;
+  margin-left: 8px;
 }
 .general-content .main-content main .option-content .options .option .option-detail {
   display: flex;
@@ -240,13 +249,13 @@ body {
   color: black;
 }
 .general-content .main-content main .option-content .options .option .option-detail h3 {
-  font-size: 2rem;
+  font-size: 1.4rem;
   font-weight: 500;
   color: #391f4c;
 }
 .general-content .main-content main .option-content .options .option .option-detail p {
   width: 200px;
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: #57386b;
   max-width: 200px;
@@ -353,13 +362,15 @@ body {
 }
 
 .option-disabled {
-  background-color: #d5d5d5;
+  background-color: #d5d5d5 !important;
   pointer-events: none;
 }
 .option-disabled:hover {
   background-color: none;
 }
-.option-disabled i, .option-disabled h3, .option-disabled p {
+.option-disabled i,
+.option-disabled h3,
+.option-disabled p {
   color: #626262;
 }
 
@@ -379,6 +390,7 @@ body {
   border-radius: 12px;
   opacity: 0;
   position: relative;
+  max-width: 90vw;
 }
 .modal-content .modal .close-modal {
   position: absolute;
@@ -427,6 +439,27 @@ body {
 }
 .modal-content .modal .table .tbody .tr .td {
   font-size: 1.8rem;
+}
+.modal-content .modal .content-button {
+  margin-top: 24px;
+  display: flex;
+  justify-content: end;
+}
+.modal-content .modal .content-button button {
+  background-color: #2ea667;
+  color: #EEEEEE;
+  height: 50px;
+  width: 150px;
+  border-radius: 8px;
+  outline: none;
+  font-size: 1.6rem;
+  font-weight: 700;
+  border: 0;
+  transition: 0.2s;
+  cursor: pointer;
+}
+.modal-content .modal .content-button button:hover {
+  background-color: #1f8d54;
 }
 
 .modal-content.show {
@@ -811,7 +844,8 @@ main.invoice-main .section-body .articles-section .table-article .table .tbody .
 main.invoice-main .section-body .articles-section .table-article .table .tbody .tr:nth-child(2n+1) {
   background-color: rgba(0, 0, 0, 0.062745098);
 }
-main.invoice-main .section-body .articles-section .table-article .table .tbody .td, main.invoice-main .section-body .articles-section .table-article .table .tbody a {
+main.invoice-main .section-body .articles-section .table-article .table .tbody .td,
+main.invoice-main .section-body .articles-section .table-article .table .tbody a {
   font-size: 1.8rem;
 }
 main.invoice-main .section-body .articles-section .table-article .table .tfoot {
@@ -1058,6 +1092,105 @@ main.invoice-main .section-body .control-section .actions-button button:active {
 .selected-row {
   background-color: rgb(233, 146, 146) !important;
   cursor: pointer;
+}
+
+.content-order {
+  width: 100%;
+  height: 100vh;
+  background-color: #a271ce;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+.content-order .panel-content {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+  background-color: #faf8fc;
+  font-size: 10rem;
+  padding: 20px 28px;
+  border-radius: 14px;
+  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.4392156863);
+}
+.content-order .panel-content .title {
+  font-weight: 700;
+}
+.content-order .panel-content .title p {
+  font-size: 2.4rem;
+}
+.content-order .panel-content .row-head {
+  display: flex;
+  justify-content: space-between;
+  margin: 18px 0;
+}
+.content-order .panel-content .row-head .search input {
+  border: 1px solid gray;
+  border-radius: 25px;
+  padding: 0 16px;
+  font-size: 2rem;
+  height: 40px;
+  width: 188px;
+}
+.content-order .panel-content .row-head .filter select {
+  border: 1px solid gray;
+  padding: 12px;
+  height: 40px;
+  width: 145px;
+  border-radius: 16px;
+}
+.content-order .panel-content .content-card {
+  height: 90%;
+  overflow-y: scroll;
+  padding: 4px;
+}
+.content-order .panel-content .content-card .row {
+  display: flex;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 0 6px 4px rgba(99, 99, 99, 0.32);
+  margin-bottom: 18px;
+  transition: 0.2s;
+  height: 100px;
+  position: relative;
+}
+.content-order .panel-content .content-card .row .menu {
+  display: flex;
+}
+.content-order .panel-content .content-card .row .menu i {
+  font-size: 2.4rem;
+}
+.content-order .panel-content .content-card .row .dowm {
+  position: absolute;
+  bottom: 0;
+  width: 98%;
+  text-align: center;
+}
+.content-order .panel-content .content-card .row .dowm i {
+  font-size: 2rem;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+.content-order .panel-content .content-card .row .dowm i:hover {
+  background-color: rgba(147, 147, 147, 0.1098039216);
+}
+.content-order .panel-content .content-card .row .colum {
+  width: 100%;
+}
+.content-order .panel-content .content-card .row .colum .head {
+  font-size: 1.9rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.content-order .panel-content .content-card .row .colum .tbody {
+  font-size: 1.8rem;
+  font-weight: 100;
+}
+.content-order .panel-content .content-card .row:hover {
+  background-color: rgba(147, 147, 147, 0.1098039216);
 }
 
 /*# sourceMappingURL=factura.css.map */

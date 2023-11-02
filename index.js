@@ -89,6 +89,9 @@ app.get('/compras', (req, res) => {
 app.get('/mantenimiento-suplidor', (req, res) => {
   res.render(path.join('./views/Compras/mantenimiento-suplidor'),salesProps);
 })
+app.get('/ordenes-creadas', (req, res) => {
+  res.render(path.join('./views/Facturacion/ordenes-creadas'),salesProps);
+})
 //#endregion Compras
 
 app.listen(port, () => {

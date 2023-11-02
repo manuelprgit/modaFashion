@@ -1,8 +1,8 @@
 @import 'main';
 @import 'variables';
 
-@mixin formatTable (){
-    .tr{
+@mixin formatTable () {
+    .tr {
         display: grid;
         grid-template-columns: 2fr 1fr 1fr;
         align-items: center;
@@ -10,40 +10,48 @@
         margin: 4px;
     }
 }
-main.invoice-main{ 
-    
+
+main.invoice-main {
+
     .section-body {
-        @include flex(null,null,null,20px);
+        @include flex(null, null, null, 20px);
         background-color: $white;
-        border-radius: $radius-8; 
+        border-radius: $radius-8;
         padding: 30px;
-        width: 100%; 
+        width: 100%;
         margin-top: 8px;
-        .articles-section{
-            width: 70%; 
+
+        .articles-section {
+            width: 70%;
             height: 600px;
-            .input-content{
+
+            .input-content {
                 display: flex;
             }
-            .table-article{
+
+            .table-article {
                 background-color: white;
                 padding: 12px;
                 width: 100%;
                 border-radius: 8px;
                 box-shadow: $box-shadow;
                 height: 70%;
-                position: relative; 
-                .table{
+                position: relative;
+
+                .table {
                     height: 100%;
                     @include formatTable();
-                    .th{
+
+                    .th {
                         font-size: 1.8rem;
                     }
-                    .thead{
+
+                    .thead {
                         margin-bottom: 12px;
-                      
+
                     }
-                    .tbody{
+
+                    .tbody {
                         max-height: 300px;
                         margin-bottom: 12px;
                         overflow-y: scroll;
@@ -51,43 +59,50 @@ main.invoice-main{
                         margin-top: 22px;
                         height: 80%;
                         @include formatTable();
-                        .tr:nth-child(2n+1){
+
+                        .tr:nth-child(2n+1) {
                             background-color: $grey-10;
                         }
-                        .td,a{
+
+                        .td,
+                        a {
                             font-size: 1.8rem;
                         }
                     }
-                    .tfoot{
+
+                    .tfoot {
                         width: 98%;
                         @include formatTable();
-                        .tf{
+
+                        .tf {
                             font-size: 1.8rem;
                         }
                     }
                 }
             }
-    
-            .table-article.select{
-                .tbody{
-                    .tr{
+
+            .table-article.select {
+                .tbody {
+                    .tr {
                         @extend .select-art;
                         cursor: pointer;
                     }
                 }
             }
         }
-        .control-section{
+
+        .control-section {
             width: 30%;
             display: flex;
             flex-direction: column;
             align-items: center;
-    
-            .actions-button{
+
+            .actions-button {
                 display: flex;
                 flex-direction: column;
                 gap: 22px;
-                button{
+
+                button {
                     background-color: white;
                     width: 90px;
                     height: 70px;
@@ -99,38 +114,44 @@ main.invoice-main{
                     justify-content: center;
                     flex-direction: column;
                     cursor: pointer;
-                    &.disabled{
+
+                    &.disabled {
                         opacity: 0.45;
                         pointer-events: none;
                     }
-                    i{
+
+                    i {
                         font-size: 2rem,
                     }
-                    span{
+
+                    span {
                         font-size: 1.6rem;
                     }
-                } 
-                
-                button:hover{
+                }
+
+                button:hover {
                     background-color: $soft-grey;
                 }
-                button:active{
+
+                button:active {
                     background-color: $strong-grey;
                 }
             }
         }
-        
-        
+
+
     }
 }
-.input-form{
+
+.input-form {
     display: flex;
     flex-direction: column;
     width: 250px;
     margin-left: 16px;
     margin-bottom: 12px;
     position: relative;
-    input{
+
+    input {
         height: 48px;
         padding: 12px;
         border: none;
@@ -140,14 +161,17 @@ main.invoice-main{
         outline: none;
         margin: 10px 0;
     }
+
     label,
-    input{
+    input {
         font-size: 1.8rem;
     }
-    span{
+
+    span {
         font-size: 1.6rem;
     }
-    button{
+
+    button {
         position: absolute;
         height: 50px;
         width: 50px;
@@ -157,20 +181,23 @@ main.invoice-main{
         top: 27px;
         cursor: pointer;
         background: #ccc;
-        &:hover{
+
+        &:hover {
             background: #b6b6b6;
         }
-        &:active{
+
+        &:active {
             background: #979797;
         }
-        i{
+
+        i {
             font-size: 20px;
         }
     }
 }
 
-.modal-user-content{
-    width: 100%;  
+.modal-user-content {
+    width: 100%;
     height: 100%;
     position: absolute;
     transition: 0.2s;
@@ -179,16 +206,17 @@ main.invoice-main{
     display: flex;
     justify-content: center;
     align-items: center;
-    .modal-user{
+
+    .modal-user {
         border-radius: 8px;
         background-color: white;
-        width:30% ;
+        width: 30%;
         transition: 0.2s;
         overflow: hidden;
         max-height: 0px;
-        padding: 0 50px ;
+        padding: 0 50px;
 
-        .input-content{
+        .input-content {
             display: flex;
             position: relative;
             height: 100%;
@@ -196,15 +224,18 @@ main.invoice-main{
             align-items: center;
             flex-direction: column;
             gap: 22px;
-            label{
+
+            label {
                 display: flex;
                 flex-direction: column;
                 gap: 6px;
             }
-            span{
+
+            span {
                 font-size: 1.6rem;
             }
-            span.wrong-password{
+
+            span.wrong-password {
                 position: absolute;
                 font-size: 1.4rem;
                 bottom: 135px;
@@ -214,13 +245,15 @@ main.invoice-main{
                 opacity: 0;
             }
         }
-        .button-content{
+
+        .button-content {
             display: flex;
             gap: 20px;
             flex-direction: row;
             justify-content: center;
             margin-top: 10px;
-            .btn{
+
+            .btn {
                 width: 150px;
                 height: 44px;
                 border: none;
@@ -231,16 +264,19 @@ main.invoice-main{
                 font-size: 1.6rem;
                 cursor: pointer;
             }
-            .btn-success{
+
+            .btn-success {
                 background-color: $primary-color;
 
             }
-            .btn-danger{
+
+            .btn-danger {
                 background-color: $secondary-color;
-            } 
+            }
         }
     }
-    .input-form{
+
+    .input-form {
         width: 269px;
         height: 32px;
         border: none;
@@ -250,27 +286,30 @@ main.invoice-main{
         font-size: 1.8rem;
         margin-left: 0;
         box-sizing: border-box;
-        
+
     }
 }
-.modal-user-content.show{
+
+.modal-user-content.show {
     background-color: #4A4A4A50;
     pointer-events: auto;
-    .modal-user{
+
+    .modal-user {
         max-height: 500px;
         padding: 50px;
     }
 }
 
-.collect-modal{
-    .modal-user{
+.collect-modal {
+    .modal-user {
         width: 40% !important;
-        .collect-content{
+
+        .collect-content {
             display: flex;
             gap: 36px;
             justify-content: center;
-            
-            textarea{ 
+
+            textarea {
                 width: 90%;
                 padding: 20px;
                 border-radius: 8px;
@@ -279,26 +318,30 @@ main.invoice-main{
                 box-shadow: 2px 2px 6px 2px rgba(0, 0, 0, 0.25);
                 margin-bottom: 30px;
             }
-            .total-collect-content{
+
+            .total-collect-content {
                 width: 100%;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-around;
-                .collect{
+
+                .collect {
                     display: flex;
                     flex-direction: column;
-                    gap: 3px; 
+                    gap: 3px;
                     align-items: center;
                     margin: 8px 0;
-                    p{
+
+                    p {
                         font-weight: 500;
                         font-size: 1.8rem;
                     }
-        
-                    &.grand{
+
+                    &.grand {
                         font-size: 2rem;
                         text-align: center;
-                        p:nth-child(2){
+
+                        p:nth-child(2) {
                             font-size: 2rem;
                         }
                     }
@@ -310,11 +353,128 @@ main.invoice-main{
 
 }
 
-.select-row{
+.select-row {
     background-color: rgb(222, 222, 231) !important;
     cursor: pointer;
 }
-.selected-row{
+
+.selected-row {
     background-color: rgb(233, 146, 146) !important;
     cursor: pointer;
-} 
+}
+
+.content-order {
+    width: 100%;
+    height: 100vh;
+    background-color: $smooth-purple-active;
+    margin: 0;
+    padding: 0;
+    position: relative;
+
+    .panel-content {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        bottom: 16px;
+        left: 16px;
+        background-color: $white;
+        font-size: 10rem;
+        padding: 20px 28px;
+        border-radius: 14px;
+        box-shadow: 0 0 4px 3px #00000070;
+
+        .title {
+            font-weight: 700;
+
+            p {
+                font-size: 2.4rem;
+            }
+        }
+
+        .row-head {
+            display: flex;
+            justify-content: space-between;
+            margin: 18px 0;
+
+            .search {
+                input {
+                    border: 1px solid gray;
+                    border-radius: 25px;
+                    padding: 0 16px;
+                    font-size: 2rem;
+                    height: 40px;
+                    width: 188px;
+                }
+            }
+
+            .filter {
+                select {
+                    border: 1px solid gray;
+                    padding: 12px;
+                    height: 40px;
+                    width: 145px;
+                    border-radius: 16px;
+                }
+            }
+        }
+
+        .content-card {
+            height: 90%;
+            overflow-y: scroll;
+            padding: 4px;
+
+            .row {
+                display: flex;
+                padding: 16px;
+                border-radius: 8px;
+                box-shadow: 0 0 6px 4px rgb(99 99 99 / 32%);
+                margin-bottom: 18px;
+                transition: 0.2s;
+                height: 100px;
+                position: relative;
+                .menu {
+                    display: flex;
+                    i {
+                        font-size: 2.4rem;
+                    }
+                }
+
+                .dowm {
+                    position: absolute;
+                    bottom: 0;
+                    width: 98%;
+                    text-align: center;
+                    i{
+                        font-size: 2rem;
+                        padding: 10px;
+                        cursor: pointer;
+                        border-radius: 50%;
+                        transition: 0.2s;
+                    }
+                    i:hover{
+                        background-color: #9393931c;
+                    }
+                }
+
+                .colum {
+                    width: 100%;
+
+                    .head {
+                        font-size: 1.9rem;
+                        font-weight: 600;
+                        margin-bottom: 8px;
+                    }
+
+                    .tbody {
+                        font-size: 1.8rem;
+                        font-weight: 100;
+                    }
+                }
+            }
+
+            .row:hover {
+                background-color: #9393931c;
+            }
+        }
+    }
+}
