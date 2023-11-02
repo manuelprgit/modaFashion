@@ -9,6 +9,7 @@ import Supplier from './supplier.routes.js';
 import Seller from './seller.routes.js';
 import Orders from './order.routes.js';
 import Invoice from './invoice.routes.js';
+import Receivable from './accountReceivable.routes.js';
 
 const mainRoutes = Router();
 
@@ -21,6 +22,7 @@ mainRoutes.use(Supplier);
 mainRoutes.use(Seller);
 
 mainRoutes.use(Orders);
+mainRoutes.use(Receivable);
 mainRoutes.use(Invoice);
 
 export default mainRoutes;
