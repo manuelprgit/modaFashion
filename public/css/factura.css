@@ -1148,12 +1148,14 @@ main.invoice-main .section-body .control-section .actions-button button:active {
 .content-order .panel-content .content-card .row {
   display: flex;
   padding: 16px;
+  gap: 30px;
   border-radius: 8px;
   box-shadow: 0 0 6px 4px rgba(99, 99, 99, 0.32);
   margin-bottom: 18px;
   transition: 0.2s;
   height: 100px;
   position: relative;
+  overflow-y: hidden;
 }
 .content-order .panel-content .content-card .row .menu {
   display: flex;
@@ -1168,7 +1170,7 @@ main.invoice-main .section-body .control-section .actions-button button:active {
   text-align: center;
 }
 .content-order .panel-content .content-card .row .dowm i {
-  font-size: 2rem;
+  font-size: 1.4rem;
   padding: 10px;
   cursor: pointer;
   border-radius: 50%;
@@ -1185,9 +1187,52 @@ main.invoice-main .section-body .control-section .actions-button button:active {
   font-weight: 600;
   margin-bottom: 8px;
 }
+.content-order .panel-content .content-card .row .colum .text-center {
+  text-align: center;
+}
+.content-order .panel-content .content-card .row .colum .text-right {
+  text-align: end;
+}
 .content-order .panel-content .content-card .row .colum .tbody {
   font-size: 1.8rem;
   font-weight: 100;
+}
+.content-order .panel-content .content-card .row .table-orders {
+  position: absolute;
+  font-size: 6rem;
+  top: 103px;
+  width: 98%;
+  padding: 10px;
+  border-top: 1px solid gray;
+}
+.content-order .panel-content .content-card .row .table-orders .thead .tr {
+  display: flex;
+}
+.content-order .panel-content .content-card .row .table-orders .thead .tr .th {
+  width: 100%;
+  font-weight: 700;
+}
+.content-order .panel-content .content-card .row .table-orders .thead .tr .text-center {
+  text-align: center;
+}
+.content-order .panel-content .content-card .row .table-orders .thead .tr .text-right {
+  text-align: end;
+}
+.content-order .panel-content .content-card .row .table-orders .tbody {
+  margin-top: 16px;
+}
+.content-order .panel-content .content-card .row .table-orders .tbody .tr {
+  display: flex;
+  margin-bottom: 16px;
+}
+.content-order .panel-content .content-card .row .table-orders .tbody .tr .td {
+  width: 100%;
+}
+.content-order .panel-content .content-card .row .table-orders .tbody .tr .text-center {
+  text-align: center;
+}
+.content-order .panel-content .content-card .row .table-orders .tbody .tr .text-right {
+  text-align: end;
 }
 .content-order .panel-content .content-card .row:hover {
   background-color: rgba(147, 147, 147, 0.1098039216);
