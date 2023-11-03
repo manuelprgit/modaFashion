@@ -16,7 +16,7 @@ const getOrders = async (req, res) => {
                     a.orderCreationDate,
                     a.amount,
                     c.orderStatusId,
-                    c.description,
+                    c.description statusDescription,
                     b.idCustomer,
                     b.nameCustomer,
                     b.lastNameCustomer,
@@ -83,7 +83,7 @@ const getOrdersById = async (req, res) => {
                 a.amount,
                 a.orderCreationDate,
                 c.orderStatusId,
-                c.description,
+                c.description statusDescription,
                 b.idCustomer,
                 b.nameCustomer,
                 b.lastNameCustomer,
@@ -240,6 +240,10 @@ const updateOrders = async (req, res) => {
         orderDetail
     } = req.body
 
+    let totalAmount = orderDetail.reduce((acumulator, currentValue) => {
+        return acumulator + (currentValue.price * currentValue.productQuantity);
+    }, 0);
+
     let orderId = req.params.orderId;
     try {
 
@@ -247,7 +251,8 @@ const updateOrders = async (req, res) => {
         await pool.query(`
             update invoice.orders
             set customerId = ${customerId},
-                orderStatusId = ${orderStatusId}
+                orderStatusId = ${orderStatusId},
+                amount = ${totalAmount}
             where orderId = ${orderId} 
         `);
 
@@ -275,7 +280,6 @@ const updateOrders = async (req, res) => {
     }
 
 }
-
 
 export {
     getOrders,
