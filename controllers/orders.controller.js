@@ -134,14 +134,15 @@ const getOrdersById = async (req, res) => {
 const createOrders = async (req, res) => {
     const {
         customerId,
-        orderDetail
+        orderDetails
     } = req.body;
 
     let dateTime = new Date().toISOString().split('T');
     let time = dateTime[1].substring(0, 7);
     let date = dateTime[0];
 
-    let totalAmount = orderDetail.reduce((acumulator, currentValue) => {
+    //TODO: resolver el problema de DARIEL
+    let totalAmount = orderDetails.reduce((acumulator, currentValue) => {
         return acumulator + (currentValue.price * currentValue.productQuantity);
     }, 0);
 
@@ -168,7 +169,7 @@ const createOrders = async (req, res) => {
         `);
 
         let orderIdInserted = idOrderInserted.recordset[0].orderId;
-        let orderDetailInserted = await insertOrderDetails(orderIdInserted, orderDetail);
+        let orderDetailInserted = await insertOrderDetails(orderIdInserted, orderDetails);
 
         if (orderDetailInserted) {
             res.status(400).json({
@@ -194,7 +195,7 @@ const createOrders = async (req, res) => {
 
         res.status(400).json({
             msg: 'Problema al crear la orden',
-            error: 400,
+            status: 400,
             errorType: error
         });
     }
@@ -205,10 +206,10 @@ const updateOrders = async (req, res) => {
     let {
         customerId,
         orderStatusId,
-        orderDetail
+        orderDetails
     } = req.body
 
-    let totalAmount = orderDetail.reduce((acumulator, currentValue) => {
+    let totalAmount = orderDetails.reduce((acumulator, currentValue) => {
         return acumulator + (currentValue.price * currentValue.productQuantity);
     }, 0);
 
@@ -224,7 +225,7 @@ const updateOrders = async (req, res) => {
             where orderId = ${orderId} 
         `);
 
-        await insertOrderDetails(orderId, orderDetail);
+        await insertOrderDetails(orderId, orderDetails);
 
         res.status(204).json({});
 
@@ -239,7 +240,7 @@ const updateOrders = async (req, res) => {
 
 }
 
-const getOrderStatus = async (req, res) => {
+const getOrderStatus = async (_, res) => {
     let pool = await getConnection();
 
     let { recordset } = await pool.query(`
@@ -250,11 +251,94 @@ const getOrderStatus = async (req, res) => {
     res.json(odersStatus);
 }
  
-const postOrder = (req, res) => {
+const postOrder = async (req, res) => {
+    let { documentId } = req.body;
+    
+    let pool = await getConnection();
 
+    let {recordset} = await pool.query(`
+        select * from invoice.orders
+        where orderId = ${documentId}
+    `)
+
+    if(recordset[0].orderStatusId != 1){
+        res.status(400).json({
+            msg:"El documento ya no puede ser modificado",
+            status: 400
+        });
+        return;
+    }
+
+    await pool.query(`
+        insert into invoice.accountsReceivable (
+            customerId,
+            documentId,
+            amount,
+            dueDate,
+            accountStatus,
+            paymentDate,
+            paymentTypeId,
+            notes
+        )
+            select 
+            b.idCustomer,
+            a.orderId,
+            a.amount,
+            GETDATE()+30 dueDate, 
+            'Pendiente' accountStatus,
+            GETDATE() paymentDate,
+            1 paymentTypeId,
+            'Orden de shein' notes
+        from invoice.orders a
+        left join invoice.customers b
+        on a.customerId = b.idCustomer
+        where a.orderId = ${documentId}
+    `);
+
+    await pool.query(`
+        update invoice.orders
+        set orderStatusId = 2
+        where orderId = ${documentId}
+    `)
+
+    res.status(201).json({
+        msg:"Documento posteado con exito",
+        status: 201,
+        data: documentId
+    });
+    
 }
 
-const rejectOrder = (req, res) => {
+const rejectOrder = async (req, res) => {
+
+    let { documentId } = req.body;
+    
+    let pool = await getConnection();
+
+    let {recordset} = await pool.query(`
+        select * from invoice.orders
+        where orderId = ${documentId}
+    `);
+    console.log(recordset[0].orderStatusId);
+    if(recordset[0].orderStatusId != 1){
+        res.status(400).json({
+            msg:"El documento ya no puede ser modificado",
+            status: 400
+        });
+        return;
+    }
+
+    await pool.query(`
+        update invoice.orders
+        set orderStatusId = 5
+        where orderId = ${documentId}
+    `);
+
+    res.status(201).json({
+        msg:"El documento fue rechazado",
+        status: 201,
+        data: documentId
+    }); 
 
 }
 
@@ -297,5 +381,7 @@ export {
     getOrdersById,
     createOrders,
     updateOrders,
-    getOrderStatus
+    getOrderStatus,
+    postOrder,
+    rejectOrder
 }
