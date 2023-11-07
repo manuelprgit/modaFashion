@@ -426,14 +426,17 @@ main.invoice-main {
             .row {
                 display: flex;
                 padding: 16px;
+                gap: 30px;
                 border-radius: 8px;
                 box-shadow: 0 0 6px 4px rgb(99 99 99 / 32%);
                 margin-bottom: 18px;
                 transition: 0.2s;
                 height: 100px;
                 position: relative;
+                overflow-y: hidden;
                 .menu {
                     display: flex;
+
                     i {
                         font-size: 2.4rem;
                     }
@@ -444,14 +447,16 @@ main.invoice-main {
                     bottom: 0;
                     width: 98%;
                     text-align: center;
-                    i{
-                        font-size: 2rem;
+
+                    i {
+                        font-size: 1.4rem;
                         padding: 10px;
                         cursor: pointer;
                         border-radius: 50%;
                         transition: 0.2s;
                     }
-                    i:hover{
+
+                    i:hover {
                         background-color: #9393931c;
                     }
                 }
@@ -464,10 +469,55 @@ main.invoice-main {
                         font-weight: 600;
                         margin-bottom: 8px;
                     }
-
+                    .text-center{
+                        text-align: center;
+                    }
+                    .text-right{
+                        text-align: end;
+                    }
                     .tbody {
                         font-size: 1.8rem;
                         font-weight: 100;
+                    }
+                }
+
+                .table-orders {
+                    position: absolute;
+                    font-size: 6rem;
+                    top: 103px;
+                    width: 98%;
+                    padding: 10px;
+                    border-top: 1px solid gray;
+                    .thead{
+                        .tr{
+                            display: flex;
+                            .th{
+                                width: 100%;
+                                font-weight: 700;
+                            }
+                            .text-center{
+                                text-align: center;
+                            }
+                            .text-right{                                
+                                text-align: end;
+                            }
+                        }
+                    }
+                    .tbody{
+                        margin-top: 16px;
+                        .tr{
+                            display: flex;
+                            margin-bottom: 16px;
+                            .td{
+                                width: 100%;
+                            }
+                            .text-center{
+                                text-align: center;
+                            }
+                            .text-right{                                
+                                text-align: end;
+                            }
+                        }
                     }
                 }
             }
