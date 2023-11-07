@@ -2,18 +2,19 @@ import { showAlertBanner } from "../helpers/alertBanner.js";
 import showConfirmationModal from "../helpers/confirmationModal.js";
 import { mainFunctions } from "../main.js";
 import loaderController from '../helpers/loader.js';
-(async() => {
+(async () => {
     //Id
     let contentCard = document.getElementById('contentCard');
+    let btnClose = document.getElementById('btnClose');
 
+    let templateMenuTable = document.getElementById('templateMenuTable');
 
     let dataOrders = await mainFunctions.getDataFromAPI('orders');
-    console.log(dataOrders);
-    
-    function tbodyProductOrder(dataProduct){
+
+    function tbodyProductOrder(dataProduct) {
         let div;
         let listRowProduct = [];
-        for(let key in dataProduct){
+        for (let key in dataProduct) {
             let dataRowProduct = dataProduct[key];
             div = `
                         <div class="tr">
@@ -27,10 +28,9 @@ import loaderController from '../helpers/loader.js';
             `;
             listRowProduct.push(div);
         }
-        console.log(listRowProduct.join(''));
         return listRowProduct.join('');
     }
-    for(let key in dataOrders){
+    for (let key in dataOrders) {
         let dataRowOrders = dataOrders[key];
         let div = `
                 <div class="row" data-id="${dataRowOrders.orderId}">
@@ -55,9 +55,9 @@ import loaderController from '../helpers/loader.js';
                         <div class="body text-right">${dataRowOrders.amount}</div>
                     </div>
                     <div class="menu text-center">
-                        <i class="fa-solid fa-ellipsis"></i>
+                        <i data-id="${dataRowOrders.orderId}" class="fa-solid fa-ellipsis"></i>
                     </div>
-                    <div class="dowm">
+                    <div class="down">
                         <i class="open-card fa-solid fa-chevron-down"></i>
                     </div>
 
@@ -85,11 +85,38 @@ import loaderController from '../helpers/loader.js';
     document.addEventListener('click', e => {
         if (e.target.matches('i.open-card')) {
             let dataId = e.target.closest('[data-id]').getAttribute('data-id');
-            console.log(dataId);
-            contentCard.querySelectorAll(`div.row[data-id]`).forEach(row=>row.style.height = '100px');
-            contentCard.querySelectorAll(`div.row i.open-card`).forEach(ico=>ico.style.rotate = '0deg');
+            contentCard.querySelectorAll(`div.row[data-id]`).forEach(row => row.style.height = '100px');
+            contentCard.querySelectorAll(`div.row i.open-card`).forEach(ico => ico.style.rotate = '0deg');
             contentCard.querySelector(`div.row[data-id="${dataId}"]`).style.height = '300px';
             e.target.style.rotate = '180deg';
         }
+        if (e.target.matches('.row .menu i')) {
+            contentCard.querySelectorAll(`div.row[data-id]`).forEach(row => {
+                row.style.height = '100px'
+            });
+            contentCard.querySelectorAll('.content-menu-table').forEach(menu => menu.remove());
+            let clone = templateMenuTable.cloneNode(true);
+            clone = clone.content.firstElementChild;
+            e.target.insertAdjacentElement('beforeend', clone);
+            e.target.parentElement.parentElement.style.height = '300px';
+            e.target.querySelector('.content-menu-table').setAttribute('data-id', e.target.getAttribute('data-id'))
+        } else {
+            contentCard.querySelectorAll('.content-menu-table').forEach(menu => menu.remove());
+        }
+        if (e.target.closest('#openDocument')) {
+            let id = e.target.closest('[data-id]').getAttribute('data-id');
+            let dataObj = {
+                orderId: Number(id)
+            }
+
+            let resPost = mainFunctions.sendDataByRequest('POST', dataObj, 'orders/post');
+            if(resPost.status >= 400){
+                showAlertBanner('warning', 'No fue posible postear el documento');
+            }else{
+                showAlertBanner('success', 'El documento fue posteado correctamente');
+            }
+        }
     })
+
+    btnClose.addEventListener('click', e => location.assign('creacion-ordenes'))
 })()

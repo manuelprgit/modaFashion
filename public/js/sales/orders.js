@@ -105,6 +105,7 @@ import loaderController from '../helpers/loader.js';
     })
 
     saveOrder.addEventListener('click', async e=>{
+        let resValidate = showe
         let objetSend = {
             'customerId': Number(customerCode.value),
             'orderId': 0,
