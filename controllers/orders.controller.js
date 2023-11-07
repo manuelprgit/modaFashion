@@ -341,6 +341,87 @@ const rejectOrder = async (req, res) => {
     }); 
 
 }
+//Recibir odenes
+const recieveOrder = async(req,res) => {
+    
+    let { documentId } = req.body;
+
+    let pool = await getConnection();
+    try {
+        let {recordset} = await pool.query(`
+            select * from invoice.orders
+            where orderId = ${documentId}
+        `);
+        let order = recordset[0]
+        if(order == undefined){
+            res.status(400).json({
+                msg:"La orden no existe",
+                status: 400
+            });
+            return;
+        }
+
+        if(order.orderStatusId != 2){
+            res.status(400).json({
+                msg:"La orden debe de estar con el estatus PEDIDO",
+                status: 400
+            });
+            return;
+        }
+    
+        let getOrderDetail = await pool.query(`
+            select * from invoice.orderDetails
+            where orderId = ${documentId}
+        `);
+    
+        getOrderDetail = getOrderDetail.recordset;
+    
+        for(let product of getOrderDetail){
+            
+            let articleExis  = await pool.query(`
+                select * from inventory.existence 
+                where productId = ${product.productId}
+            `);
+    
+            if(articleExis.recordset.length == 0){
+    
+                await pool.query(`
+                    insert into inventory.existence
+                    select 
+                        productId,
+                        productQuantity,
+                        1 storeId
+                    from invoice.orderDetails
+                    where orderId = ${documentId} 
+                    and productId = ${product.productId}
+                `);
+    
+            }else{
+                await pool.query(` 
+                    update inventory.existence
+                    set quantity = (select quantity from inventory.existence where productId = ${product.productId}) + ${product.productQuantity}
+                    where productId = ${product.productId}
+                `)
+            }
+            
+        }
+    } catch (error) {
+        console.log(error);
+    }
+
+    //Cambio de estatus a RECIBIDO
+    await pool.query(`
+        update invoice.orders
+        set orderStatusId = 3
+        where orderId = ${documentId}
+    `);
+
+    res.status(201).json({
+        msg:"El documento fue recibido con éxito",
+        status: 201,
+        data: documentId
+    }); 
+}
 
 const insertOrderDetails = async (id, orderDetails) => {
 
@@ -375,7 +456,6 @@ const insertOrderDetails = async (id, orderDetails) => {
 
 }
 
-
 export {
     getOrders,
     getOrdersById,
@@ -383,5 +463,6 @@ export {
     updateOrders,
     getOrderStatus,
     postOrder,
-    rejectOrder
+    rejectOrder,
+    recieveOrder,
 }
