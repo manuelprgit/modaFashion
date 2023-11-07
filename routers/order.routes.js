@@ -5,7 +5,10 @@ import {
     getOrdersById,
     createOrders,
     updateOrders,
-    getOrderStatus
+    getOrderStatus,
+    postOrder,
+    rejectOrder,
+    recieveOrder
 } from '../controllers/orders.controller.js';
 
 const router = Router();
@@ -16,6 +19,9 @@ router.get(`${mainUrl}`, getOrders);
 router.get(`${mainUrl}status`, getOrderStatus);
 router.get(`${mainUrl}:orderId`, getOrdersById);
 router.post(`${mainUrl}`, express.json(), createOrders);
-router.put(`${mainUrl}:orderId`, express.json(), updateOrders);
+router.post(`${mainUrl}post`, express.json(), postOrder);
+router.post(`${mainUrl}reject`, express.json(), rejectOrder);
+router.post(`${mainUrl}recieve`, express.json(), recieveOrder);
+router.put(`${mainUrl}:orderId`, express.json(), updateOrders); 
 
 export default router;
