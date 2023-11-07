@@ -1114,6 +1114,20 @@ main.invoice-main .section-body .control-section .actions-button button:active {
   border-radius: 14px;
   box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.4392156863);
 }
+.content-order .panel-content .btn-close {
+  position: absolute;
+  right: 26px;
+  top: 10px;
+  height: 29px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.content-order .panel-content .btn-close i {
+  font-size: 2.8rem;
+  color: rgba(128, 128, 128, 0.6);
+}
 .content-order .panel-content .title {
   font-weight: 700;
 }
@@ -1161,22 +1175,57 @@ main.invoice-main .section-body .control-section .actions-button button:active {
   display: flex;
 }
 .content-order .panel-content .content-card .row .menu i {
+  cursor: pointer;
   font-size: 2.4rem;
+  height: 24px;
+  position: relative;
 }
-.content-order .panel-content .content-card .row .dowm {
+.content-order .panel-content .content-card .row .menu i .content-menu-table {
+  height: 184px;
+  width: 200px;
+  background-color: #dfdfdf;
+  position: absolute;
+  right: -2px;
+  z-index: 9;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 0 12px 1px rgba(104, 104, 104, 0.5294117647);
+}
+.content-order .panel-content .content-card .row .menu i .content-menu-table .row-option {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  padding: 6px 10px;
+  border-bottom: 1px solid gray;
+  margin-bottom: 12px;
+  transition: 0.4s;
+  border-radius: 8px;
+}
+.content-order .panel-content .content-card .row .menu i .content-menu-table .row-option .ico i {
+  font-size: 2rem;
+  color: #57386b;
+}
+.content-order .panel-content .content-card .row .menu i .content-menu-table .row-option p {
+  font-size: 1.8rem;
+  color: gray;
+}
+.content-order .panel-content .content-card .row .menu i .content-menu-table .row-option:hover {
+  background-color: rgba(110, 109, 109, 0.348);
+}
+.content-order .panel-content .content-card .row .down {
   position: absolute;
   bottom: 0;
   width: 98%;
   text-align: center;
 }
-.content-order .panel-content .content-card .row .dowm i {
+.content-order .panel-content .content-card .row .down i {
   font-size: 1.4rem;
   padding: 10px;
   cursor: pointer;
   border-radius: 50%;
   transition: 0.2s;
 }
-.content-order .panel-content .content-card .row .dowm i:hover {
+.content-order .panel-content .content-card .row .down i:hover {
   background-color: rgba(147, 147, 147, 0.1098039216);
 }
 .content-order .panel-content .content-card .row .colum {
