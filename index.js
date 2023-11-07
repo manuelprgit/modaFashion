@@ -1,6 +1,7 @@
 import express from 'express'
 const app = express();
 import dotenv from 'dotenv'
+import cors from 'cors';
 import open from 'open';
 dotenv.config();
 const port = process.env.PORT;
@@ -12,6 +13,7 @@ const __dirname = path.dirname(__filename);
 
 import router from './routers/route.routes.js';
 app.use(router);
+app.use(cors());
 
 app.set('view engine', 'hbs');
 app.set('views', path.join('public', 'html'));
