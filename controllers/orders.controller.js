@@ -9,6 +9,7 @@ const getOrders = async (req, res) => {
         select * from invoice.orders
         ${(status.statusId) ? `where orderStatusId = ${status.statusId}` : ''}
     `)
+
     let ordersStructured = [];
 
     for (let order of orders.recordset) {
@@ -135,18 +136,14 @@ const createOrders = async (req, res) => {
     const {
         customerId,
         orderDetails
-    } = req.body;
+    } = req.body; 
 
-    let dateTime = new Date().toISOString().split('T');
-    let time = dateTime[1].substring(0, 7);
-    let date = dateTime[0];
+    console.log(new Date().toISOString().substring(0, 10));
 
-    //TODO: resolver el problema de DARIEL
+
     let totalAmount = orderDetails.reduce((acumulator, currentValue) => {
         return acumulator + (currentValue.price * currentValue.productQuantity);
     }, 0);
-
-    console.log(totalAmount);
 
     try {
         let pool = await getConnection();
@@ -154,11 +151,13 @@ const createOrders = async (req, res) => {
         insert into invoice.orders(
             customerId,
             orderCreationDate,
+            orderStatusId,
             amount
         )
         values(
             ${customerId},
-            ${new Date().toISOString().substring(0, 10)},
+            getdate(),
+            1,
             ${totalAmount}
         )
         
@@ -250,20 +249,53 @@ const getOrderStatus = async (_, res) => {
 
     res.json(odersStatus);
 }
- 
+
+const insertOrderDetails = async (id, orderDetails) => {
+
+    let pool = await getConnection();
+    await pool.query(`
+        delete from invoice.orderDetails
+        where orderId = ${id}
+    `);
+
+    try {
+        for (let orderDetail of orderDetails) {
+            await pool.query(`
+                insert into invoice.orderDetails(
+                    orderId,
+                    productId, 
+                    productQuantity,
+                    price,
+                    total
+                )values(
+                    ${id},
+                    ${orderDetail.productId}, 
+                    ${orderDetail.productQuantity},
+                    ${orderDetail.price},
+                    ${Number(orderDetail.price) * Number(orderDetail.productQuantity)}
+                )
+            `);
+        }
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+
+}
+//Postear ordenes
 const postOrder = async (req, res) => {
     let { documentId } = req.body;
-    
+
     let pool = await getConnection();
 
-    let {recordset} = await pool.query(`
+    let { recordset } = await pool.query(`
         select * from invoice.orders
         where orderId = ${documentId}
     `)
 
-    if(recordset[0].orderStatusId != 1){
+    if (recordset[0].orderStatusId != 1) {
         res.status(400).json({
-            msg:"El documento ya no puede ser modificado",
+            msg: "El documento ya no puede ser modificado",
             status: 400
         });
         return;
@@ -302,27 +334,27 @@ const postOrder = async (req, res) => {
     `)
 
     res.status(201).json({
-        msg:"Documento posteado con exito",
+        msg: "Documento posteado con exito",
         status: 201,
         data: documentId
     });
-    
-}
 
+}
+//Rechazar Ordenes
 const rejectOrder = async (req, res) => {
 
     let { documentId } = req.body;
-    
+
     let pool = await getConnection();
 
-    let {recordset} = await pool.query(`
+    let { recordset } = await pool.query(`
         select * from invoice.orders
         where orderId = ${documentId}
     `);
-    console.log(recordset[0].orderStatusId);
-    if(recordset[0].orderStatusId != 1){
+
+    if (recordset[0].orderStatusId != 1) {
         res.status(400).json({
-            msg:"El documento ya no puede ser modificado",
+            msg: "El documento ya no puede ser modificado",
             status: 400
         });
         return;
@@ -335,56 +367,56 @@ const rejectOrder = async (req, res) => {
     `);
 
     res.status(201).json({
-        msg:"El documento fue rechazado",
+        msg: "El documento fue rechazado",
         status: 201,
         data: documentId
-    }); 
+    });
 
 }
 //Recibir odenes
-const recieveOrder = async(req,res) => {
-    
+const recieveOrder = async (req, res) => {
+
     let { documentId } = req.body;
 
     let pool = await getConnection();
     try {
-        let {recordset} = await pool.query(`
+        let { recordset } = await pool.query(`
             select * from invoice.orders
             where orderId = ${documentId}
         `);
         let order = recordset[0]
-        if(order == undefined){
+        if (order == undefined) {
             res.status(400).json({
-                msg:"La orden no existe",
+                msg: "La orden no existe",
                 status: 400
             });
             return;
         }
 
-        if(order.orderStatusId != 2){
+        if (order.orderStatusId != 2) {
             res.status(400).json({
-                msg:"La orden debe de estar con el estatus PEDIDO",
+                msg: "La orden debe de estar con el estatus PEDIDO",
                 status: 400
             });
             return;
         }
-    
+
         let getOrderDetail = await pool.query(`
             select * from invoice.orderDetails
             where orderId = ${documentId}
         `);
-    
+
         getOrderDetail = getOrderDetail.recordset;
-    
-        for(let product of getOrderDetail){
-            
-            let articleExis  = await pool.query(`
+
+        for (let product of getOrderDetail) {
+
+            let articleExis = await pool.query(`
                 select * from inventory.existence 
                 where productId = ${product.productId}
             `);
-    
-            if(articleExis.recordset.length == 0){
-    
+
+            if (articleExis.recordset.length == 0) {
+
                 await pool.query(`
                     insert into inventory.existence
                     select 
@@ -395,15 +427,15 @@ const recieveOrder = async(req,res) => {
                     where orderId = ${documentId} 
                     and productId = ${product.productId}
                 `);
-    
-            }else{
+
+            } else {
                 await pool.query(` 
                     update inventory.existence
                     set quantity = (select quantity from inventory.existence where productId = ${product.productId}) + ${product.productQuantity}
                     where productId = ${product.productId}
                 `)
             }
-            
+
         }
     } catch (error) {
         console.log(error);
@@ -417,43 +449,68 @@ const recieveOrder = async(req,res) => {
     `);
 
     res.status(201).json({
-        msg:"El documento fue recibido con éxito",
+        msg: "El documento fue recibido con éxito",
         status: 201,
         data: documentId
-    }); 
+    });
 }
 
-const insertOrderDetails = async (id, orderDetails) => {
+const giveOrder = async (req, res) => {
 
-    let pool = await getConnection();
-    await pool.query(`
-        delete from invoice.orderDetails
-        where orderId = ${id}
-    `);
+    let {
+        documentId,
+        killReceivable
+    } = req.body
 
+    let pool = await getConnection()
     try {
-        for (let orderDetail of orderDetails) {
-            await pool.query(`
-                insert into invoice.orderDetails(
-                    orderId,
-                    productId, 
-                    productQuantity,
-                    price,
-                    total
-                )values(
-                    ${id},
-                    ${orderDetail.productId}, 
-                    ${orderDetail.productQuantity},
-                    ${orderDetail.price},
-                    ${Number(orderDetail.price) * Number(orderDetail.productQuantity)}
-                )
-            `);
+        let { recordset } = await pool.query(`
+            select * from invoice.orders
+            where orderId = ${documentId}
+        `);
+
+        let order = recordset[0];
+
+        if (order == undefined) {
+            res.status(400).json({
+                msg: "La orden no existe",
+                status: 400
+            });
+            return;
+        } 
+        if (order.orderStatusId != 3) {
+            res.status(400).json({
+                msg: "La orden debe de estar en estatus Recibido",
+                status: 400
+            });
+            return;
         }
+
+        let orderDetails = await pool.query(`
+            select * from invoice.orderDetails
+            where orderId = ${documentId};
+        `) 
+        
+        orderDetails = orderDetails.recordset;
+        
+        for(let product of orderDetails){
+
+            await pool.query(`
+                update inventory.existence
+                set quantity = quantity - ${product.productQuantity}
+                where productId = ${product.productId}
+            `);
+            
+        }
+
+        if(killReceivable){
+            
+        }
+
+
     } catch (error) {
         console.log(error);
-        return error;
     }
-
 }
 
 export {
@@ -465,4 +522,5 @@ export {
     postOrder,
     rejectOrder,
     recieveOrder,
+    giveOrder
 }
