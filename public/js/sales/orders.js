@@ -13,7 +13,7 @@ import loaderController from '../helpers/loader.js';
     const identifyCustomer = document.getElementById('identifyCustomer');
     const pendingDebt = document.getElementById('pendingDebt');
     const saveOrder = document.getElementById('saveOrder');
-    
+
     //Id
     const productsModal = document.getElementById('productsModal');
     const btnSearch = document.getElementById('btnSearch');
@@ -22,7 +22,6 @@ import loaderController from '../helpers/loader.js';
     const btnProductModal = document.getElementById('btnProductModal');
 
     //Variables
-    let listObjDataPost = [];
     customerCode.addEventListener('change', async e => {
         let dataCustomer = await mainFunctions.getDataFromAPI(`customer/${customerCode.value}`);
 
@@ -91,35 +90,45 @@ import loaderController from '../helpers/loader.js';
                             `;
                 row.insertAdjacentHTML('beforeend', td);
                 tbodyOrders.insertAdjacentElement('beforeend', row);
-
-                let objDataProduct = {
-                    'productId': Number(allProduct.productId),
-                    'orderId': 0,
-                    'productQuantity': Number(row.querySelector('input.quantity').value),
-                    'price': Number(row.querySelector('input.price').value),
-                }
-                listObjDataPost.push(objDataProduct)
             }
         }
         mainFunctions.hideModal(productsModal)
     })
 
-    saveOrder.addEventListener('click', async e=>{
-        let resValidate = showe
-        let objetSend = {
-            'customerId': Number(customerCode.value),
-            'orderId': 0,
-            'orderDetails': listObjDataPost
-        }
+    saveOrder.addEventListener('click', async e => {
+       
+        let resConfirm = await showConfirmationModal('Guardar', 'Precione aceptar para registrar el pedido');
+        if (resConfirm) {
+            let listObjDataPost = [];
+            tbodyOrders.querySelectorAll('.tr[data-id]').forEach(tr=>{
+                console.log(tr);
+                let objDataProduct = {
+                    'productId': Number(tr.getAttribute('data-id')),
+                    'orderId': 0,
+                    "orderDetailId": 0,
+                    'productQuantity': Number(tr.querySelector('input.quantity').value),
+                    'price': Number(tr.querySelector('input.price').value),
+                }
+                listObjDataPost.push(objDataProduct)
+            })
 
-        console.log(objetSend);
-        let resPost = await mainFunctions.sendDataByRequest('POST', objetSend, 'api/orders');
-        if(resPost.status >= 400) showAlertBanner('Warning', 'No fue posible agregar esta orden');
-        else{
-            showAlertBanner('success', 'Orden agregada correctamente');
+            let objetSend = {
+                'customerId': Number(customerCode.value),
+                'orderId': 0,
+                "orderStatusId": 1,
+                'orderDetails': listObjDataPost
+            }
+
+            console.log(objetSend);
+            let resPost = await mainFunctions.sendDataByRequest('POST', objetSend, 'api/orders');
+            console.log(resPost.status);
+            if (resPost.status >= 400) showAlertBanner('Warning', 'No fue posible agregar esta orden');
+            else {
+                showAlertBanner('success', 'Orden agregada correctamente');
+            }
         }
     })
 
-    btnSearch.addEventListener('click', e=> location.assign('ordenes-creadas'))
+    btnSearch.addEventListener('click', e => location.assign('ordenes-creadas'))
 
 })()

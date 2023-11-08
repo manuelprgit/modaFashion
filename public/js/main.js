@@ -1,8 +1,9 @@
 import { showAlertBanner } from "./helpers/alertBanner.js";
 
 export const mainFunctions = {
-    mainUrl: `http://localhost:5098/api/`,
-
+    // mainUrl: `http://localhost:5098/api/`,
+    mainUrl: `http://192.168.1.106:5098/api/`,
+    
     formatter: Intl.NumberFormat("en-US",{
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
@@ -15,7 +16,8 @@ export const mainFunctions = {
      */
     getDataFromAPI: async (path) => {
         try {
-            return await fetch(`http://localhost:5098/api/${path}`)
+            return await fetch(`http://192.168.1.106:5098/api/${path}`)
+            // return await fetch(`http://localhost:5098/api/${path}`)
                 .then(res => {
                     if (res.status >= 400) {
                         throw `Error al hacer la peticion. Error ${res.status}`;

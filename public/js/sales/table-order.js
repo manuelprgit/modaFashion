@@ -48,7 +48,7 @@ import loaderController from '../helpers/loader.js';
                     </div>
                     <div class="colum">
                         <div class="head text-center">Estatus</div>
-                        <div class="body text-center">En proceso</div>
+                        <div class="body text-center">${(dataRowOrders.orderStatus)?dataRowOrders.orderStatus.description:''}</div>
                     </div>
                     <div class="colum">
                         <div class="head text-right">Monto</div>
@@ -82,7 +82,7 @@ import loaderController from '../helpers/loader.js';
     }
 
 
-    document.addEventListener('click', e => {
+    document.addEventListener('click',async e => {
         if (e.target.matches('i.open-card')) {
             let dataId = e.target.closest('[data-id]').getAttribute('data-id');
             contentCard.querySelectorAll(`div.row[data-id]`).forEach(row => row.style.height = '100px');
@@ -103,17 +103,21 @@ import loaderController from '../helpers/loader.js';
         } else {
             contentCard.querySelectorAll('.content-menu-table').forEach(menu => menu.remove());
         }
-        if (e.target.closest('#openDocument')) {
-            let id = e.target.closest('[data-id]').getAttribute('data-id');
-            let dataObj = {
-                orderId: Number(id)
-            }
-
-            let resPost = mainFunctions.sendDataByRequest('POST', dataObj, 'orders/post');
-            if(resPost.status >= 400){
-                showAlertBanner('warning', 'No fue posible postear el documento');
-            }else{
-                showAlertBanner('success', 'El documento fue posteado correctamente');
+        if (e.target.closest('#postDocument')) {
+            let resConfirm = await showConfirmationModal('Postear', 'Precione aceptar para postear el documento');
+            if(resConfirm){
+                let id = e.target.closest('[data-id]').getAttribute('data-id');
+                let dataObj = {
+                    documentId: Number(id)
+                }
+                console.log(dataObj);
+                let resPost = await mainFunctions.sendDataByRequest('POST', dataObj, 'api/orders/post');
+                console.log(resPost.status);
+                if(resPost.status >= 400){
+                    showAlertBanner('warning', 'No fue posible postear el documento');
+                }else{
+                    showAlertBanner('success', 'El documento fue posteado correctamente');
+                }
             }
         }
     })
