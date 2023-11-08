@@ -1,6 +1,7 @@
 import express from 'express'
 const app = express();
 import dotenv from 'dotenv'
+import cors from 'cors';
 import open from 'open';
 dotenv.config();
 const port = process.env.PORT;
@@ -10,6 +11,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+app.use(cors());
 import router from './routers/route.routes.js';
 app.use(router);
 

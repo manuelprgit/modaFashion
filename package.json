@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"node index.js",
+    "start": "node index.js",
     "dev": "nodemon .",
     "sass": "sass --watch ./public/sass/main.scss:./public/css/main.css",
     "sass-var": "sass --watch ./public/sass/variables.scss:./public/css/variables.css",
@@ -20,6 +20,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "hbs": "^4.2.0",
