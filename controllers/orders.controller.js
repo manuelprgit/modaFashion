@@ -5,9 +5,11 @@ const getOrders = async (req, res) => {
 
     let status = req.query;
 
+    //TODO: creaar un get para todas las ordenes
     let orders = await pool.query(`
         select * from invoice.orders
-        ${(status.statusId) ? `where orderStatusId = ${status.statusId}` : ''}
+        where orderStatusId not between 4 and 5
+        ${(status.statusId) ? `and orderStatusId = ${status.statusId}` : ''}
     `)
 
     let ordersStructured = [];
@@ -140,7 +142,6 @@ const createOrders = async (req, res) => {
 
     console.log(new Date().toISOString().substring(0, 10));
 
-
     let totalAmount = orderDetails.reduce((acumulator, currentValue) => {
         return acumulator + (currentValue.price * currentValue.productQuantity);
     }, 0);
@@ -174,7 +175,7 @@ const createOrders = async (req, res) => {
             res.status(400).json({
                 msg: 'Problemas al insertar uno o mas artículos',
                 error: 400,
-                errorType: error
+                errorType: error 
             });
             return
         }
@@ -431,9 +432,9 @@ const recieveOrder = async (req, res) => {
             } else {
                 await pool.query(` 
                     update inventory.existence
-                    set quantity = (select quantity from inventory.existence where productId = ${product.productId}) + ${product.productQuantity}
+                    set quantity = quantity + ${product.productQuantity}
                     where productId = ${product.productId}
-                `)
+                `);
             }
 
         }
@@ -454,7 +455,7 @@ const recieveOrder = async (req, res) => {
         data: documentId
     });
 }
-
+//Entragar la orden
 const giveOrder = async (req, res) => {
 
     let {
@@ -504,14 +505,62 @@ const giveOrder = async (req, res) => {
         }
 
         if(killReceivable){
-            
+
+            let remaining = await pool.query(`
+                select
+                    sum(amount) remainingAmount
+                from invoice.accountsReceivable
+                where documentId = ${documentId}
+            `);
+
+            remaining = remaining.recordset[0];
+
+            await pool.query(` 
+                insert into invoice.accountsReceivable(
+                    customerId,
+                    documentId,
+                    amount,
+                    dueDate,
+                    accountStatus,
+                    paymentDate,
+                    paymentTypeId,
+                    notes
+                )
+                values(
+                    ${order.customerId},
+                    ${order.orderId},
+                    -${remaining.remainingAmount},
+                    GETDATE(),
+                    '',
+                    GETDATE(),
+                    2,
+                    'Pago'
+                )
+
+                update invoice.accountsReceivable
+                set accountStatus = 'Saldado'
+                where  paymentTypeId = 1
+                and documentId = ${documentId}
+
+                update invoice.orders
+                set orderStatusId = 4
+                where orderId = ${documentId}
+            `);
+
         }
 
+        res.status(201).json({
+            msg: "El documento fue entregado éxitosamente",
+            status: 201,
+            data: documentId
+        });
 
     } catch (error) {
         console.log(error);
     }
 }
+
+//pago
 
 export {
     getOrders,

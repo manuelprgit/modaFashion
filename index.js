@@ -1,3 +1,4 @@
+import os from 'os';
 import express from 'express'
 const app = express();
 import dotenv from 'dotenv'
@@ -95,6 +96,13 @@ app.get('/ordenes-creadas', (req, res) => {
   res.render(path.join('./views/Facturacion/ordenes-creadas'),salesProps);
 })
 //#endregion Compras
+
+//TODO: MACADDRESS
+const networkInterfaces = os.networkInterfaces();
+let macAddress = networkInterfaces['Wi-Fi'][1].mac;
+console.log({macAddress});
+//TODO: MACADDRESS
+
 
 app.listen(port, () => {
   console.log(`listening on http://localhost:${port}`);
