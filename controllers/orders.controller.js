@@ -10,6 +10,7 @@ const getOrders = async (req, res) => {
         select * from invoice.orders
         where orderStatusId not between 4 and 5
         ${(status.statusId) ? `and orderStatusId = ${status.statusId}` : ''}
+        order by orderId desc
     `)
 
     let ordersStructured = [];
