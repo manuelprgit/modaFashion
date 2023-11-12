@@ -2,7 +2,25 @@ import { getConnection } from "../database/dbconfig.js";
 
 const getAllCustomers = async (req, res) => {
     let pool = await getConnection();
-    let customers = await pool.query('select * from invoice.customers');
+    let customers = await pool.query(`
+        select 
+        a.idCustomer,
+        a.nameCustomer,
+        a.lastNameCustomer,
+        a.customerIdentification,
+        a.creationDate,
+        a.statusCustomer,
+        b.receivable
+        from invoice.customers a
+        left join (
+            select 
+                customerId,
+                sum(amount) receivable
+            from invoice.accountsReceivable
+            GROUP by customerId
+        ) b
+        on a.idCustomer = b.customerId
+    `);
     res.json(customers.recordset);
 }
 
