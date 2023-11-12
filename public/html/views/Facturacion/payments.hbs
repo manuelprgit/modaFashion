@@ -85,12 +85,12 @@
                     </div>
                     <div class="input-form-content">
                         <label for="identifyCustomer">Fecha</label>
-                        <input class="input-form" type="date" id="identifyCustomer">
+                        <input class="input-form" type="date" id="dateBill">
                         <span>Fecha de pago</span>
                     </div>
                     <div class="input-form-content">
                         <label for="customerLastName">Monto</label>
-                        <input class="input-form" type="text" id="customerLastName">
+                        <input class="input-form" type="text" id="amount">
                         <span> </span>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                                     <div class="th text-right">Monto a pagar</div>
                                 </div>
                             </div>
-                            <div class="tbody" id="tbodyOrders">
+                            <div class="tbody" id="tbodyInvoices">
 
                             </div>
                         </div>
@@ -152,44 +152,7 @@
         </div>
     </div>
 
-    <div class="modal-content customers-modal" id="productsModal">
-        <div class="modal">
-            <div class="close-modal" id="closeModal">
-                <p>X</p>
-            </div>
-            <div class="content-table">
-                <div class="search">
-                    <div class="input-form">
-                        <input type="text">
-                        <img id="btnSearch" src="../../../src/img/search-regular.png" alt="">
-                    </div>
-                </div>
-                <div class="table">
-                    <div class="thead">
-                        <div class="tr">
-                            <div class="th"></div>
-                            <div class="th text-center">Código</div>
-                            <div class="th text-center">Código shein</div>
-                            <div class="th">Descripción</div>
-                            <div class="th text-center">Existencia</div>
-                            <div class="th text-right">Precio</div>
-                            <div class="th text-right">Costo</div>
-                        </div>
-                    </div>
-                    <div class="tbody" id="tbodyProduct">
-
-                    </div>
-                </div>
-            </div>
-            <div class="content-button">
-                <button class="btn btn-success" id="btnProductModal">
-                    Seleccionar
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script src="./js/sales/orders.js" type="module"></script>
+    <script src="./js/sales/payments.js" type="module"></script>
 
     <script>
         document.querySelector('a[href="/facturacion"]').classList.add('active')
