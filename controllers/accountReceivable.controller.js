@@ -32,6 +32,7 @@ const getInvoicesWithPendingBills = async (req, res) => {
     let invoice = await pool.query(`
         select 
             b.documentId,
+            b.paymentDate date,
             b.amount,
             c.receivable
         from invoice.customers a
