@@ -97,11 +97,15 @@ app.get('/ordenes-creadas', (req, res) => {
 })
 //#endregion Compras
 
-//TODO: MACADDRESS
-const networkInterfaces = os.networkInterfaces();
-let macAddress = networkInterfaces['Wi-Fi'][1].mac;
-console.log({macAddress});
-//TODO: MACADDRESS
+// //TODO: MACADDRESS
+// const networkInterfaces = os.networkInterfaces();
+
+// let macAddress = 
+//   (networkInterfaces['Ethernet'][1].mac) 
+//     ? networkInterfaces['Ethernet'][1].mac 
+//     : networkInterfaces['Wi-Fi'][1].mac; 
+// console.log({macAddress});
+// //TODO: MACADDRESS
 
 
 app.listen(port, () => {

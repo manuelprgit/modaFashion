@@ -561,8 +561,6 @@ const giveOrder = async (req, res) => {
     }
 }
 
-//pago
-
 export {
     getOrders,
     getOrdersById,
