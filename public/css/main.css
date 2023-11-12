@@ -312,6 +312,15 @@ body {
   flex-direction: column;
   gap: 8px;
   margin-bottom: 12px;
+  position: relative;
+}
+.input-form-content .search {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 8px;
+  top: 36px;
+  cursor: pointer;
 }
 .input-form-content label {
   font-weight: 500;
@@ -432,7 +441,6 @@ body {
   padding: 8px;
   transition: background-color 0.2s;
   border-radius: 6px;
-  cursor: pointer;
 }
 .modal-content .modal .table .tbody .tr:hover {
   background-color: rgba(0, 0, 0, 0.062745098);
@@ -598,6 +606,10 @@ body {
 
 .text-center {
   text-align: center !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .text-left {

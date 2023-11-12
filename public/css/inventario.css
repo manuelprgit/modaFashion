@@ -75,7 +75,6 @@
   align-items: center;
   gap: 14px;
   min-height: 60px;
-  cursor: auto !important;
 }
 .content-table .table .tbody .tr .td {
   font-size: 1.4rem;

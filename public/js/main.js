@@ -1,8 +1,8 @@
 import { showAlertBanner } from "./helpers/alertBanner.js";
 
 export const mainFunctions = {
-    // mainUrl: `http://localhost:5098/api/`,
-    mainUrl: `http://192.168.1.106:5098/api/`,
+    mainUrl: `http://localhost:5098/api/`,
+    // mainUrl: `http://192.168.1.106:5098/api/`,
     
     formatter: Intl.NumberFormat("en-US",{
         minimumFractionDigits: 2,
@@ -16,8 +16,8 @@ export const mainFunctions = {
      */
     getDataFromAPI: async (path) => {
         try {
-            return await fetch(`http://192.168.1.106:5098/api/${path}`)
-            // return await fetch(`http://localhost:5098/api/${path}`)
+            // return await fetch(`http://192.168.1.106:5098/api/${path}`)
+            return await fetch(`http://localhost:5098/api/${path}`)
                 .then(res => {
                     if (res.status >= 400) {
                         throw `Error al hacer la peticion. Error ${res.status}`;
@@ -60,7 +60,8 @@ export const mainFunctions = {
      * @returns retorna la data del elemento creado 
      */
     sendDataByRequest: async (method, data, urlPath, dataId) => {
-
+        urlPath = mainFunctions.mainUrl+urlPath;
+        console.log(urlPath);
         let url = (method.toUpperCase() === 'PUT')
             ? `${urlPath}/${dataId}`
             : urlPath
@@ -79,6 +80,7 @@ export const mainFunctions = {
                 return res;
             })
             .catch(err => {
+                
                 return err
             })
     },

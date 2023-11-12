@@ -6,6 +6,7 @@ import loaderController from '../helpers/loader.js';
     //Id
     let contentCard = document.getElementById('contentCard');
     let btnClose = document.getElementById('btnClose');
+    
 
     let templateMenuTable = document.getElementById('templateMenuTable');
 
@@ -32,6 +33,10 @@ import loaderController from '../helpers/loader.js';
     }
     for (let key in dataOrders) {
         let dataRowOrders = dataOrders[key];
+        let colorStatus;
+        if(dataRowOrders.orderStatus.orderStatusId == 1) colorStatus = 'proceso'
+        if(dataRowOrders.orderStatus.orderStatusId == 2) colorStatus = 'pedido'
+        if(dataRowOrders.orderStatus.orderStatusId == 3) colorStatus = 'recibido'
         let div = `
                 <div class="row" data-id="${dataRowOrders.orderId}">
                     <div class="colum">
@@ -48,7 +53,7 @@ import loaderController from '../helpers/loader.js';
                     </div>
                     <div class="colum">
                         <div class="head text-center">Estatus</div>
-                        <div class="body text-center">${(dataRowOrders.orderStatus)?dataRowOrders.orderStatus.description:''}</div>
+                        <div class="body text-center ${colorStatus}">${(dataRowOrders.orderStatus)?dataRowOrders.orderStatus.description:''}</div>
                     </div>
                     <div class="colum">
                         <div class="head text-right">Monto</div>
@@ -81,7 +86,18 @@ import loaderController from '../helpers/loader.js';
         contentCard.insertAdjacentHTML('beforeend', div);
     }
 
+    async function changeStatusOrders(method, obj, url, message){
+        let resPost = await mainFunctions.sendDataByRequest(method, obj, url);
+        console.log(resPost.status);
+        if(resPost.status >= 400){
+            showAlertBanner('warning', `No fue posible ${message} el documento`);
+        }else{
+            showAlertBanner('success', `El documento fue ${message} correctamente`);
+            location.assign('ordenes-creadas');
+        }
+    }
 
+    let orderStatusPosteo = ''; 
     document.addEventListener('click',async e => {
         if (e.target.matches('i.open-card')) {
             let dataId = e.target.closest('[data-id]').getAttribute('data-id');
@@ -100,26 +116,80 @@ import loaderController from '../helpers/loader.js';
             e.target.insertAdjacentElement('beforeend', clone);
             e.target.parentElement.parentElement.style.height = '300px';
             e.target.querySelector('.content-menu-table').setAttribute('data-id', e.target.getAttribute('data-id'))
+            let id = e.target.getAttribute('data-id');
+            let orderById = await mainFunctions.getDataFromAPI(`orders/${id}`)
+            console.log(orderById.orderStatusId);
+            let textStatus = document.getElementById('textStatus');
+
+            if(orderById.orderStatusId == 1){
+                orderStatusPosteo = 'posteo';
+                textStatus.textContent = 'Pedir';
+            } 
+            else if(orderById.orderStatusId == 2) {
+                orderStatusPosteo = 'recieve';
+                textStatus.textContent = 'Recibir';
+            }
+            else if(orderById.orderStatusId == 3) {
+                orderStatusPosteo = 'given';
+                textStatus.textContent = 'Entregar';
+            }
+
         } else {
             contentCard.querySelectorAll('.content-menu-table').forEach(menu => menu.remove());
         }
+        if(e.target.closest('#openDocument')){
+            let id = e.target.closest('[data-id]').getAttribute('data-id');
+            localStorage.setItem('orderId', id)
+            location.assign('creacion-ordenes');
+        }
         if (e.target.closest('#postDocument')) {
-            let resConfirm = await showConfirmationModal('Postear', 'Precione aceptar para postear el documento');
+            let resConfirm = await showConfirmationModal('¿Desea continuar?', 'Precione aceptar para seguir el proceso');
             if(resConfirm){
                 let id = e.target.closest('[data-id]').getAttribute('data-id');
                 let dataObj = {
                     documentId: Number(id)
                 }
-                console.log(dataObj);
-                let resPost = await mainFunctions.sendDataByRequest('POST', dataObj, 'api/orders/post');
+                let url;
+                let message = '';
+                console.log(orderStatusPosteo);
+                if(orderStatusPosteo == 'posteo'){
+                    url = 'orders/post'
+                    message = 'Pedir'
+                } 
+                else if(orderStatusPosteo == 'recieve'){
+                    url = 'orders/recieve'
+                    message = 'Recibir'
+                } 
+                else if(orderStatusPosteo == 'given'){
+                    let affectAccountReceivable = await showConfirmationModal('Guardar pagado', 'Si este pedido ya está pagado presione aceptar de lo contrario presione cancelar y de este modo el cliente puede pagar mas adelante si no ha entendido este proceso por favor llamar al departamento de tecnología, muchas gracias y pase buen resto del día')
+                    url = 'orders/given'
+                    message = 'Entregar';
+                    dataObj = {
+                        documentId: Number(id),
+                        "killReceivable": affectAccountReceivable
+                    }
+                } 
+                changeStatusOrders('POST', dataObj, url, 'Postear', message)
+            }
+        }
+        if (e.target.closest('#decline')) {
+            let resConfirm = await showConfirmationModal('Rechazar', 'Presione aceptar para rechazar el pedido');
+            if(resConfirm){
+                let id = e.target.closest('[data-id]').getAttribute('data-id');
+                let dataObj = {
+                    documentId: Number(id)
+                }
+                let resPost = await mainFunctions.sendDataByRequest('POST', dataObj, 'orders/reject');
                 console.log(resPost.status);
                 if(resPost.status >= 400){
-                    showAlertBanner('warning', 'No fue posible postear el documento');
+                    showAlertBanner('warning', 'No fue posible rechazar el pedido');
                 }else{
-                    showAlertBanner('success', 'El documento fue posteado correctamente');
+                    showAlertBanner('success', 'El documento fue rechazado correctamente');
+                    location.assign('ordenes-creadas');
                 }
             }
         }
+        
     })
 
     btnClose.addEventListener('click', e => location.assign('creacion-ordenes'))

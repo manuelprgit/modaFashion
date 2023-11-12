@@ -68,9 +68,9 @@
                 </div>
                 <div class="articles-form-content" id="userForm">
                     <div class="input-form-content">
-                        <label for="customerCode">Orden</label>
+                        <label for="customerCode">Numero</label>
                         <input class="input-form" type="text" value="Nuevo" id="ordersNumber" disabled="">
-                        <span>Numero de orden</span>
+                        <span>Numero</span>
                     </div>
                     <div class="input-form-content">
                         <label for="customerCode">Código</label>
@@ -84,40 +84,27 @@
                         <span></span>
                     </div>
                     <div class="input-form-content">
-                        <label for="customerLastName">Apellido</label>
-                        <input disabled class="input-form" type="text" id="customerLastName">
+                        <label for="identifyCustomer">Fecha</label>
+                        <input class="input-form" type="date" id="identifyCustomer">
+                        <span>Fecha de pago</span>
+                    </div>
+                    <div class="input-form-content">
+                        <label for="customerLastName">Monto</label>
+                        <input class="input-form" type="text" id="customerLastName">
                         <span> </span>
-                    </div>
-                    <div class="input-form-content">
-                        <label for="identifyCustomer">Cédula</label>
-                        <input disabled class="input-form" type="text" id="identifyCustomer">
-                        <span>Numero de identificación</span>
-                    </div>
-                    <div class="input-form-content">
-                        <label for="customerCreationDate">Deuda pendiente</label>
-                        <input disabled class="input-form" type="text" id="pendingDebt" disabled="">
-                        <span>Fecha de creación</span>
                     </div>
                 </div>
 
                 <div class="content-product">
-                    <div class="content-table">
-                        <div class="search">
-                            <div class="input-form">
-                                <input type="text">
-                                <img id="btnSearch" src="../../../src/img/search-regular.png" alt="">
-                            </div>
-                        </div>
+                    <div class="content-table"> 
                         <div class="table">
                             <div class="thead">
                                 <div class="tr">
-                                    <div class="th text-center">Código</div>
-                                    <div class="th">Código producto</div>
-                                    <div class="th">Descripción</div>
-                                    <div class="th text-center">Cantidad</div>
-                                    <div class="th text-right">Precio</div>
-                                    <div class="th text-right">Total</div>
-                                    <div class="th"></div>
+                                    <div class="th text-center">No. factura</div>
+                                    <div class="th">Fecha</div>
+                                    <div class="th">Monto factura</div>
+                                    <div class="th text-center">Monto pendiente</div>
+                                    <div class="th text-right">Monto a pagar</div>
                                 </div>
                             </div>
                             <div class="tbody" id="tbodyOrders">
