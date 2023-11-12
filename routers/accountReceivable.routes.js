@@ -10,6 +10,6 @@ const router = Router();
 const mainUrl = '/api/receivable/';
 
 router.get(`${mainUrl}`, getAccountReceivable); 
-router.get(`${mainUrl}invoices`, getInvoicesWithPendingBills); 
+router.get(`${mainUrl}invoices/:customerId`, getInvoicesWithPendingBills); 
 
 export default router;

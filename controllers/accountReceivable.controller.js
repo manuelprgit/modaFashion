@@ -1,8 +1,8 @@
 import { getConnection } from "../database/dbconfig.js";
 
-const getAccountReceivable = async(req,res) => {
+const getAccountReceivable = async (req, res) => {
     let pool = await getConnection();
-    let {recordset} = await pool.query(`
+    let { recordset } = await pool.query(`
         select * from invoice.accountsReceivable
     `)
     let accountReceivable = recordset;
@@ -10,49 +10,49 @@ const getAccountReceivable = async(req,res) => {
     res.json(accountReceivable);
 }
 
-const getInvoicesWithPendingBills = async (req,res) => {
-  
+const getInvoicesWithPendingBills = async (req, res) => {
+
+    let customerId = req.params.customerId;
+
     let pool = await getConnection();
 
-    let customers = await pool.query(`
+    let customer = await pool.query(`
         select * from invoice.customers
+        where idCustomer = ${customerId}
     `);
-
-    customers = customers.recordset;
-    
-    let customerAcounts = [];
-
-    for(let customer of customers){
-        
-        let invoice = await pool.query(`
-            select 
-                a.idCustomer,
-                a.nameCustomer,
-                a.lastNameCustomer,
-                b.documentId,
-                b.amount,
-                c.receivable
-            from invoice.customers a
-            left join invoice.accountsReceivable b
-            on a.idCustomer = b.customerId
-            left join (
-            select 
-                documentId,
-                sum(amount) receivable
-            from invoice.accountsReceivable
-            group by documentId
-            ) c
-            on b.documentId = c.documentId
-            where a.idCustomer = ${customer.idCustomer}
-              and b.paymentTypeId = 1
-              and b.accountStatus != 'Saldado'
-        `)
-        invoice = invoice.recordset;
-        customer.invoices = invoice;
-        customerAcounts.push(customer);
-
+    if (customer.recordset.length <= 0) {
+        res.status(400).json({
+            msg: 'El cliente no existe',
+            status: 400
+        });
+        return
     }
-    res.json(customerAcounts)
+    customer = customer.recordset[0];
+
+    let invoice = await pool.query(`
+        select 
+            b.documentId,
+            b.amount,
+            c.receivable
+        from invoice.customers a
+        left join invoice.accountsReceivable b
+        on a.idCustomer = b.customerId
+        left join (
+        select 
+            documentId,
+            sum(amount) receivable
+        from invoice.accountsReceivable
+        group by documentId
+        ) c
+        on b.documentId = c.documentId
+        where a.idCustomer = ${customerId}
+            and b.paymentTypeId = 1
+            and b.accountStatus != 'Saldado'
+        `)
+    invoice = invoice.recordset;
+    customer['invoices'] = invoice
+
+    res.json(customer)
 }
 
 export {
