@@ -390,7 +390,15 @@ body {
 .input-form-content {
     @include flex(null, null, column, 8px);
     margin-bottom: 12px;
-
+    position: relative;
+    .search{
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        right: 8px;
+        top: 36px;
+        cursor: pointer;
+    }
     label {
         font-weight: 500;
         font-size: 1.8rem;
@@ -531,8 +539,6 @@ body {
                     padding: 8px;
                     transition: background-color 0.2s;
                     border-radius: 6px;
-                    cursor: pointer;
-
                     &:hover {
                         background-color: #00000010;
                     }
@@ -747,7 +753,9 @@ body {
 .text-center {
     text-align: center !important;
 }
-
+.cursor-pointer{
+    cursor: pointer;
+}
 .text-left {
     text-align: left !important;
 }

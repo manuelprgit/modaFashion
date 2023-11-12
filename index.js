@@ -95,6 +95,9 @@ app.get('/mantenimiento-suplidor', (req, res) => {
 app.get('/ordenes-creadas', (req, res) => {
   res.render(path.join('./views/Facturacion/ordenes-creadas'),salesProps);
 })
+app.get('/payments', (req, res) => {
+  res.render(path.join('./views/Facturacion/payments'),salesProps);
+})
 //#endregion Compras
 
 // //TODO: MACADDRESS

@@ -470,7 +470,8 @@ main.invoice-main {
                             border-radius: 8px;
                             padding: 10px;
                             box-shadow: 0 0 12px 1px #68686887;
-                            .row-option{
+
+                            .row-option {
                                 display: flex;
                                 align-items: center;
                                 column-gap: 10px;
@@ -479,18 +480,21 @@ main.invoice-main {
                                 margin-bottom: 12px;
                                 transition: 0.4s;
                                 border-radius: 8px;
-                                .ico{
-                                    i{
+
+                                .ico {
+                                    i {
                                         font-size: 2rem;
                                         color: $main-purple;
                                     }
                                 }
-                                p{
+
+                                p {
                                     font-size: 1.8rem;
                                     color: gray;
                                 }
                             }
-                            .row-option:hover{
+
+                            .row-option:hover {
                                 background-color: rgba(110, 109, 109, 0.348);
                             }
                         }
@@ -536,6 +540,19 @@ main.invoice-main {
                     .tbody {
                         font-size: 1.8rem;
                         font-weight: 100;
+                    }
+
+                    .proceso{
+                        color: #3893cc;
+                        font-weight: 700;
+                    } 
+                    .pedido{
+                        font-weight: 700;
+                        color: darkorange;
+                    } 
+                    .recibido{
+                        font-weight: 700;
+                        color: green;
                     }
                 }
 

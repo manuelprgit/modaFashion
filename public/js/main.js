@@ -60,7 +60,8 @@ export const mainFunctions = {
      * @returns retorna la data del elemento creado 
      */
     sendDataByRequest: async (method, data, urlPath, dataId) => {
-
+        urlPath = mainFunctions.mainUrl+urlPath;
+        console.log(urlPath);
         let url = (method.toUpperCase() === 'PUT')
             ? `${urlPath}/${dataId}`
             : urlPath
@@ -79,6 +80,7 @@ export const mainFunctions = {
                 return res;
             })
             .catch(err => {
+                
                 return err
             })
     },
