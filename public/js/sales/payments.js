@@ -3,6 +3,10 @@ import showConfirmationModal from "../helpers/confirmationModal.js";
 import { mainFunctions } from "../main.js";
 import loaderController from '../helpers/loader.js';
 
+const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+});
 (async () => {
     loaderController.disabled();
     //Id de inputs
@@ -25,7 +29,8 @@ import loaderController from '../helpers/loader.js';
     const searchUser = document.getElementById('searchUser');
     const userModal = document.getElementById('userModal');
     const tbodyUser = document.getElementById('tbodyUser');
-
+    const panelContent = document.getElementById('panelContent');
+    
 
     //Variables
 
@@ -46,10 +51,10 @@ import loaderController from '../helpers/loader.js';
             let td = `
                         <div class="td text-center" bill-id="${dataRow.documentId}">${dataRow.documentId}</div>
                         <div class="td text-center" bill-date="${dataRow.date}">${dataRow.date.substring(0, 10)}</div>
-                        <div class="td text-right" bill-amount="${dataRow.amount}">${dataRow.amount}</div>
-                        <div class="td text-right">${dataRow.receivable}</div>
+                        <div class="td text-right" bill-amount="${dataRow.amount}">${formatter.format(dataRow.amount)}</div>
+                        <div class="td text-right">${formatter.format(dataRow.receivable)}</div>
                         <div class="td text-center">
-                            <input type"number">
+                            <input type="number" class="required">
                         </div>
                         `;
             row.insertAdjacentHTML('beforeend', td);
@@ -100,8 +105,7 @@ import loaderController from '../helpers/loader.js';
             }
             listObjDataPost.push(objDataProduct)
         })
-        console.log(listObjDataPost);
-        let resValidate = await mainFunctions.validateInputsRequired(userForm);
+        let resValidate = await mainFunctions.validateInputsRequired(panelContent);
         if (!resValidate) {
                 let resConfirm = await showConfirmationModal('Guardar', 'Presione aceptar para registrar el pago');
                 if (resConfirm) {
@@ -110,7 +114,7 @@ import loaderController from '../helpers/loader.js';
                         'customerId': Number(customerCode.value),
                         'invoices': listObjDataPost
                     }
-    
+                    console.log(objetSend);
                     let resPost = await mainFunctions.sendDataByRequest('POST', objetSend, 'receivable');
                     console.log(resPost);
                     if (resPost.status >= 400) showAlertBanner('Warning', 'No fue posible realizar el pago');

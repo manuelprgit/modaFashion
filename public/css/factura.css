@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .select-art, main.invoice-main .section-body .articles-section .table-article.select .tbody .tr {
   background: #e5dcd9;
   border-radius: 6px;
@@ -1309,6 +1310,16 @@ main.invoice-main .section-body .control-section .actions-button button:active {
 }
 .content-order .panel-content .content-card .row:hover {
   background-color: rgba(147, 147, 147, 0.1098039216);
+}
+
+input[type=number] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none; /* WebKit browsers like Chrome and Safari */
+  margin: 0; /* Espacio adicional entre el número y las flechas (en algunos navegadores) */
 }
 
 /*# sourceMappingURL=factura.css.map */
