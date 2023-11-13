@@ -1,6 +1,6 @@
 import { getConnection } from "../database/dbconfig.js";
 
-const getAccountReceivable = async (req, res) => {
+const getAccountReceivable = async (_, res) => {
     let pool = await getConnection();
     let { recordset } = await pool.query(`
         select * from invoice.accountsReceivable
@@ -56,7 +56,102 @@ const getInvoicesWithPendingBills = async (req, res) => {
     res.json(customer)
 }
 
+const billPayment = async (req, res) => {
+
+    let pool = await getConnection();
+    let {
+        customerId,
+        invoices
+    } = req.body;
+
+    for (let invoice of invoices) {
+
+        let newInvoice = await pool.query(`
+            insert into invoice.accountsReceivable(
+                customerId,
+                documentId,
+                amount,
+                dueDate,
+                accountStatus,
+                paymentDate,
+                paymentTypeId,
+                notes
+            ) 
+            values
+            ( 
+                ${customerId},
+                ${invoice.documentId},
+                -${invoice.amount},  
+                ${invoice.date},
+                '',
+                getdate(),
+                2,
+                'Pago'
+            )
+
+            DECLARE @invoice INT;
+            SET @invoice = SCOPE_IDENTITY();
+            
+            select @invoice as invoice
+        `)
+
+        newInvoice = newInvoice.recordset[0].invoice;
+        
+        console.log(newInvoice);
+
+        let { recordset } = await pool.query(`
+            select
+                sum(amount) receivable
+            from invoice.accountsReceivable
+            where documentId = ${invoice.documentId}
+            group by documentId
+        `);
+
+        let invoiceAmount = recordset[0].receivable;
+
+        if (invoiceAmount < 0) {
+
+            await pool.query(`
+                delete from invoice.accountsReceivable
+                where accountId = ${newInvoice}
+            `)
+
+            res.status(400).json({
+                msg: 'El monto es mayor al monto a pagar',
+                status: 400
+            });
+            return
+
+
+            // await pool.query(`
+            //     update invoice.accountsReceivable
+            //     set accountStatus = 'Saldado'
+            //     where paymentTypeId = 1
+            //     and documentId = ${invoice.documentId}
+            // `)
+        }
+
+        if (invoiceAmount == 0) {
+            await pool.query(`
+                update invoice.accountsReceivable
+                set accountStatus = 'Saldado'
+                where paymentTypeId = 1
+                and documentId = ${invoice.documentId}
+            `)
+        }
+
+    }
+
+    res.json({
+        msg: 'Los pagos han sido aplicados exitosamente',
+        status: 200,
+        data: customerId
+    })
+
+}
+
 export {
     getAccountReceivable,
-    getInvoicesWithPendingBills
+    getInvoicesWithPendingBills,
+    billPayment
 }

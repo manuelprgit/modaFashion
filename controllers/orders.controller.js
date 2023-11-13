@@ -491,7 +491,7 @@ const giveOrder = async (req, res) => {
         let orderDetails = await pool.query(`
             select * from invoice.orderDetails
             where orderId = ${documentId};
-        `) 
+        `)
         
         orderDetails = orderDetails.recordset;
         
