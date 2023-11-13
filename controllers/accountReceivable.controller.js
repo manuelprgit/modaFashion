@@ -82,7 +82,7 @@ const billPayment = async (req, res) => {
                 ${customerId},
                 ${invoice.documentId},
                 -${invoice.amount},  
-                ${invoice.date},
+                '${invoice.date}',
                 '',
                 getdate(),
                 2,
