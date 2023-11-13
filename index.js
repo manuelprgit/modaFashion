@@ -1,19 +1,21 @@
 import os from 'os';
 import express from 'express'
-const app = express();
 import dotenv from 'dotenv'
-import cors from 'cors';
-import open from 'open';
 dotenv.config();
-const port = process.env.PORT;
+import cors from 'cors'; 
 import path from 'path';
 import hbs from 'hbs';
 import { fileURLToPath } from 'url';
+// import Server from './models/server.js'
+import router from './routers/route.routes.js';
+
+
+const app = express();
+const port = process.env.PORT;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.use(cors());
-import router from './routers/route.routes.js';
 app.use(router);
 
 app.set('view engine', 'hbs');
@@ -26,12 +28,11 @@ app.get('/', (req, res) => {
   res.render(path.join('home'));
 })
 
-//#region Facturacion
-
 let billingProps = {
   mainTitle: "Ventas",
   icon: "fa-solid fa-store"
 } 
+//#region Facturacion
 
 app.get('/facturacion', (req, res) => {
   res.render(path.join('facturacion'),billingProps);
@@ -110,6 +111,7 @@ app.get('/payments', (req, res) => {
 // console.log({macAddress});
 // //TODO: MACADDRESS
 
+// const server = new Server();
 
 app.listen(port, () => {
   console.log(`listening on http://localhost:${port}`);
