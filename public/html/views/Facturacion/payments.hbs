@@ -59,7 +59,7 @@
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
                     </button>
-                    <button class="btn btn-success" id="saveOrder">
+                    <button class="btn btn-success" id="savePayment">
                         Guardar
                         <div class="icon-content">
                             <i class="fa-regular fa-floppy-disk"></i>
@@ -74,13 +74,13 @@
                     </div>
                     <div class="input-form-content">
                         <label for="customerCode">Código</label>
-                        <input class="input-form required" type="text" placeholder="No. del cliente" id="customerCode">
+                        <input placeholder="" class="input-form required" type="text" placeholder="No. del cliente" id="customerCode">
                         <img id="searchUser" class="search" src="../../../src/img/search-regular.png" alt="">
                         <span>Código del cliente</span>
                     </div>
                     <div class="input-form-content">
                         <label for="customerName">Nombre</label>
-                        <input disabled class="input-form required" type="text" id="customerName">
+                        <input placeholder="Nombre del cliente" disabled class="input-form required" type="text" id="customerName">
                         <span></span>
                     </div>
                     <div class="input-form-content">
@@ -90,7 +90,7 @@
                     </div>
                     <div class="input-form-content">
                         <label for="customerLastName">Monto</label>
-                        <input class="input-form" type="text" id="amount">
+                        <input placeholder="0.00" class="input-form" type="text" id="amount">
                         <span> </span>
                     </div>
                 </div>
@@ -101,10 +101,10 @@
                             <div class="thead">
                                 <div class="tr">
                                     <div class="th text-center">No. factura</div>
-                                    <div class="th">Fecha</div>
-                                    <div class="th">Monto factura</div>
-                                    <div class="th text-center">Monto pendiente</div>
-                                    <div class="th text-right">Monto a pagar</div>
+                                    <div class="th text-center">Fecha</div>
+                                    <div class="th text-right">Monto factura</div>
+                                    <div class="th text-right">Monto pendiente</div>
+                                    <div class="th text-center">Monto a pagar</div>
                                 </div>
                             </div>
                             <div class="tbody" id="tbodyInvoices">

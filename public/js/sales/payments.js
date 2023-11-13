@@ -13,7 +13,8 @@ import loaderController from '../helpers/loader.js';
     const dateBill = document.getElementById('dateBill');
     const pendingDebt = document.getElementById('pendingDebt');
     const saveOrder = document.getElementById('saveOrder');
-
+    const savePayment = document.getElementById('savePayment');
+    
     //Id
     const productsModal = document.getElementById('productsModal');
     const btnSearch = document.getElementById('btnSearch');
@@ -34,18 +35,19 @@ import loaderController from '../helpers/loader.js';
         customerCode.value = '';
         customerCode.value = dataCustomer.idCustomer
         customerName.value = dataCustomer.nameCustomer
-        amount.value = dataCustomer.lastNameCustomer
         dateBill.value = dataCustomer.creationDate.substring(0, 10);
 
+        tbodyInvoices.textContent = '';
         for(let key in dataCustomer.invoices){
             let dataRow = dataCustomer.invoices[key];
             let row = document.createElement('div');
+            row.classList.add('tr')
             row.setAttribute('data-id', dataRow.documentId)
             let td = `
-                        <div class="td text-center"><input data-id="${dataRow.documentId}" class="input-check" type="checkbox"></div>
-                        <div class="td text-center">${dataRow.date}</div>
-                        <div class="td text-center">${dataRow.amount}</div>
-                        <div class="td">${dataRow.receivable}</div>
+                        <div class="td text-center" bill-id="${dataRow.documentId}">${dataRow.documentId}</div>
+                        <div class="td text-center" bill-date="${dataRow.date}">${dataRow.date.substring(0, 10)}</div>
+                        <div class="td text-right" bill-amount="${dataRow.amount}">${dataRow.amount}</div>
+                        <div class="td text-right">${dataRow.receivable}</div>
                         <div class="td text-center">
                             <input type"number">
                         </div>
@@ -58,46 +60,17 @@ import loaderController from '../helpers/loader.js';
         fillUserInput(customerCode.value)
     })
 
-    // document.addEventListener('click', async e => {
-    //     if (e.target.matches('#btnSearch')) {
-    //         let dataProduct = await mainFunctions.getDataFromAPI('product');
-    //         for (let key in dataProduct) {
-    //             let dataRow = dataProduct[key];
-    //             let row = document.createElement('div');
-    //             row.classList.add('tr');
-    //             row.setAttribute('data-id', dataRow.productId)
-    //             let td = `
-    //                         <div class="td text-center"><input data-id="${dataRow.productId}" class="input-check" type="checkbox"></div>
-    //                         <div class="td text-center">${dataRow.productId}</div>
-    //                         <div class="td text-center">${dataRow.productBarCode}</div>
-    //                         <div class="td">${dataRow.productName}</div>
-    //                         <div class="td text-center">${dataRow.productCategory}</div>
-    //                         <div class="td text-right">
-    //                             <p><span>$Us </span> ${dataRow.productPrice} <br /> <span>$RD </span> 906,300.00</p>
-    //                         </div>
-    //                         <div class="td text-right">${dataRow.productCost}</div>
-    //                         `;
-    //             row.insertAdjacentHTML('beforeend', td);
-    //             tbodyProduct.insertAdjacentElement('beforeend', row)
-    //         }
-
-    //         mainFunctions.showModal(productsModal)
-    //     }
-    //     if (e.target.closest('#closeModal')) {
-    //         mainFunctions.hideModal(productsModal)
-    //     }
-    //     if (e.target.closest('#closeModalUser')) {
-    //         mainFunctions.hideModal(userModal)
-    //     }
-    //     if(e.target.closest('#tbodyUser')){
-    //         let id = e.target.closest('[data-id]').getAttribute('data-id');
-    //         fillUserInput(id);
-    //         mainFunctions.hideModal(userModal);
-    //     }
-    // })
+    document.addEventListener('click', async e => {
+        if(e.target.closest('#tbodyUser')){
+            let id = e.target.closest('[data-id]').getAttribute('data-id');
+            fillUserInput(id);
+            mainFunctions.hideModal(userModal);
+        }
+    })
 
     searchUser.addEventListener('click', async e => {
         let dataUser = await mainFunctions.getDataFromAPI('customer');
+        tbodyUser.textContent = '';
         for (let key in dataUser) {
             let rowDataUser = dataUser[key];
             let row = document.createElement('div');
@@ -117,39 +90,34 @@ import loaderController from '../helpers/loader.js';
             mainFunctions.showModal(userModal);
         }
     })
-    saveOrder.addEventListener('click', async e => {
+    savePayment.addEventListener('click', async e => {
         let listObjDataPost = [];
-        tbodyOrders.querySelectorAll('.tr[data-id]').forEach(tr => {
+        tbodyInvoices.querySelectorAll('.tr[data-id]').forEach(tr => {
             let objDataProduct = {
-                'productId': Number(tr.getAttribute('data-id')),
-                'orderId': 0,
-                "orderDetailId": 0,
-                'productQuantity': Number(tr.querySelector('input.quantity').value),
-                'price': Number(tr.querySelector('input.price').value),
+                'documentId': Number(tr.getAttribute('data-id')),
+                'date': tr.querySelector('.td[bill-date]').getAttribute('bill-date'),
+                "amount": Number(tr.querySelector('.td input').value),
             }
             listObjDataPost.push(objDataProduct)
         })
+        console.log(listObjDataPost);
         let resValidate = await mainFunctions.validateInputsRequired(userForm);
         if (!resValidate) {
-            if(listObjDataPost.length > 0){
-                let resConfirm = await showConfirmationModal('Guardar', 'Precione aceptar para registrar el pedido');
+                let resConfirm = await showConfirmationModal('Guardar', 'Presione aceptar para registrar el pago');
                 if (resConfirm) {
     
                     let objetSend = {
                         'customerId': Number(customerCode.value),
-                        'orderId': 0,
-                        "orderStatusId": 1,
-                        'orderDetails': listObjDataPost
+                        'invoices': listObjDataPost
                     }
     
-                    let resPost = await mainFunctions.sendDataByRequest('POST', objetSend, 'orders');
+                    let resPost = await mainFunctions.sendDataByRequest('POST', objetSend, 'receivable');
                     console.log(resPost);
-                    if (resPost.status >= 400) showAlertBanner('Warning', 'No fue posible agregar esta orden');
+                    if (resPost.status >= 400) showAlertBanner('Warning', 'No fue posible realizar el pago');
                     else {
-                        showAlertBanner('success', 'Orden agregada correctamente');
+                        showAlertBanner('success', 'Pago realizado correctamente');
                     }
                 }
-            }else showAlertBanner('warning', 'Debe agregar al menos un articulo');
         }else showAlertBanner('warning', 'Faltan parámetros');
     })
 
