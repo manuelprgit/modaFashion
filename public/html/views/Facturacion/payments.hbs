@@ -18,34 +18,9 @@
         {{> side_menu}}
 
         <div class="main-content" id="panelContent">
-            <div class="head-content">
-
-                <div class="info-section">
-
-                    <div class="icon-module">
-                        <i id="iconContent" class="fa-solid fa-store"></i>
-                    </div>
-                    <div class="detail-module">
-                        <h2 id="moduleName">Ventas</h2>
-                    </div>
-
-                </div>
-
-                <div class="profile-section">
-                    <div class="profile-content">
-                        <div class="profile-info">
-                            <p id="profileName">Nombre del usuario</p>
-                        </div>
-                        <div class="profile-img">
-                            <figure>
-                                <img src="./src//img/user-icon.jpeg" id="userImage" alt="imagen del usuario">
-                            </figure>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+            {{> head}}
             <main>
+                <h1 class="title-page">Pagos</h1>
                 <div class="button-content">
                     <button class="btn btn-info" id="clearInputs">
                         Limpiar
@@ -90,7 +65,7 @@
                     </div>
                     <div class="input-form-content">
                         <label for="customerLastName">Monto</label>
-                        <input placeholder="0.00" class="input-form" type="text" id="amount">
+                        <input placeholder="0.00" class="input-form required" type="text" id="amount">
                         <span> </span>
                     </div>
                 </div>

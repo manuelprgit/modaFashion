@@ -25,7 +25,7 @@ import loaderController from '../helpers/loader.js';
     let getCustomers;
     let storeCustomerId = 0;
 
-    let baseUrl = `${mainFunctions.mainUrl}customer`
+    let baseUrl = `customer`
 
     customerCreationDate.value = new Date().toISOString().substring(0, 10);
 

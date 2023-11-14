@@ -7,6 +7,7 @@ const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD'
 });
+
 (async () => {
     loaderController.disabled();
     //Id de inputs
@@ -54,7 +55,7 @@ const formatter = new Intl.NumberFormat('en-US', {
                         <div class="td text-right" bill-amount="${dataRow.amount}">${formatter.format(dataRow.amount)}</div>
                         <div class="td text-right">${formatter.format(dataRow.receivable)}</div>
                         <div class="td text-center">
-                            <input type="number" class="required">
+                            <input type="text" class="inputNumber">
                         </div>
                         `;
             row.insertAdjacentHTML('beforeend', td);
@@ -97,34 +98,51 @@ const formatter = new Intl.NumberFormat('en-US', {
     })
     savePayment.addEventListener('click', async e => {
         let listObjDataPost = [];
+        let amountTotal = 0;
         tbodyInvoices.querySelectorAll('.tr[data-id]').forEach(tr => {
             let objDataProduct = {
                 'documentId': Number(tr.getAttribute('data-id')),
                 'date': tr.querySelector('.td[bill-date]').getAttribute('bill-date'),
                 "amount": Number(tr.querySelector('.td input').value),
             }
+            amountTotal += Number(tr.querySelector('.td input').value)
             listObjDataPost.push(objDataProduct)
         })
         let resValidate = await mainFunctions.validateInputsRequired(panelContent);
-        if (!resValidate) {
-                let resConfirm = await showConfirmationModal('Guardar', 'Presione aceptar para registrar el pago');
-                if (resConfirm) {
-    
-                    let objetSend = {
-                        'customerId': Number(customerCode.value),
-                        'invoices': listObjDataPost
+        if(amountTotal == amount.value){
+            if (!resValidate) {
+                    let resConfirm = await showConfirmationModal('Guardar', 'Presione aceptar para registrar el pago');
+                    if (resConfirm) {
+        
+                        let objetSend = {
+                            'customerId': Number(customerCode.value),
+                            'invoices': listObjDataPost
+                        }
+                        console.log(objetSend);
+                        let resPost = await mainFunctions.sendDataByRequest('POST', objetSend, 'receivable');
+                        console.log(resPost);
+                        if (resPost.status >= 400) showAlertBanner('Warning', 'No fue posible realizar el pago');
+                        else {
+                            mainFunctions.clearAllInputs(panelContent)
+                            tbodyInvoices.textContent = '';
+                            showAlertBanner('success', 'Pago realizado correctamente');
+                        }
                     }
-                    console.log(objetSend);
-                    let resPost = await mainFunctions.sendDataByRequest('POST', objetSend, 'receivable');
-                    console.log(resPost);
-                    if (resPost.status >= 400) showAlertBanner('Warning', 'No fue posible realizar el pago');
-                    else {
-                        showAlertBanner('success', 'Pago realizado correctamente');
-                    }
-                }
-        }else showAlertBanner('warning', 'Faltan parámetros');
+            }else showAlertBanner('warning', 'Faltan parámetros');
+        }else showAlertBanner('warning', 'El monto debe ser igual a la suma de la facturas, verifique');
     })
 
     btnSearch.addEventListener('click', e => location.assign('ordenes-creadas'))
 
+    document.addEventListener('input', e=>{
+        if(e.target.matches('input.inputNumber')){
+            if(Number(e.target.value) >= 0){
+                e.target.value = Number(e.target.value);
+                formatter.format(e.target.value)
+            }else{
+                e.target.value = e.target.value.substring(0, e.target.value.length - 1);
+                formatter.format(e.target.value)
+            }
+        }
+    })
 })()

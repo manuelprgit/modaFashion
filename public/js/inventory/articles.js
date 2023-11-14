@@ -124,18 +124,18 @@ import createTable from '../helpers/createTables.js';
         let resultRequest
         //TODO: no se estan tomando en cuenta los errores
         if (productData.productId == 0) {
-            resultRequest = await mainFunctions.sendDataByRequest('POST', productData, `${baseUrl}product`);
+            resultRequest = await mainFunctions.sendDataByRequest('POST', productData, `product`);
             console.log(resultRequest);
-            resultRequest = JSON.parse(resultRequest)
+            // resultRequest = JSON.parse(resultRequest)
             if (resultRequest.error == 405) {
-                showAlertBanner('warning', 'El codigo de barra ya existe');
+                showAlertBanner('warning', 'El código de barra ya existe');
                 return;
             } 
-            resultRequest = await resultRequest.json();
-            showAlertBanner('success', `Se ha creado el articulo numero ${resultRequest.productId} con éxito!`)
+            // resultRequest = await resultRequest.json();
+            showAlertBanner('success', `Se ha creado el articulo con éxito!`)
             clearAllMyInputs(articleForm);
         } else {
-            await mainFunctions.sendDataByRequest('PUT', productData, `${baseUrl}product`, productData.productId);
+            await mainFunctions.sendDataByRequest('PUT', productData, `product`, productData.productId);
             console.log(productData);
             showAlertBanner('success', `Se ha modificado el articulo ${productData.name} con éxito!`)
             clearAllMyInputs(articleForm); 

@@ -386,17 +386,20 @@ body {
         }
     }
 }
-
+.title-page{
+    font-size: 20px;
+    font-weight: 700;
+}
 .input-form-content {
     @include flex(null, null, column, 8px);
     margin-bottom: 12px;
     position: relative;
     .search{
-        width: 30px;
-        height: 30px;
+        width: 20px;
+        height: 20px;
         position: absolute;
-        right: 8px;
-        top: 36px;
+        right: 3px;
+        top: 41px;
         cursor: pointer;
     }
     label {
