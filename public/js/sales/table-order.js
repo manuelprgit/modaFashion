@@ -21,7 +21,11 @@ import loaderController from '../helpers/loader.js';
                         <div class="tr">
                              <div class="td text-center">${dataRowProduct.productId}</div>
                              <div class="td text-center">${dataRowProduct.productBarCode}</div>
-                             <div class="td">${dataRowProduct.productDetail}</div>
+                             <div class="td">
+                                <a href="${dataRowProduct.linkURL}" target="_blank">   
+                                    ${dataRowProduct.productDetail}
+                                </a>
+                            </div>
                              <div class="td text-center">${dataRowProduct.productQuantity}</div>
                              <div class="td text-right">${dataRowProduct.price}</div>
                              <div class="td text-right">${dataRowProduct.total}</div>

@@ -453,6 +453,9 @@ body {
 .modal-content .modal .table .tbody .tr .td {
   font-size: 1.8rem;
 }
+.modal-content .modal .table .tbody .tr .td a {
+  font-size: 1.8rem;
+}
 .modal-content .modal .content-button {
   margin-top: 24px;
   display: flex;
@@ -1305,6 +1308,9 @@ main.invoice-main .section-body .control-section .actions-button button:active {
 }
 .content-order .panel-content .content-card .row .table-orders .tbody .tr .td {
   width: 100%;
+}
+.content-order .panel-content .content-card .row .table-orders .tbody .tr .td a {
+  font-size: 1.8rem;
 }
 .content-order .panel-content .content-card .row .table-orders .tbody .tr .text-center {
   text-align: center;
