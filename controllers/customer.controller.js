@@ -4,13 +4,15 @@ const getAllCustomers = async (req, res) => {
     let pool = await getConnection();
     let customers = await pool.query(`
         select 
-        a.idCustomer,
-        a.nameCustomer,
-        a.lastNameCustomer,
-        a.customerIdentification,
-        a.creationDate,
-        a.statusCustomer,
-        b.receivable
+            a.idCustomer,
+            a.nameCustomer,
+            a.lastNameCustomer,
+            a.customerIdentification,
+            a.creationDate,
+            a.statusCustomer,
+            a.cellphone,
+            a.tellphone,
+            b.receivable
         from invoice.customers a
         left join (
             select 
@@ -57,6 +59,8 @@ const createCustomer = async (req, res) => {
         lastNameCustomer,
         customerIdentification,
         creationDate,
+        cellphone,
+        tellphone,
         statusCustomer,
     } = req.body;
 
@@ -78,6 +82,8 @@ const createCustomer = async (req, res) => {
                         lastNameCustomer,
                         customerIdentification,
                         creationDate,
+                        cellphone,
+                        tellphone,
                         statusCustomer
                     )
                 OUTPUT
@@ -93,6 +99,8 @@ const createCustomer = async (req, res) => {
                         '${lastNameCustomer}',
                         '${customerIdentification}',
                         '${creationDate}',
+                        '${cellphone}',
+                        '${tellphone}',
                         ${Number(statusCustomer)}
                 )
 

@@ -18,34 +18,9 @@
         {{> side_menu}}
 
         <div class="main-content">
-            <div class="head-content">
-
-                <div class="info-section">
-
-                    <div class="icon-module">
-                        <i id="iconContent" class="fa-solid fa-store"></i>
-                    </div>
-                    <div class="detail-module">
-                        <h2 id="moduleName">Ventas</h2>
-                    </div>
-
-                </div>
-
-                <div class="profile-section">
-                    <div class="profile-content">
-                        <div class="profile-info">
-                            <p id="profileName">Nombre del usuario</p>
-                        </div>
-                        <div class="profile-img">
-                            <figure>
-                                <img src="./src//img/user-icon.jpeg" id="userImage" alt="imagen del usuario">
-                            </figure>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+            {{> head}}
             <main>
+                <h1 class="title-page">Mantenimiento de clientes</h1>
                 <div class="button-content">
                     <button class="btn btn-info" id="clearInputs">
                         Limpiar
@@ -69,7 +44,7 @@
                 <div class="articles-form-content" id="userForm">
                     <div class="input-form-content">
                         <label for="customerCode">Orden</label>
-                        <input class="input-form" type="text" value="Nuevo" id="ordersNumber" disabled="">
+                        <input class="input-form" type="text" placeholder="Nuevo" id="ordersNumber" disabled="">
                         <span>Numero de orden</span>
                     </div>
                     <div class="input-form-content">

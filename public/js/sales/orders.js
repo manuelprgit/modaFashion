@@ -3,6 +3,11 @@ import showConfirmationModal from "../helpers/confirmationModal.js";
 import { mainFunctions } from "../main.js";
 import loaderController from '../helpers/loader.js';
 
+const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+});
+
 (async () => {
     loaderController.disabled();
     //Id de inputs
@@ -60,7 +65,7 @@ import loaderController from '../helpers/loader.js';
         localStorage.removeItem('orderId');
     }
 
-    async function fillUserInput(id){
+    async function fillUserInput(id) {
         let dataCustomer = await mainFunctions.getDataFromAPI(`customer/${id}`);
         customerCode.value = '';
         customerCode.value = dataCustomer.idCustomer
@@ -104,7 +109,7 @@ import loaderController from '../helpers/loader.js';
         if (e.target.closest('#closeModalUser')) {
             mainFunctions.hideModal(userModal)
         }
-        if(e.target.closest('#tbodyUser')){
+        if (e.target.closest('#tbodyUser')) {
             let id = e.target.closest('[data-id]').getAttribute('data-id');
             fillUserInput(id);
             mainFunctions.hideModal(userModal);
@@ -132,9 +137,9 @@ import loaderController from '../helpers/loader.js';
                             <div class="td text-center">${allProduct.productId}</div>
                             <div class="td">${allProduct.productBarCode}</div>
                             <div class="td">${allProduct.productName}</div>
-                            <div class="td text-center"><input type="text" class="quantity" value="${allProduct.productCategory}"></div>
+                            <div class="td text-center"><input type="text"  class="quantity" placeholder="0"></div>
                             <div class="td text-right"><input type="text" class="price" value="${allProduct.productPrice}"></div>
-                            <div class="td text-right ">${allProduct.productPrice * 4}</div>
+                            <div class="td text-right total">0</div>
                             <div class="td text-center"><img src="../../../src/img/trash-regular.png" alt=""></div>
                             `;
                 row.insertAdjacentHTML('beforeend', td);
@@ -143,7 +148,17 @@ import loaderController from '../helpers/loader.js';
         }
         mainFunctions.hideModal(productsModal)
     })
+    tbodyOrders.addEventListener('change', e => {
+        if (e.target.matches('input')) {
+            let id = e.target.closest('[data-id]').getAttribute('data-id');
+            let quantity = tbodyOrders.querySelector(`div[data-id="${id}"] input.quantity`).value;
+            let price = tbodyOrders.querySelector(`div[data-id="${id}"] input.price`).value;
 
+            tbodyOrders.querySelector(`div[data-id="${id}"] .total`).textContent
+                = formatter.format(Number(quantity) * Number(price)
+                );
+        }
+    })
     searchUser.addEventListener('click', async e => {
         let dataUser = await mainFunctions.getDataFromAPI('customer');
         for (let key in dataUser) {
@@ -179,26 +194,28 @@ import loaderController from '../helpers/loader.js';
         })
         let resValidate = await mainFunctions.validateInputsRequired(userForm);
         if (!resValidate) {
-            if(listObjDataPost.length > 0){
+            if (listObjDataPost.length > 0) {
                 let resConfirm = await showConfirmationModal('Guardar', 'Precione aceptar para registrar el pedido');
                 if (resConfirm) {
-    
+
                     let objetSend = {
                         'customerId': Number(customerCode.value),
                         'orderId': 0,
                         "orderStatusId": 1,
                         'orderDetails': listObjDataPost
                     }
-    
+
                     let resPost = await mainFunctions.sendDataByRequest('POST', objetSend, 'orders');
                     console.log(resPost);
                     if (resPost.status >= 400) showAlertBanner('Warning', 'No fue posible agregar esta orden');
                     else {
+                        mainFunctions.clearAllInputs(userForm);
+                        tbodyOrders.textContent = ('');
                         showAlertBanner('success', 'Orden agregada correctamente');
                     }
                 }
-            }else showAlertBanner('warning', 'Debe agregar al menos un articulo');
-        }else showAlertBanner('warning', 'Faltan parámetros');
+            } else showAlertBanner('warning', 'Debe agregar al menos un articulo');
+        } else showAlertBanner('warning', 'Faltan parámetros');
     })
 
     btnSearch.addEventListener('click', e => location.assign('ordenes-creadas'))

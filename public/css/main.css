@@ -307,6 +307,11 @@ body {
   background-color: #126da1;
 }
 
+.title-page {
+  font-size: 20px;
+  font-weight: 700;
+}
+
 .input-form-content {
   display: flex;
   flex-direction: column;
@@ -315,11 +320,11 @@ body {
   position: relative;
 }
 .input-form-content .search {
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   position: absolute;
-  right: 8px;
-  top: 36px;
+  right: 3px;
+  top: 41px;
   cursor: pointer;
 }
 .input-form-content label {
