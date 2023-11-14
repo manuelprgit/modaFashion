@@ -88,6 +88,7 @@ import createTable from '../helpers/createTables.js';
     }
 
     let fillAllInputs = (article) => {
+
         idProductForPut = article.productId;
         productBarcode.value = article.productBarCode;
         productName.value = article.productName;
@@ -98,7 +99,7 @@ import createTable from '../helpers/createTables.js';
         productStatus.value = article.productStatusId;
         productDescription.value = article.productDetail;
         productPrice.value = article.productPrice;
-        linkUrl.value = article.linkUrl;
+        linkUrl.value = article.linkURL;
         // productQuantity.value = article.product
         // productSuplier.value = article.product
         productBarcode.disabled = true;

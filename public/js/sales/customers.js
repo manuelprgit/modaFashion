@@ -10,6 +10,8 @@ import loaderController from '../helpers/loader.js';
     let customerName = document.getElementById('customerName');
     let customerLastName = document.getElementById('customerLastName');
     let identifyCustomer = document.getElementById('identifyCustomer');
+    let cellPhone = document.getElementById('cellPhone');
+    let tellPhone = document.getElementById('tellPhone');
     let customerCreationDate = document.getElementById('customerCreationDate');
     let customerStatus = document.getElementById('customerStatus');
 
@@ -59,6 +61,8 @@ import loaderController from '../helpers/loader.js';
         customerName.value = customer.nameCustomer;
         customerLastName.value = customer.lastNameCustomer;
         identifyCustomer.value = customer.customerIdentification;
+        cellPhone.value = customer.cellphone;
+        tellPhone.value = customer.tellphone;
         customerCreationDate.value = date.toISOString().substring(0, 10);
         customerStatus.value = (customer.statusCustomer) ? 1 : 0;
     }
@@ -69,6 +73,8 @@ import loaderController from '../helpers/loader.js';
             nameCustomer: customerName.value,
             lastNameCustomer: customerLastName.value,
             customerIdentification: identifyCustomer.value,
+            cellphone: cellPhone.value,
+            tellphone: tellPhone.value,
             creationDate: new Date().toISOString().substring(0, 10),
             statusCustomer: Number(customerStatus.value)
         }
@@ -103,15 +109,15 @@ import loaderController from '../helpers/loader.js';
         }
     });
 
-    clearInputs.addEventListener('click',e=>{
+    clearInputs.addEventListener('click', e => {
         clearAllMyInputs()
     });
 
     saveCustomer.addEventListener('click', async e => {
 
         let hasEmptyValue = mainFunctions.validateInputsRequired(articleForm);
-        if(hasEmptyValue) {
-            showAlertBanner('warning','Faltan parametros');
+        if (hasEmptyValue) {
+            showAlertBanner('warning', 'Faltan parametros');
             return;
         };
         let hasAcepted = await showConfirmationModal('Crear Cliente', '¿Desea cear el cliente?');
@@ -119,22 +125,22 @@ import loaderController from '../helpers/loader.js';
 
         loaderController.enable();
         let getDataUser = getDataFromApi();
-        if(storeCustomerId === 0){
+        if (storeCustomerId === 0) {
             let newCustomer = await mainFunctions.sendDataByRequest('POST', getDataUser, baseUrl);
-            if(!newCustomer.ok){
-                showAlertBanner('danger','Error al hacer la peticion');
+            if (!newCustomer.ok) {
+                showAlertBanner('danger', 'Error al hacer la peticion');
                 return;
             }
-            newCustomer = await newCustomer.json(); 
-            showAlertBanner('success',`Se ha creado el cliente numero ${newCustomer.idCustomer}`);
+            newCustomer = await newCustomer.json();
+            showAlertBanner('success', `Se ha creado el cliente numero ${newCustomer.idCustomer}`);
         }
-        else{
+        else {
             let newCustomer = await mainFunctions.sendDataByRequest('PUT', getDataUser, baseUrl, storeCustomerId);
-            if(!newCustomer.ok){
-                showAlertBanner('danger','Error al hacer la peticion');
+            if (!newCustomer.ok) {
+                showAlertBanner('danger', 'Error al hacer la peticion');
                 return;
-            } 
-            showAlertBanner('success',`Se ha modificado el cliente numero ${storeCustomerId}`);
+            }
+            showAlertBanner('success', `Se ha modificado el cliente numero ${storeCustomerId}`);
         }
 
         clearAllMyInputs();
@@ -142,6 +148,6 @@ import loaderController from '../helpers/loader.js';
 
     });
 
-    loaderController.disabled(); 
+    loaderController.disabled();
 
 })()

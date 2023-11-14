@@ -90,7 +90,11 @@ const formatter = new Intl.NumberFormat('en-US', {
                             <div class="td text-center"><input data-id="${dataRow.productId}" class="input-check" type="checkbox"></div>
                             <div class="td text-center">${dataRow.productId}</div>
                             <div class="td text-center">${dataRow.productBarCode}</div>
-                            <div class="td">${dataRow.productName}</div>
+                            <div class="td">
+                                <a href="${dataRow.linkURL}" target="_blank">
+                                    ${dataRow.productName}
+                                </a>
+                            </div>
                             <div class="td text-center">${dataRow.productCategory}</div>
                             <div class="td text-right">
                                 <p><span>$Us </span> ${dataRow.productPrice} <br /> <span>$RD </span> 906,300.00</p>

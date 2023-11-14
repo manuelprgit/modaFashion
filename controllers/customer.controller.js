@@ -107,6 +107,8 @@ const updateCustomer = async (req, res) => {
         nameCustomer,
         lastNameCustomer,
         customerIdentification,
+        cellphone,
+        tellphone,
         statusCustomer,
     } = req.body;
 
@@ -121,13 +123,16 @@ const updateCustomer = async (req, res) => {
                 nameCustomer = '${nameCustomer}',
                 lastNameCustomer = '${lastNameCustomer}',
                 customerIdentification = '${customerIdentification}', 
-                statusCustomer = '${statusCustomer}'
+                statusCustomer = '${statusCustomer}',
+                cellphone = '${cellphone}',
+                tellphone = '${tellphone}'
             where idCustomer = ${idCustomer}
         `);
 
         res.status(204).json({});
 
     } catch (error) {
+        console.log(error);
         res.status(401).json({
             msg: error.message,
             error: 401

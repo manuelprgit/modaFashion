@@ -453,6 +453,9 @@ body {
 .modal-content .modal .table .tbody .tr .td {
   font-size: 1.8rem;
 }
+.modal-content .modal .table .tbody .tr .td a {
+  font-size: 1.8rem;
+}
 .modal-content .modal .content-button {
   margin-top: 24px;
   display: flex;
