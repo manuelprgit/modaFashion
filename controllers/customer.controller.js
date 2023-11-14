@@ -35,6 +35,8 @@ const getCustomerById = async (req, res) => {
                 a.nameCustomer,
                 a.lastNameCustomer,
                 a.customerIdentification,
+                a.tellphone,
+                a.cellphone,
                 a.creationDate,
                 a.statusCustomer,
                 b.receivable
