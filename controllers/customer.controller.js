@@ -27,7 +27,26 @@ const getAllCustomers = async (req, res) => {
 const getCustomerById = async (req, res) => {
     const { customerId } = req.params;
     let pool = await getConnection();
-    let customer = await pool.query(`select * from invoice.customers where idCustomer = ${customerId}`);
+    let customer = await pool.query(`
+            select 
+                a.idCustomer,
+                a.nameCustomer,
+                a.lastNameCustomer,
+                a.customerIdentification,
+                a.creationDate,
+                a.statusCustomer,
+                b.receivable
+            from invoice.customers a
+            left join (
+                select 
+                    customerId,
+                    sum(amount) receivable
+                from invoice.accountsReceivable
+                GROUP by customerId
+            ) b
+            on a.idCustomer = b.customerId
+            where idCustomer = ${customerId} 
+            `);
     res.json(customer.recordset[0]);
 }
 

@@ -10,6 +10,24 @@ const getAccountReceivable = async (_, res) => {
     res.json(accountReceivable);
 }
 
+const getCustomerPendingBills = async (req, res) => {
+
+    let {
+        customerId
+    } = req.body;
+
+    let pool = await getConnection();
+
+    let getCustomer = await pool.query(`
+        select * from invoice.customers;
+    `);
+
+    getCustomer = getCustomer.recordset;
+
+
+    
+}
+
 const getInvoicesWithPendingBills = async (req, res) => {
 
     let customerId = req.params.customerId;
@@ -29,7 +47,7 @@ const getInvoicesWithPendingBills = async (req, res) => {
     }
     customer = customer.recordset[0];
 
-    let invoice = await pool.query(`
+    let invoices = await pool.query(`
         select 
             b.documentId,
             b.paymentDate date,
@@ -50,8 +68,26 @@ const getInvoicesWithPendingBills = async (req, res) => {
             and b.paymentTypeId = 1
             and b.accountStatus != 'Saldado'
         `)
-    invoice = invoice.recordset;
-    customer['invoices'] = invoice
+    invoices = invoices.recordset;
+    // let newInvoices = [];
+    // for (let invoice of invoices){
+    //     let articles = await pool.query(`
+    //         select 
+    //             b.productId,
+    //             b.productName,
+    //             a.price,
+    //             b.productCost,
+    //             a.productQuantity
+    //         from invoice.orderDetails a
+    //         left join inventory.products b
+    //         on a.productId = b.productId
+    //         where a.orderId = ${invoice.documentId}
+    //     `)
+    //     articles = articles.recordset;
+    //     invoice['articles'] = articles;
+    //     newInvoices.push(invoice);
+    // }
+    customer['invoices'] = invoices
 
     res.json(customer)
 }
@@ -96,7 +132,7 @@ const billPayment = async (req, res) => {
         `)
 
         newInvoice = newInvoice.recordset[0].invoice;
-        
+
         console.log(newInvoice);
 
         let { recordset } = await pool.query(`
