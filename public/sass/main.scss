@@ -492,7 +492,7 @@ body {
         opacity: 0;
         position: relative;
         max-width: 90vw;
-
+        min-width: 960px;
         .close-modal {
             position: absolute;
             top: 10px;

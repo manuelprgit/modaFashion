@@ -405,6 +405,7 @@ body {
   opacity: 0;
   position: relative;
   max-width: 90vw;
+  min-width: 960px;
 }
 .modal-content .modal .close-modal {
   position: absolute;

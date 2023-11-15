@@ -23,7 +23,8 @@ import createTable from '../helpers/createTables.js';
     let closeModal = document.getElementById('closeModal');
     let articleForm = document.getElementById('articleForm');
     let linkUrl = document.getElementById('linkUrl');
-
+    let valorTasa = document.getElementById('valorTasa');
+    
     let productTable = document.getElementById('productTable');
     let tbodyProduct = productTable.querySelector('.tbody');
 
@@ -159,8 +160,22 @@ import createTable from '../helpers/createTables.js';
 
     });
 
-    clearInputs.addEventListener('click', e => {
-        clearAllMyInputs(articleForm);
+    valorTasa.addEventListener('change', e=>{
+        productCost.value = '';
+        if(e.target.value > 0) productCost.disabled = false;
+        else productCost.disabled = true;
+    })
+    productCost.addEventListener('change', e=>{
+        let cost = valorTasa.value * e.target.value
+        productPrice.value = Math.ceil(e.target.value * 100);
+        e.target.value = Math.ceil(cost)
+    })
+
+    clearInputs.addEventListener('click',async e => {
+        let resConfirm = await showConfirmationModal('Limpiar', 'Presione aceptar para limpiar todos los campos');
+        if(resConfirm){
+            clearAllMyInputs(articleForm);
+        }
     });
 
     closeModal.addEventListener('click', e => {
