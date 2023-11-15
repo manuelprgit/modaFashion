@@ -90,7 +90,7 @@ const formatter = new Intl.NumberFormat('en-US', {
             let td = `
                         <div class="td text-center"><input data-id="${dataRow.productId}" class="input-check" type="checkbox"></div>
                         <div class="td text-center">${dataRow.productId}</div>
-                        <div class="td text-center">${dataRow.productBarCode}</div>
+                        <div class="td text-center">${(dataRow.productBarCode).substring(0, 8)}</div>
                         <div class="td">
                             <a href="${dataRow.linkURL}" target="_blank">
                                 ${dataRow.productName}
@@ -144,7 +144,7 @@ const formatter = new Intl.NumberFormat('en-US', {
                 row.setAttribute('data-id', allProduct.productId);
                 let td = `
                             <div class="td text-center">${allProduct.productId}</div>
-                            <div class="td">${allProduct.productBarCode}</div>
+                            <div class="td">${(allProduct.productBarCode).substring(0, 12)}</div>
                             <div class="td">${allProduct.productName}</div>
                             <div class="td text-center"><input type="text"  class="quantity" placeholder="0"></div>
                             <div class="td text-right"><input type="text" class="price" value="${allProduct.productPrice}"></div>
@@ -169,9 +169,9 @@ const formatter = new Intl.NumberFormat('en-US', {
         }
     })
     tbodyOrders.addEventListener('click',async e=>{
-        let resConfirm = await showConfirmationModal('Eliminar', 'Presione aceptar para eliminar este articulo');
-        if(resConfirm){
             if(e.target.matches('.ico-delete')){
+                let resConfirm = await showConfirmationModal('Eliminar', 'Presione aceptar para eliminar este articulo');
+                if(resConfirm){
                 e.target.closest('[data-id]').remove();
             }
         }

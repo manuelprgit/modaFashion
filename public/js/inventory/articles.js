@@ -79,9 +79,9 @@ import createTable from '../helpers/createTables.js';
             price: productPrice.value || 0,
             cost: productCost.value || 0,
             quantity: productQuantity.value,
-            suplierId: productSuplier.value,
+            // suplierId: productSuplier.value,
             categoryId: productCategory.value,
-            familyId: productFamily.value,
+            familyId: 1,
             status: productStatus.value,
             linkUrl: linkUrl.value,
             description: productDescription.value,
@@ -96,7 +96,7 @@ import createTable from '../helpers/createTables.js';
         productCode.value = article.productId;
         productCost.value = article.productCost;
         productCategory.value = article.productCategory;
-        productFamily.value = article.productFamily;
+        // productFamily.value = article.productFamily;
         productStatus.value = article.productStatusId;
         productDescription.value = article.productDetail;
         productPrice.value = article.productPrice;
@@ -127,7 +127,6 @@ import createTable from '../helpers/createTables.js';
         //TODO: no se estan tomando en cuenta los errores
         if (productData.productId == 0) {
             resultRequest = await mainFunctions.sendDataByRequest('POST', productData, `product`);
-            console.log(resultRequest);
             // resultRequest = JSON.parse(resultRequest)
             if (resultRequest.error == 405) {
                 showAlertBanner('warning', 'El código de barra ya existe');
@@ -214,7 +213,7 @@ import createTable from '../helpers/createTables.js';
     productTable.append(createTable(getProducts, objectProduct)); 
 
     mainFunctions.fillSelectElement(productCategory, getCategories, 'categoryDescription', 'categoryId');
-    mainFunctions.fillSelectElement(productFamily, getFamilies, 'familyDescription', 'familyId');
+    // mainFunctions.fillSelectElement(productFamily, getFamilies, 'familyDescription', 'familyId');
     mainFunctions.fillSelectElement(productStatus, getStatus, 'statusDescription', 'statusId');
 
     loaderController.disabled();
