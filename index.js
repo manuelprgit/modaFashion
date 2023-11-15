@@ -43,15 +43,28 @@ app.get('/facturar', (req, res) => {
 })
 
 app.get('/creacion-cliente', (req, res) => {
-  res.render(path.join('./views/Facturacion/creacion-cliente'),billingProps);
+  res.render(path.join('./views/Facturacion/creacion-cliente'),{
+    mainTitle: "Clientes",
+    icon: "fa-solid fa-user"
+  });
 })
 
 app.get('/creacion-vendedor', (req, res) => {
   res.render(path.join('./views/Facturacion/creacion-vendedor'),billingProps);
 })
 
+app.get('/payments', (req, res) => {
+  res.render(path.join('./views/Facturacion/payments'),{
+    mainTitle: "Pagos",
+    icon: "fa-solid fa-money-bill-wave"
+  });
+})
+
 app.get('/creacion-ordenes', (req, res) => {
-  res.render(path.join('./views/Facturacion/creacion-ordenes'),billingProps);
+  res.render(path.join('./views/Facturacion/creacion-ordenes'),{
+    mainTitle: "Ordenes",
+    icon: "fa-solid fa-basket-shopping"
+  } );
 })
 //#endregion Facturacion
 
@@ -67,7 +80,10 @@ app.get('/inventario', (req, res) => {
 })
 
 app.get('/creacion-articulos', (req, res) => {
-  res.render(path.join('./views/Inventario/creacion-articulos'),inventoryProps);
+  res.render(path.join('./views/Inventario/creacion-articulos'),{
+    mainTitle: "Creación de articulos",
+    icon: "fa-solid fa-box"
+  } );
 })
 
 app.get('/categoria', (req, res) => {
@@ -96,9 +112,7 @@ app.get('/mantenimiento-suplidor', (req, res) => {
 app.get('/ordenes-creadas', (req, res) => {
   res.render(path.join('./views/Facturacion/ordenes-creadas'),salesProps);
 })
-app.get('/payments', (req, res) => {
-  res.render(path.join('./views/Facturacion/payments'),salesProps);
-})
+
 //#endregion Compras
 
 // //TODO: MACADDRESS
