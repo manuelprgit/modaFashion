@@ -27,7 +27,7 @@ const getOrders = async (req, res) => {
                 b.nameCustomer,
                 b.lastNameCustomer,
                 b.customerIdentification
-            from invoice.orders A
+            from invoice.orders a
             left join invoice.customers b
             on a.customerId = b.idCustomer
             left join invoice.orderStatus c
