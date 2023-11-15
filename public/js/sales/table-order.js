@@ -17,12 +17,13 @@ import loaderController from '../helpers/loader.js';
         let listRowProduct = [];
         for (let key in dataProduct) {
             let dataRowProduct = dataProduct[key];
+            console.log(dataRowProduct)
             div = `
                         <div class="tr">
                              <div class="td text-center">${dataRowProduct.productId}</div>
                              <div class="td text-center">${dataRowProduct.productBarCode}</div>
                              <div class="td">
-                                <a href="${dataRowProduct.linkURL}" target="_blank">   
+                                <a href="${dataRowProduct.linkUrl}" target="_blank">   
                                     ${dataRowProduct.productDetail}
                                 </a>
                             </div>
