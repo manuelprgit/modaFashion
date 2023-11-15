@@ -58,7 +58,7 @@ body {
 
     .side-menu {
         background-color: #57386b;
-        overflow-y: scroll;
+        
         min-width: 270px;
         width: 24%;
         padding: 0 20px 0 0;
@@ -74,9 +74,10 @@ body {
                 margin: 20px;
 
                 figure {
-                    width: 50%;
-                    height: 80px;
-
+                    width: 58%;
+                    height: 137px;
+                    position: absolute;
+                    top: -10px;
                     img {
                         object-fit: contain;
                     }
