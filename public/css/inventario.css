@@ -100,6 +100,7 @@
 .content-table .table .tbody .tr .td img {
   width: 30px;
   height: 30px;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=inventario.css.map */

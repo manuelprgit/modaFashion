@@ -72,6 +72,9 @@ const formatter = new Intl.NumberFormat('en-US', {
             fillUserInput(id);
             mainFunctions.hideModal(userModal);
         }
+        if(e.target.closest('#closeModalUser')){
+            mainFunctions.hideModal(userModal);
+        }
     })
 
     searchUser.addEventListener('click', async e => {
