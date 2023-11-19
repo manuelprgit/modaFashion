@@ -74,9 +74,10 @@ export const mainFunctions = {
             }
         })
             .then(async res => {
-                if (res.status >= 400) {
-                    throw await res.text();
-                };
+                // if (res.status >= 400) {
+                //     if(method == 'POST') throw await res;
+                //     throw await res.text();
+                // };
                 return res;
             })
             .catch(err => {

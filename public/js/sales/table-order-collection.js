@@ -12,7 +12,9 @@ const formatter = new Intl.NumberFormat('en-US', {
     //Id
     let contentCard = document.getElementById('contentCard');
     let btnClose = document.getElementById('btnClose');
-    
+    let searchCollectionOrder = document.getElementById('searchCollectionOrder');
+    let collectionOrderModal = document.getElementById('collectionOrderModal');
+    let saveCollectionOrder = document.getElementById('saveCollectionOrder');
 
     let templateMenuTable = document.getElementById('templateMenuTable');
 
@@ -43,14 +45,20 @@ const formatter = new Intl.NumberFormat('en-US', {
     for (let key in dataOrders) {
         let dataRowOrders = dataOrders[key];
         let colorStatus;
-        if(dataRowOrders.orderStatus.orderStatusId == 1) colorStatus = 'proceso'
-        if(dataRowOrders.orderStatus.orderStatusId == 2) colorStatus = 'pedido'
-        if(dataRowOrders.orderStatus.orderStatusId == 3) colorStatus = 'recibido'
+        if (dataRowOrders.orderStatus.orderStatusId == 1) colorStatus = 'proceso'
+        if (dataRowOrders.orderStatus.orderStatusId == 2) colorStatus = 'pedido'
+        if (dataRowOrders.orderStatus.orderStatusId == 3) colorStatus = 'recibido'
         let div = `
                 <div class="row" data-id="${dataRowOrders.orderId}">
                     <div class="colum">
-                        <div class="head text-center">No.</div>
-                        <div class="body text-center">${dataRowOrders.orderId}</div>
+                        <div class="head text-center">Seleccionar</div>
+                        <div class="body text-center">
+                            <input class="check" type="checkbox">
+                        </div>
+                    </div>
+                    <div class="colum">
+                         <div class="head text-center">No.</div>
+                         <div class="body text-center" order-id="${dataRowOrders.orderId}">${dataRowOrders.orderId}</div>
                     </div>
                     <div class="colum">
                         <div class="head text-center">Código cliente</div>
@@ -62,11 +70,11 @@ const formatter = new Intl.NumberFormat('en-US', {
                     </div>
                     <div class="colum">
                         <div class="head text-center">Estatus</div>
-                        <div class="body text-center ${colorStatus}">${(dataRowOrders.orderStatus)?dataRowOrders.orderStatus.description:''}</div>
+                        <div class="body text-center ${colorStatus}">${(dataRowOrders.orderStatus) ? dataRowOrders.orderStatus.description : ''}</div>
                     </div>
                     <div class="colum">
                         <div class="head text-right">Monto</div>
-                        <div class="body text-right">${formatter.format(dataRowOrders.amount)}</div>
+                        <div class="body text-right" data-amount="${dataRowOrders.amount}">${formatter.format(dataRowOrders.amount)}</div>
                     </div>
                     <div class="menu text-center">
                         <i data-id="${dataRowOrders.orderId}" class="fa-solid fa-ellipsis"></i>
@@ -95,18 +103,21 @@ const formatter = new Intl.NumberFormat('en-US', {
         contentCard.insertAdjacentHTML('beforeend', div);
     }
 
-    async function changeStatusOrders(method, obj, url, message){
+    async function changeStatusOrders(method, obj, url, message) {
         let resPost = await mainFunctions.sendDataByRequest(method, obj, url);
-        if(resPost.status >= 400){
+        if (resPost.status >= 400) {
             showAlertBanner('warning', `No fue posible ${message} el documento`);
-        }else{
+        } else {
             showAlertBanner('success', `El documento fue ${message} correctamente`);
             location.assign('ordenes-creadas');
         }
     }
 
-    let orderStatusPosteo = ''; 
-    document.addEventListener('click',async e => {
+    searchCollectionOrder.addEventListener('click', e=>{
+        mainFunctions.showModal(collectionOrderModal);
+    })
+    let orderStatusPosteo = '';
+    document.addEventListener('click', async e => {
         if (e.target.matches('i.open-card')) {
             let dataId = e.target.closest('[data-id]').getAttribute('data-id');
             contentCard.querySelectorAll(`div.row[data-id]`).forEach(row => row.style.height = '100px');
@@ -128,15 +139,15 @@ const formatter = new Intl.NumberFormat('en-US', {
             let orderById = await mainFunctions.getDataFromAPI(`orders/${id}`)
             let textStatus = document.getElementById('textStatus');
 
-            if(orderById.orderStatusId == 1){
+            if (orderById.orderStatusId == 1) {
                 orderStatusPosteo = 'posteo';
                 textStatus.textContent = 'Pedir';
-            } 
-            else if(orderById.orderStatusId == 2) {
+            }
+            else if (orderById.orderStatusId == 2) {
                 orderStatusPosteo = 'recieve';
                 textStatus.textContent = 'Recibir';
             }
-            else if(orderById.orderStatusId == 3) {
+            else if (orderById.orderStatusId == 3) {
                 orderStatusPosteo = 'given';
                 textStatus.textContent = 'Entregar';
             }
@@ -144,58 +155,88 @@ const formatter = new Intl.NumberFormat('en-US', {
         } else {
             contentCard.querySelectorAll('.content-menu-table').forEach(menu => menu.remove());
         }
-        if(e.target.closest('#openDocument')){
+        if (e.target.closest('#openDocument')) {
             let id = e.target.closest('[data-id]').getAttribute('data-id');
             localStorage.setItem('orderId', id)
             location.assign('creacion-ordenes');
         }
         if (e.target.closest('#postDocument')) {
             let resConfirm = await showConfirmationModal('¿Desea continuar?', 'Precione aceptar para seguir el proceso');
-            if(resConfirm){
+            if (resConfirm) {
                 let id = e.target.closest('[data-id]').getAttribute('data-id');
                 let dataObj = {
                     documentId: Number(id)
                 }
                 let url;
                 let message = '';
-                if(orderStatusPosteo == 'posteo'){
+                if (orderStatusPosteo == 'posteo') {
                     url = 'orders/post'
                     message = 'Pedir'
-                } 
-                else if(orderStatusPosteo == 'recieve'){
+                }
+                else if (orderStatusPosteo == 'recieve') {
                     url = 'orders/recieve'
                     message = 'Recibir'
-                } 
-                else if(orderStatusPosteo == 'given'){
-                    let affectAccountReceivable = await showConfirmationModal('Guardar pagado', 'Si este pedido ya está pagado presione aceptar')
+                }
+                else if (orderStatusPosteo == 'given') {
+                    let affectAccountReceivable = await showConfirmationModal('Guardar pagado', 'Si este pedido ya está pagado presione aceptar de lo contrario presione cancelar y de este modo el cliente puede pagar mas adelante si no ha entendido este proceso por favor llamar al departamento de tecnología, muchas gracias y pase buen resto del día')
                     url = 'orders/given'
                     message = 'Entregar';
                     dataObj = {
                         documentId: Number(id),
                         "killReceivable": affectAccountReceivable
                     }
-                } 
+                }
                 changeStatusOrders('POST', dataObj, url, 'Postear', message)
             }
         }
         if (e.target.closest('#decline')) {
             let resConfirm = await showConfirmationModal('Rechazar', 'Presione aceptar para rechazar el pedido');
-            if(resConfirm){
+            if (resConfirm) {
                 let id = e.target.closest('[data-id]').getAttribute('data-id');
                 let dataObj = {
                     documentId: Number(id)
                 }
                 let resPost = await mainFunctions.sendDataByRequest('POST', dataObj, 'orders/reject');
-                if(resPost.status >= 400){
+                console.log(resPost.status);
+                if (resPost.status >= 400) {
                     showAlertBanner('warning', 'No fue posible rechazar el pedido');
-                }else{
+                } else {
                     showAlertBanner('success', 'El documento fue rechazado correctamente');
                     location.assign('ordenes-creadas');
                 }
             }
         }
-        
+        if(e.target.closest('#closeModalUser')){
+            mainFunctions.hideModal(collectionOrderModal);
+        }
     })
 
+    let listAllOrder = [];
+    let dataCollectionOrder = {};
+    saveCollectionOrder.addEventListener('click',async e=>{
+        contentCard.querySelectorAll('div[data-id]').forEach(tr=>{
+            let check = tr.querySelector('input');
+            let objDateOrder = {
+                "id": tr.querySelector('div[order-id]').getAttribute('order-id'),
+                "amount": tr.querySelector('div[data-amount]').getAttribute('data-amount'),
+            }
+            if(check.checked){
+                listAllOrder.push(objDateOrder)
+            }
+            dataCollectionOrder = {
+                "date": new Date(),
+                "collectionDetail": listAllOrder 
+            }
+        })
+        console.log(listAllOrder.length);
+        if(listAllOrder.length > 0){
+            let resConfirm = await showConfirmationModal('Guardar', 'Presione aceptar para guardar esta colección de pedidos');
+            if(resConfirm){
+                showAlertBanner('success', 'Colección de ordenes guardad correctamente');
+            }
+        }else{
+            showAlertBanner('warning', 'Debe seleccionar al menos una orden');
+        } 
+    })
     btnClose.addEventListener('click', e => location.assign('creacion-ordenes'))
 })()

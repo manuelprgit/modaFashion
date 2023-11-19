@@ -32,7 +32,7 @@ let createHeaderTableRow = (dataObj) => {
     thead.insertAdjacentElement('afterbegin', row);
     return thead;
 }
-
+ 
 let createTable = (dataTable, dataObj) => {
     let fragment = document.createDocumentFragment();
     let head = createHeaderTableRow(dataObj);
@@ -45,7 +45,6 @@ let createTable = (dataTable, dataObj) => {
         tbody.insertAdjacentElement('afterbegin', row);
     }
     fragment.append(tbody);
-    console.log(fragment);
     return fragment;
 }
 
