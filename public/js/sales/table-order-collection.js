@@ -9,7 +9,6 @@ const formatter = new Intl.NumberFormat('en-US', {
 });
 
 (async () => {
-    showConfirmationModal('warning', 'HIjo de puta');
     //Id
     let contentCard = document.getElementById('contentCard');
     let btnClose = document.getElementById('btnClose');
@@ -214,7 +213,7 @@ const formatter = new Intl.NumberFormat('en-US', {
 
     let listAllOrder = [];
     let dataCollectionOrder = {};
-    saveCollectionOrder.addEventListener('click', e=>{
+    saveCollectionOrder.addEventListener('click',async e=>{
         contentCard.querySelectorAll('div[data-id]').forEach(tr=>{
             let check = tr.querySelector('input');
             let objDateOrder = {
@@ -231,7 +230,7 @@ const formatter = new Intl.NumberFormat('en-US', {
         })
         console.log(listAllOrder.length);
         if(listAllOrder.length > 0){
-            let resConfirm = showConfirmationModal('Guardar', 'Presione aceptar para guardar esta colección de pedidos');
+            let resConfirm = await showConfirmationModal('Guardar', 'Presione aceptar para guardar esta colección de pedidos');
             if(resConfirm){
                 showAlertBanner('success', 'Colección de ordenes guardad correctamente');
             }
