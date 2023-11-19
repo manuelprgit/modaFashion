@@ -2,6 +2,7 @@ import express, { Router } from 'express';
 
 import {
     getOrderCollected, 
+    getOrderCollectedById, 
 } from '../controllers/orderCollector.controller.js';
 
 const router = Router();
@@ -9,6 +10,7 @@ const router = Router();
 const mainUrl = '/api/ordersCollector/';
 
 router.get(`${mainUrl}`, getOrderCollected);
+router.get(`${mainUrl}:collectionId`, getOrderCollectedById);
 // router.get(`${mainUrl}status`, getOrderStatus);
 // router.get(`${mainUrl}:orderId`, getOrdersById);
 // router.post(`${mainUrl}`, express.json(), createOrders);
