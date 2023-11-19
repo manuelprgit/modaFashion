@@ -42,8 +42,8 @@ const getOrderCollected = async (req, res) => {
 }
 
 const getOrderCollectedById = async (req, res) => {
-    
-    let {collectionId} = req.params;
+
+    let { collectionId } = req.params;
 
     let pool = await getConnection();
 
@@ -67,8 +67,15 @@ const getOrderCollectedById = async (req, res) => {
 
     ordersCollectedDetails = ordersCollectedDetails.recordset;
     getOrderCollect['ordersCollectedDetails'] = ordersCollectedDetails;
-  
+
     res.json(getOrderCollect);
+}
+
+const createOrderCollected = async (req, res) => {
+
+}
+const updateOrderCollected = async (req, res) => {
+
 }
 
 
@@ -76,5 +83,7 @@ const getOrderCollectedById = async (req, res) => {
 
 export {
     getOrderCollected,
-    getOrderCollectedById
+    getOrderCollectedById,
+    createOrderCollected,
+    updateOrderCollected
 }
