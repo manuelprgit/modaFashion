@@ -129,7 +129,7 @@ const updateProduct = async (req, res) => {
                 ,productFamily = ${familyId}
                 ,productCategory = ${categoryId}
                 ,productStatusId = ${status}
-                ,linkURL = ${linkUrl}
+                ,linkURL = '${linkUrl}'
             where productId = ${productId}
          `);
 
@@ -137,6 +137,7 @@ const updateProduct = async (req, res) => {
         res.status(201).json({});
 
     } catch (error) {
+        console.log(error);
         res.status(401).json({
             msg: error.message,
             error: 401

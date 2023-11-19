@@ -127,7 +127,7 @@ import loaderController from '../helpers/loader.js';
         let getDataUser = getDataFromApi();
         if (storeCustomerId === 0) {
             let newCustomer = await mainFunctions.sendDataByRequest('POST', getDataUser, baseUrl);
-            if (!newCustomer.ok) {
+            if (newCustomer.status >= 400) {
                 showAlertBanner('danger', 'Error al hacer la peticion');
                 return;
             }
@@ -136,7 +136,7 @@ import loaderController from '../helpers/loader.js';
         }
         else {
             let newCustomer = await mainFunctions.sendDataByRequest('PUT', getDataUser, baseUrl, storeCustomerId);
-            if (!newCustomer.ok) {
+            if (newCustomer.error >= 400) {
                 showAlertBanner('danger', 'Error al hacer la peticion');
                 return;
             }

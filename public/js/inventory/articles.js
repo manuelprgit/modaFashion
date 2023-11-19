@@ -128,7 +128,7 @@ import createTable from '../helpers/createTables.js';
         if (productData.productId == 0) {
             resultRequest = await mainFunctions.sendDataByRequest('POST', productData, `product`);
             // resultRequest = JSON.parse(resultRequest)
-            if (resultRequest.error == 405) {
+            if (resultRequest.status > 400) {
                 showAlertBanner('warning', 'El código de barra ya existe');
                 return;
             } 
@@ -136,14 +136,43 @@ import createTable from '../helpers/createTables.js';
             showAlertBanner('success', `Se ha creado el articulo con éxito!`)
             clearAllMyInputs(articleForm);
         } else {
-            await mainFunctions.sendDataByRequest('PUT', productData, `product`, productData.productId);
-            console.log(productData);
-            showAlertBanner('success', `Se ha modificado el articulo ${productData.name} con éxito!`)
-            clearAllMyInputs(articleForm); 
+            let ruesulPut = await mainFunctions.sendDataByRequest('PUT', productData, `product`, productData.productId);
+            if(ruesulPut >= 400){
+                showAlertBanner('warning', `Este documento no pudo ser modificado`)
+            }else{
+                showAlertBanner('success', `Se ha modificado el articulo ${productData.name} con éxito!`)
+                clearAllMyInputs(articleForm); 
+            }
         }
     })
 
-    searchProduct.addEventListener('click', e => {
+    searchProduct.addEventListener('click', async e => {
+        let getProducts = await mainFunctions.getDataFromAPI('product');
+        productTable.textContent = '';
+        let objectProduct = {
+            productId: {
+                className: 'text-center',
+                headDescription: 'Código del producto'
+            },
+            productName: {
+                className: 'text-left',
+                headDescription: 'Descripción'
+            },
+            productBarCode: {
+                className: 'text-left',
+                headDescription: 'Código de barra'
+            },
+            productPrice: {
+                className: 'text-right',
+                headDescription: 'Precio'
+            },
+            productCost: {
+                className: 'text-right',
+                headDescription: 'Costo'
+            }
+        }
+    
+        productTable.append(createTable(getProducts, objectProduct)); 
         mainFunctions.showModal(productModal);
     });
 
@@ -186,31 +215,6 @@ import createTable from '../helpers/createTables.js';
             mainFunctions.removeWrongInput(e.target)
         }
     })
-
-    let objectProduct = {
-        productId: {
-            className: 'text-center',
-            headDescription: 'Código del producto'
-        },
-        productName: {
-            className: 'text-left',
-            headDescription: 'Descripción'
-        },
-        productBarCode: {
-            className: 'text-left',
-            headDescription: 'Código de barra'
-        },
-        productPrice: {
-            className: 'text-right',
-            headDescription: 'Precio'
-        },
-        productCost: {
-            className: 'text-right',
-            headDescription: 'Costo'
-        }
-    }
-
-    productTable.append(createTable(getProducts, objectProduct)); 
 
     mainFunctions.fillSelectElement(productCategory, getCategories, 'categoryDescription', 'categoryId');
     // mainFunctions.fillSelectElement(productFamily, getFamilies, 'familyDescription', 'familyId');

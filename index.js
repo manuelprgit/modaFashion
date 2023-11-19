@@ -112,6 +112,9 @@ app.get('/mantenimiento-suplidor', (req, res) => {
 app.get('/ordenes-creadas', (req, res) => {
   res.render(path.join('./views/Facturacion/ordenes-creadas'),salesProps);
 })
+app.get('/table-order-collection', (req, res) => {
+  res.render(path.join('./views/Facturacion/table-order-collection'),salesProps);
+})
 
 //#endregion Compras
 

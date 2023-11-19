@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css" />
+    <link rel="stylesheet" href="./css/factura.css">
+    <link rel="stylesheet" href="./css/inventario.css">
+    {{> head_links}}
+    <link rel="stylesheet" href="">
+    <title>Ordenes creadas</title>
+</head>
+
+<body>
+    <div class="content-order">
+        <div class="panel-content">
+            <div class="btn-close" id="btnClose">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+            <div class="title">
+                <p>
+                    Coleccionar ordenes
+                </p>
+            </div>
+            <div class="row-head">
+                <div class="search">
+                    <input type="text" placeholder="Buscar orden">
+                </div>
+                <div class="button-content">
+                    <button class="btn btn-info" id="searchCollectionOrder">
+                        Buscar
+                        <div class="icon-content">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                    </button>
+                    <button class="btn btn-success" id="saveCollectionOrder">
+                        Guardar
+                        <div class="icon-content">
+                            <i class="fa-regular fa-floppy-disk"></i>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div class="content-card" id="contentCard">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-content customers-modal" id="collectionOrderModal">
+        <div class="modal">
+            <div class="close-modal" id="closeModalUser">
+                <p>X</p>
+            </div>
+            <div class="content-table">
+                <div class="table">
+                    <div class="thead">
+                        <div class="tr">
+                            <div class="th text-center">Código</div>
+                            <div class="th text-center">Fecha</div>
+                            <div class="th">Total</div>
+                        </div>
+                    </div>
+                    <div class="tbody" id="tbodyUser">
+                        <div class="tr cursor-pointer" data-id="1">
+                            <div class="td text-center">12</div>
+                            <div class="td text-center">00/12/5679</div>
+                            <div class="td">$50,202.32</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <template id="templateMenuTable">
+        <div class="content-menu-table">
+            <div class="row-option" id="openDocument">
+                <div class="ico">
+                    <i class="fa-regular fa-folder-open"></i>
+                </div>
+                <p>
+                    Abrir
+                </p>
+            </div>
+            <div class="row-option" id="postDocument">
+                <div class="ico">
+                    <i class="fa-regular fa-paper-plane"></i>
+                </div>
+                <p id="textStatus">
+                </p>
+            </div>
+            <div class="row-option" id="decline">
+                <div class="ico">
+                    <i class="fa-regular fa-calendar-xmark"></i>
+                </div>
+                <p id="">
+                    Rechazar
+                </p>
+            </div>
+            <div class="row-option">
+                <div class="ico">
+                    <i class="fa-solid fa-print"></i>
+                </div>
+                <p>
+                    Imprimir
+                </p>
+            </div>
+        </div>
+    </template>
+    {{> tools}}
+</body>
+
+<script src="./js/sales/table-order-collection.js" type="module"></script>
+
+</html>
