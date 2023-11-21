@@ -73,13 +73,66 @@ const getOrderCollectedById = async (req, res) => {
 
 const createOrderCollected = async (req, res) => {
 
+    let {
+        collectionId,
+        totalAmount,
+        ordersCollectedDetails
+    } = req.body
+    let pool = await getConnection();
+
+    let orderCollectedId = await pool.query(`
+
+        insert into invoice.orderCollection(
+            totalAmount,
+            collectionDate,
+            orderStatusId
+        )
+        values(
+            ${totalAmount},
+            getdate(),
+            1
+        )
+
+        DECLARE @invoicesOrdes INT;
+        SET @invoicesOrdes = SCOPE_IDENTITY();
+        select @invoicesOrdes as invoicesOrdes
+
+    `);
+
+    orderCollectedId = orderCollectedId.recordset[0].invoicesOrdes;
+
+    for(let ordersCollected of ordersCollectedDetails){
+
+        let {recordset} = await pool.query(`
+            select * from invoice.orders
+            where orderId = ${ordersCollected.orderId}
+        `);
+
+        let order = recordset[0];
+
+        await pool.query(`
+            insert into invoice.orderCollectionDetail(
+                collectionId,
+                orderId,
+                orderAmount
+            )values(
+                ${orderCollectedId},
+                ${order.orderId},
+                ${order.amount}
+            )
+        `)
+    }
+
+    res.status(201).json({
+        status: 201,
+        msg: 'Se ha creado el pedido exitosamente',
+        data: {'orderCollectedId':orderCollectedId}
+    })
+
 }
 const updateOrderCollected = async (req, res) => {
 
 }
-
-
-
 
 export {
     getOrderCollected,
