@@ -132,6 +132,49 @@ const createOrderCollected = async (req, res) => {
 }
 const updateOrderCollected = async (req, res) => {
 
+    let {
+        totalAmount,
+        ordersCollectedDetails
+    } = req.body;
+
+    let collectionId = req.params.collectionId;
+    
+    let pool = await getConnection();
+
+    await pool.query(`
+
+        update invoice.orderCollection set
+        totalAmount = ${totalAmount}
+        where collectionId = ${collectionId}
+
+        delete from invoice.orderCollectionDetail
+        where collectionId = ${collectionId}
+    `); 
+
+    for(let ordersCollected of ordersCollectedDetails){
+
+        let {recordset} = await pool.query(`
+            select * from invoice.orders
+            where orderId = ${ordersCollected.orderId}
+        `);
+
+        let order = recordset[0];
+
+        await pool.query(`
+            insert into invoice.orderCollectionDetail(
+                collectionId,
+                orderId,
+                orderAmount
+            )values(
+                ${collectionId},
+                ${order.orderId},
+                ${order.amount}
+            )
+        `)
+    }
+
+    res.status(204).json({})
+
 }
 
 export {
