@@ -1,6 +1,6 @@
 import { getConnection } from "../database/dbconfig.js";
 
-const getOrderCollected = async (req, res) => {
+const getOrderCollected = async (_, res) => {
 
     let pool = await getConnection();
 
@@ -101,9 +101,9 @@ const createOrderCollected = async (req, res) => {
 
     orderCollectedId = orderCollectedId.recordset[0].invoicesOrdes;
 
-    for(let ordersCollected of ordersCollectedDetails){
+    for (let ordersCollected of ordersCollectedDetails) {
 
-        let {recordset} = await pool.query(`
+        let { recordset } = await pool.query(`
             select * from invoice.orders
             where orderId = ${ordersCollected.orderId}
         `);
@@ -126,10 +126,11 @@ const createOrderCollected = async (req, res) => {
     res.status(201).json({
         status: 201,
         msg: 'Se ha creado el pedido exitosamente',
-        data: {'orderCollectedId':orderCollectedId}
+        data: { 'orderCollectedId': orderCollectedId }
     })
 
 }
+
 const updateOrderCollected = async (req, res) => {
 
     let {
@@ -138,7 +139,7 @@ const updateOrderCollected = async (req, res) => {
     } = req.body;
 
     let collectionId = req.params.collectionId;
-    
+
     let pool = await getConnection();
 
     await pool.query(`
@@ -149,11 +150,11 @@ const updateOrderCollected = async (req, res) => {
 
         delete from invoice.orderCollectionDetail
         where collectionId = ${collectionId}
-    `); 
+    `);
 
-    for(let ordersCollected of ordersCollectedDetails){
+    for (let ordersCollected of ordersCollectedDetails) {
 
-        let {recordset} = await pool.query(`
+        let { recordset } = await pool.query(`
             select * from invoice.orders
             where orderId = ${ordersCollected.orderId}
         `);
@@ -177,9 +178,184 @@ const updateOrderCollected = async (req, res) => {
 
 }
 
+const postOrderCollected = async (req, res) => {
+
+    let { orderCollectId } = req.body;
+
+    let pool = await getConnection();
+
+    let { recordset } = await pool.query(`
+        select * from invoice.orderCollectionDetail
+        where collectionId = ${orderCollectId}
+    `);
+
+    let ordersCollectedDetails = recordset;
+
+    for (let order of ordersCollectedDetails) {
+
+        let { recordset } = await pool.query(`
+            select * from invoice.orders
+            where orderId = ${order.orderId}
+        `);
+
+        let currentOrder = recordset[0];
+
+        if (currentOrder.orderStatusId != 1) {
+            res.status(400).json({
+                msg: `El documento ${currentOrder.orderId} ya no puede ser modificado`,
+                status: 400
+            });
+            return;
+        };
+
+        await pool.query(`
+            insert into invoice.accountsReceivable (
+                customerId,
+                documentId,
+                amount,
+                dueDate,
+                accountStatus,
+                paymentDate,
+                paymentTypeId,
+                notes
+            )
+                select 
+                b.idCustomer,
+                a.orderId,
+                a.amount,
+                GETDATE()+30 dueDate, 
+                'Pendiente' accountStatus,
+                GETDATE() paymentDate,
+                1 paymentTypeId,
+                'Orden de shein' notes
+            from invoice.orders a
+            left join invoice.customers b
+            on a.customerId = b.idCustomer
+            where a.orderId = ${order.orderId}
+        `);
+
+        await pool.query(`
+            update invoice.orders
+            set orderStatusId = 2
+            where orderId = ${order.orderId}
+        `);
+    }
+
+    await pool.query(`
+        update invoice.orderCollection
+        set orderStatusId = 2
+        where collectionId = ${orderCollectId}
+    `);
+
+    res.status(200).json({
+        msg: "El pedido fue posteado con exito",
+        status: 200,
+        data: orderCollectId
+    });
+
+}
+
+const receiveOrderCollected = async (req,res) => {
+
+    let { orderCollectId } = req.body;
+
+    let pool = await getConnection();
+
+    try {
+        let orderList = await pool.query(`
+        select * from invoice.orderCollectionDetail
+        where collectionId = ${orderCollectId}
+        `);
+
+        orderList = orderList.recordset;
+
+        for (let orders of orderList) {
+
+            let documentId = orders.orderId
+
+            let { recordset } = await pool.query(`
+                select * from invoice.orders
+                where orderId = ${documentId}
+            `);
+            let order = recordset[0]
+            if (order == undefined) {
+                res.status(400).json({
+                    msg: "La orden no existe",
+                    status: 400
+                });
+                return;
+            }
+
+            if (order.orderStatusId != 2) {
+                res.status(400).json({
+                    msg: "La orden debe de estar con el estatus PEDIDO",
+                    status: 400
+                });
+                return;
+            }
+
+            let getOrderDetail = await pool.query(`
+                select * from invoice.orderDetails
+                where orderId = ${documentId}
+            `);
+
+            getOrderDetail = getOrderDetail.recordset;
+
+            for (let product of getOrderDetail) {
+
+                let articleExis = await pool.query(`
+                    select * from inventory.existence 
+                    where productId = ${product.productId}
+                `);
+
+                if (articleExis.recordset.length == 0) {
+
+                    await pool.query(`
+                        insert into inventory.existence
+                        select 
+                            productId,
+                            productQuantity,
+                            1 storeId
+                        from invoice.orderDetails
+                        where orderId = ${documentId} 
+                        and productId = ${product.productId}
+                    `);
+
+                } else {
+                    await pool.query(` 
+                        update inventory.existence
+                        set quantity = quantity + ${product.productQuantity}
+                        where productId = ${product.productId}
+                    `);
+                }
+            }
+            //Cambio de estatus a RECIBIDO
+            await pool.query(`
+                update invoice.orders
+                set orderStatusId = 3
+                where orderId = ${orders.orderId}
+            `);
+
+        }
+
+        res.status(201).json({
+            msg: "Las ordenes del pedido fueron recibidas con éxito",
+            status: 201,
+            data: orderCollectId
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
+
+
+}
+
 export {
     getOrderCollected,
     getOrderCollectedById,
     createOrderCollected,
-    updateOrderCollected
+    updateOrderCollected,
+    postOrderCollected,
+    receiveOrderCollected
 }
