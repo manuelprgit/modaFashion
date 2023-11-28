@@ -20,7 +20,9 @@ import { mainFunctions } from "../main.js";
             let tds = `
                 <div class="td text-center">${product.productId}</div>
                 <div class="td text-left">${product.productBarCode}</div>
-                <div class="td text-left">${description}</div>
+                <div class="td text-left">
+                    <a href="${product.linkURL}">${description}</a>
+                </div>
                 <div class="td text-right">${formatter(product.quantity)}</div>
                 <div class="td text-right">${formatter(product.productPrice)}</div>
                 <div class="td text-right">${formatter(product.productCost)}</div>
