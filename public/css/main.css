@@ -309,6 +309,23 @@ body {
 .button-content .btn-info:active {
   background-color: #126da1;
 }
+.button-content .btn-danger {
+  background-color: #b31914;
+  color: #EEEEEE;
+  height: 50px;
+  width: 150px;
+  border-radius: 8px;
+}
+.button-content .btn-danger:hover {
+  background-color: #910e09;
+}
+.button-content .btn-danger:active {
+  background-color: #770a06;
+}
+
+.hidden {
+  display: none !important;
+}
 
 .title-page {
   font-size: 20px;
@@ -432,34 +449,6 @@ body {
   font-size: 1.8rem;
   font-weight: 800;
 }
-.modal-content .modal .table .thead {
-  background-color: #ccc;
-  border-radius: 6px;
-}
-.modal-content .modal .table .thead .tr {
-  display: grid;
-  gap: 10px;
-  padding: 8px;
-}
-.modal-content .modal .table .thead .tr .th {
-  font-size: 1.8rem;
-}
-.modal-content .modal .table .tbody .tr {
-  display: grid;
-  gap: 10px;
-  padding: 8px;
-  transition: background-color 0.2s;
-  border-radius: 6px;
-}
-.modal-content .modal .table .tbody .tr:hover {
-  background-color: rgba(0, 0, 0, 0.062745098);
-}
-.modal-content .modal .table .tbody .tr .td {
-  font-size: 1.8rem;
-}
-.modal-content .modal .table .tbody .tr .td a {
-  font-size: 1.8rem;
-}
 .modal-content .modal .content-button {
   margin-top: 24px;
   display: flex;
@@ -482,12 +471,68 @@ body {
   background-color: #1f8d54;
 }
 
+.table .thead {
+  background-color: #ccc;
+  border-radius: 6px;
+}
+.table .thead .tr {
+  display: grid;
+  gap: 10px;
+  padding: 8px;
+}
+.table .thead .tr .th {
+  font-size: 1.8rem;
+}
+.table .tbody .tr {
+  display: grid;
+  gap: 10px;
+  padding: 8px;
+  transition: background-color 0.2s;
+  border-radius: 6px;
+}
+.table .tbody .tr:hover {
+  background-color: rgba(0, 0, 0, 0.062745098);
+}
+.table .tbody .tr .td {
+  font-size: 1.8rem;
+}
+.table .tbody .tr .td a {
+  font-size: 1.8rem;
+}
+
+.inventory-table {
+  background-color: white;
+}
+.inventory-table .thead {
+  position: sticky;
+  top: -30px;
+  border-radius: 0;
+}
+.inventory-table .tr {
+  grid-template-columns: 1fr 200px 250px 2fr 2fr 2fr 2fr 2fr 40px;
+  align-items: center;
+}
+
 .modal-content.show {
   background-color: rgba(0, 0, 0, 0.2078431373);
   pointer-events: initial;
 }
 .modal-content.show .modal {
   opacity: 1;
+}
+
+.edit-button {
+  border: none;
+  font-size: 30px;
+  background: #FBDB93;
+  color: rgb(67, 67, 67);
+  border-radius: 25px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .accept-reject-content {

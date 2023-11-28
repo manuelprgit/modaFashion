@@ -3,8 +3,28 @@ import { getConnection } from "../database/dbconfig.js";
 const getAllProducts = async (_, res) => {
     let pool = await getConnection();
     let products = await pool.query(`
-        select * from 
-        inventory.products
+        select 
+            a.productId,
+            a.productName,
+            a.productBarCode,
+            a.productDetail,
+            a.productPrice,
+            a.productCost,
+            a.productCategory,
+            a.productFamily,
+            a.productStatusId,
+            d.statusDescription,
+            isnull(a.supplierId,0) supplierId,
+            isnull(c.supplierName,'N/A') supplierName,
+            isnull(a.linkURL,'Pendiente') linkURL,
+            isnull(b.quantity,0) quantity
+        from inventory.products a
+        left join inventory.existence b
+        on a.productId = b.productId
+        left join purchase.suppliers c
+        on a.supplierId = c.supplierId
+        left join inventory.productStatus d
+        on a.productStatusId = d.statusId
     `);
     res.json(products.recordset);
 }
@@ -13,13 +33,34 @@ const getProductByBarcode = async (req, res) => {
     const { barcode } = req.params;
     let pool = await getConnection();
     let products = await pool.query(`
-        select * from inventory.products 
-        where productBarCode = '${barcode}'
+        select 
+            a.productId,
+            a.productName,
+            a.productBarCode,
+            a.productDetail,
+            a.productPrice,
+            a.productCost,
+            a.productCategory,
+            a.productFamily,
+            a.productStatusId,
+            d.statusDescription,
+            isnull(a.supplierId,0) supplierId,
+            isnull(c.supplierName,'N/A') supplierName,
+            isnull(a.linkURL,'Pendiente') linkURL,
+            isnull(b.quantity,0) quantity
+        from inventory.products a
+        left join inventory.existence b
+        on a.productId = b.productId
+        left join purchase.suppliers c
+        on a.supplierId = c.supplierId
+        left join inventory.productStatus d
+        on a.productStatusId = d.statusId
+        where a.productBarCode = '${barcode}'
     `);
     if (!products.recordset[0]) {
-        res.status(404).json({
+        res.status(400).json({
             msg: 'Articulo no encontrado',
-            error: 404
+            error: 40
         });
         return;
     }
@@ -144,10 +185,43 @@ const updateProduct = async (req, res) => {
         })
     }
 }
+//TODO: hacer una lista para ver los articulos: estatus, cantidad, descripcion (con el link), etc...
+const inventoryConsult = async (req, res)=> {
+    const pool = await getConnection();
+    let getInventory = await pool.query(`
+        select 
+            a.productId,
+            a.productName,
+            a.productBarCode,
+            a.productDetail,
+            a.productPrice,
+            a.productCost,
+            a.productFamily,
+            a.productStatusId,
+            d.statusDescription,
+            isnull(a.supplierId,0) supplierId,
+            isnull(c.supplierName,'N/A') supplierName,
+            isnull(a.linkURL,'Pendiente') linkURL,
+            isnull(b.quantity,0) quantity
+        from inventory.products a
+        left join inventory.existence b
+        on a.productId = b.productId
+        left join purchase.suppliers c
+        on a.supplierId = c.supplierId
+        left join inventory.productStatus d
+        on a.productStatusId = d.statusId
+    `);
+    getInventory = getInventory.recordset;
+
+    res.json(getInventory);
+
+}
+
 
 export {
     getAllProducts,
     getProductByBarcode,
     createPorduct,
-    updateProduct
+    updateProduct,
+    inventoryConsult
 }

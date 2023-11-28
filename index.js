@@ -86,6 +86,13 @@ app.get('/creacion-articulos', (req, res) => {
   } );
 })
 
+app.get('/consulta-inventario', (req, res) => {
+  res.render(path.join('./views/Inventario/consulta-inventario'),{
+    mainTitle: "Inventario",
+    icon: "fa-solid fa-boxes-stacked"
+  } );
+})
+
 app.get('/categoria', (req, res) => {
   res.render(path.join('./views/Inventario/categoria'),inventoryProps);
 })

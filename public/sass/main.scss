@@ -390,6 +390,25 @@ body {
             background-color: $info-active
         }
     }
+    .btn-danger {
+        background-color: $danger;
+        color: #EEEEEE;
+        height: 50px;
+        width: 150px;
+        border-radius: 8px;
+
+        &:hover {
+            background-color: $danger-hover
+        }
+
+        &:active {
+            background-color: $danger-active
+        }
+    }
+}
+
+.hidden{
+    display: none !important;
 }
 
 .title-page {
@@ -529,44 +548,6 @@ body {
             }
         }
 
-        .table {
-            .thead {
-                background-color: #ccc;
-                border-radius: 6px;
-
-                .tr {
-                    display: grid;
-                    gap: 10px;
-                    padding: 8px;
-
-                    .th {
-                        font-size: 1.8rem;
-                    }
-                }
-            }
-
-            .tbody {
-                .tr {
-                    display: grid;
-                    gap: 10px;
-                    padding: 8px;
-                    transition: background-color 0.2s;
-                    border-radius: 6px;
-
-                    &:hover {
-                        background-color: #00000010;
-                    }
-
-                    .td {
-                        font-size: 1.8rem;
-
-                        a {
-                            font-size: 1.8rem;
-                        }
-                    }
-                }
-            }
-        }
 
         .content-button {
             margin-top: 24px;
@@ -593,6 +574,57 @@ body {
         }
     }
 }
+.table {
+    .thead {
+        background-color: #ccc;
+        border-radius: 6px;
+
+        .tr {
+            display: grid;
+            gap: 10px;
+            padding: 8px;
+
+            .th {
+                font-size: 1.8rem;
+            }
+        }
+    }
+
+    .tbody {
+        .tr {
+            display: grid;
+            gap: 10px;
+            padding: 8px;
+            transition: background-color 0.2s;
+            border-radius: 6px;
+
+            &:hover {
+                background-color: #00000010;
+            }
+
+            .td {
+                font-size: 1.8rem;
+
+                a {
+                    font-size: 1.8rem;
+                }
+            }
+        }
+    }
+}
+
+.inventory-table{
+    background-color: white;
+    .thead{
+        position: sticky;
+        top: -30px;
+        border-radius: 0;
+    }
+    .tr{
+        grid-template-columns: 1fr 200px 250px 2fr 2fr 2fr 2fr 2fr 40px;
+        align-items: center;
+    }
+}
 
 .modal-content.show {
     background-color: #00000035;
@@ -602,7 +634,19 @@ body {
         opacity: 1;
     }
 }
-
+.edit-button{
+    border: none;
+    font-size: 30px;
+    background: $ps-color;
+    color: rgb(67, 67, 67);
+    border-radius: 25px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
 // CONFIRMATION MODAL
 .accept-reject-content {
     position: fixed;

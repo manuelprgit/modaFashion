@@ -20,5 +20,4 @@ router.put(`${mainUrl}:collectionId`, express.json(), updateOrderCollected);
 router.post(`${mainUrl}postOrderCollected`, express.json(), postOrderCollected);
 router.post(`${mainUrl}recieveOrderCollected`, express.json(), receiveOrderCollected);
 
-
 export default router;

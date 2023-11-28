@@ -4,10 +4,12 @@ import showConfirmationModal from '../helpers/confirmationModal.js';
 import { mainFunctions } from '../main.js';
 import createTable from '../helpers/createTables.js';
 
+
+
 (async () => {
-
+    
     loaderController.enable();
-
+    
     let productBarcode = document.getElementById('productBarcode');
     let productName = document.getElementById('productName');
     let productCode = document.getElementById('productCode');
@@ -22,24 +24,27 @@ import createTable from '../helpers/createTables.js';
     let productModal = document.getElementById('productModal');
     let closeModal = document.getElementById('closeModal');
     let articleForm = document.getElementById('articleForm');
+    let goBack = document.getElementById('goBack');
     let linkUrl = document.getElementById('linkUrl');
     let valorTasa = document.getElementById('valorTasa');
     
     let productTable = document.getElementById('productTable');
     let tbodyProduct = productTable.querySelector('.tbody');
-
+    
     let searchProduct = document.getElementById('searchProduct');
     let clearInputs = document.getElementById('clearInputs');
     let saveProduct = document.getElementById('saveProduct');
-
+    
     let getProducts;
     let getCategories;
     let getFamilies;
     let getStatus;
-
-
+    
+    let getProductById = JSON.parse(localStorage.getItem('productInventory'));
+    console.log(getProductById);
+    
     let idProductForPut = 0;
-
+    
     let baseUrl = mainFunctions.mainUrl;
 
     try {
@@ -101,7 +106,7 @@ import createTable from '../helpers/createTables.js';
         productDescription.value = article.productDetail;
         productPrice.value = article.productPrice;
         linkUrl.value = article.linkURL;
-        // productQuantity.value = article.product
+        productQuantity.value = article.quantity
         // productSuplier.value = article.product
         productBarcode.disabled = true;
     }
@@ -131,17 +136,17 @@ import createTable from '../helpers/createTables.js';
             if (resultRequest.status > 400) {
                 showAlertBanner('warning', 'El código de barra ya existe');
                 return;
-            } 
+            }
             // resultRequest = await resultRequest.json();
             showAlertBanner('success', `Se ha creado el articulo con éxito!`)
             clearAllMyInputs(articleForm);
         } else {
             let ruesulPut = await mainFunctions.sendDataByRequest('PUT', productData, `product`, productData.productId);
-            if(ruesulPut >= 400){
+            if (ruesulPut >= 400) {
                 showAlertBanner('warning', `Este documento no pudo ser modificado`)
-            }else{
+            } else {
                 showAlertBanner('success', `Se ha modificado el articulo ${productData.name} con éxito!`)
-                clearAllMyInputs(articleForm); 
+                clearAllMyInputs(articleForm);
             }
         }
     })
@@ -171,8 +176,8 @@ import createTable from '../helpers/createTables.js';
                 headDescription: 'Costo'
             }
         }
-    
-        productTable.append(createTable(getProducts, objectProduct)); 
+
+        productTable.append(createTable(getProducts, objectProduct));
         mainFunctions.showModal(productModal);
     });
 
@@ -188,20 +193,20 @@ import createTable from '../helpers/createTables.js';
 
     });
 
-    valorTasa.addEventListener('change', e=>{
+    valorTasa.addEventListener('change', e => {
         productCost.value = '';
-        if(e.target.value > 0) productCost.disabled = false;
+        if (e.target.value > 0) productCost.disabled = false;
         else productCost.disabled = true;
     })
-    productCost.addEventListener('change', e=>{
+    productCost.addEventListener('change', e => {
         let cost = valorTasa.value * e.target.value
         productPrice.value = Math.ceil(e.target.value * 100);
         e.target.value = Math.ceil(cost)
     })
 
-    clearInputs.addEventListener('click',async e => {
+    clearInputs.addEventListener('click', async e => {
         let resConfirm = await showConfirmationModal('Limpiar', 'Presione aceptar para limpiar todos los campos');
-        if(resConfirm){
+        if (resConfirm) {
             clearAllMyInputs(articleForm);
         }
     });
@@ -216,9 +221,19 @@ import createTable from '../helpers/createTables.js';
         }
     })
 
+    goBack.addEventListener('click',e=>{
+        window.location.assign('/consulta-inventario');
+    });
+
     mainFunctions.fillSelectElement(productCategory, getCategories, 'categoryDescription', 'categoryId');
-    // mainFunctions.fillSelectElement(productFamily, getFamilies, 'familyDescription', 'familyId');
     mainFunctions.fillSelectElement(productStatus, getStatus, 'statusDescription', 'statusId');
+
+    if (getProductById != null  ) {
+        fillAllInputs(getProductById);
+        goBack.hidden = false;
+        goBack.classList.remove('hidden')
+        localStorage.removeItem('productInventory');
+    }
 
     loaderController.disabled();
 

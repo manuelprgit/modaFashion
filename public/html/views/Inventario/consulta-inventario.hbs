@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {{> head_links}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css" />
+    <link rel="stylesheet" href="./css/inventario.css"> 
+    <link rel="stylesheet" href="./css/main.css">
+
+</head>
+ 
+<body>
+    {{> tools}}
+    <div class="general-content">
+        {{> side_menu}}
+        <div class="main-content">
+            {{> head}}
+
+            <main>
+                <div class="button-content">
+                </div>
+                <div class="table-content">
+                    <div class="table inventory-table">
+                        <div class="thead">
+                            <div class="tr">
+                                <div class="th text-center">Código</div>
+                                <div class="th text-left">Codigo de Barra</div>
+                                <div class="th text-left">Descripcion</div>
+                                <div class="th text-right">Existencia</div>
+                                <div class="th text-right">Precio</div>
+                                <div class="th text-right">Costo</div>
+                                <div class="th text-center">Estatus</div>
+                                <div class="th text-left">Suplidor</div>
+                                <div class="th text-center"></div>
+                            </div>
+                        </div>
+                        <div class="tbody" id="tbodyArticles">
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="./js/inventory/inventory-consult.js" type="module"></script>
+    <script>
+        document.querySelector('a[href="/inventario"]').classList.add('active')
+    </script>
+</body>
+
+</html>
