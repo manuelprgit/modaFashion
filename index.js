@@ -49,6 +49,13 @@ app.get('/creacion-cliente', (req, res) => {
   });
 })
 
+app.get('/ventas', (req, res) => {
+  res.render(path.join('./views/Facturacion/ventas'),{
+    mainTitle: "Ventas",
+    icon: "fa-solid fa-coins"
+  } );
+})
+
 app.get('/creacion-vendedor', (req, res) => {
   res.render(path.join('./views/Facturacion/creacion-vendedor'),billingProps);
 })

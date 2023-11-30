@@ -309,6 +309,23 @@ body {
 .button-content .btn-info:active {
   background-color: #126da1;
 }
+.button-content .btn-danger {
+  background-color: #b31914;
+  color: #EEEEEE;
+  height: 50px;
+  width: 150px;
+  border-radius: 8px;
+}
+.button-content .btn-danger:hover {
+  background-color: #910e09;
+}
+.button-content .btn-danger:active {
+  background-color: #770a06;
+}
+
+.hidden {
+  display: none !important;
+}
 
 .title-page {
   font-size: 20px;
@@ -432,34 +449,6 @@ body {
   font-size: 1.8rem;
   font-weight: 800;
 }
-.modal-content .modal .table .thead {
-  background-color: #ccc;
-  border-radius: 6px;
-}
-.modal-content .modal .table .thead .tr {
-  display: grid;
-  gap: 10px;
-  padding: 8px;
-}
-.modal-content .modal .table .thead .tr .th {
-  font-size: 1.8rem;
-}
-.modal-content .modal .table .tbody .tr {
-  display: grid;
-  gap: 10px;
-  padding: 8px;
-  transition: background-color 0.2s;
-  border-radius: 6px;
-}
-.modal-content .modal .table .tbody .tr:hover {
-  background-color: rgba(0, 0, 0, 0.062745098);
-}
-.modal-content .modal .table .tbody .tr .td {
-  font-size: 1.8rem;
-}
-.modal-content .modal .table .tbody .tr .td a {
-  font-size: 1.8rem;
-}
 .modal-content .modal .content-button {
   margin-top: 24px;
   display: flex;
@@ -482,12 +471,68 @@ body {
   background-color: #1f8d54;
 }
 
+.table .thead {
+  background-color: #ccc;
+  border-radius: 6px;
+}
+.table .thead .tr {
+  display: grid;
+  gap: 10px;
+  padding: 8px;
+}
+.table .thead .tr .th {
+  font-size: 1.8rem;
+}
+.table .tbody .tr {
+  display: grid;
+  gap: 10px;
+  padding: 8px;
+  transition: background-color 0.2s;
+  border-radius: 6px;
+}
+.table .tbody .tr:hover {
+  background-color: rgba(0, 0, 0, 0.062745098);
+}
+.table .tbody .tr .td {
+  font-size: 1.8rem;
+}
+.table .tbody .tr .td a {
+  font-size: 1.8rem;
+}
+
+.inventory-table {
+  background-color: white;
+}
+.inventory-table .thead {
+  position: sticky;
+  top: -30px;
+  border-radius: 0;
+}
+.inventory-table .tr {
+  grid-template-columns: 1fr 200px 250px 2fr 2fr 2fr 2fr 2fr 40px;
+  align-items: center;
+}
+
 .modal-content.show {
   background-color: rgba(0, 0, 0, 0.2078431373);
   pointer-events: initial;
 }
 .modal-content.show .modal {
   opacity: 1;
+}
+
+.edit-button {
+  border: none;
+  font-size: 30px;
+  background: #FBDB93;
+  color: rgb(67, 67, 67);
+  border-radius: 25px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .accept-reject-content {
@@ -1118,7 +1163,7 @@ main.invoice-main .section-body .control-section .actions-button button:active {
   cursor: pointer;
 }
 
-.content-order {
+.content-order, .content-invoice {
   width: 100%;
   height: 100vh;
   background-color: #a271ce;
@@ -1126,7 +1171,7 @@ main.invoice-main .section-body .control-section .actions-button button:active {
   padding: 0;
   position: relative;
 }
-.content-order .panel-content {
+.content-order .panel-content, .content-invoice .panel-content {
   position: absolute;
   top: 16px;
   right: 16px;
@@ -1138,7 +1183,7 @@ main.invoice-main .section-body .control-section .actions-button button:active {
   border-radius: 14px;
   box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.4392156863);
 }
-.content-order .panel-content .btn-close {
+.content-order .panel-content .btn-close, .content-invoice .panel-content .btn-close {
   position: absolute;
   right: 26px;
   top: 10px;
@@ -1148,22 +1193,22 @@ main.invoice-main .section-body .control-section .actions-button button:active {
   align-items: center;
   cursor: pointer;
 }
-.content-order .panel-content .btn-close i {
+.content-order .panel-content .btn-close i, .content-invoice .panel-content .btn-close i {
   font-size: 2.8rem;
   color: rgba(128, 128, 128, 0.6);
 }
-.content-order .panel-content .title {
+.content-order .panel-content .title, .content-invoice .panel-content .title {
   font-weight: 700;
 }
-.content-order .panel-content .title p {
+.content-order .panel-content .title p, .content-invoice .panel-content .title p {
   font-size: 2.4rem;
 }
-.content-order .panel-content .row-head {
+.content-order .panel-content .row-head, .content-invoice .panel-content .row-head {
   display: flex;
   justify-content: space-between;
   margin: 18px 0;
 }
-.content-order .panel-content .row-head .search input {
+.content-order .panel-content .row-head .search input, .content-invoice .panel-content .row-head .search input {
   border: 1px solid gray;
   border-radius: 25px;
   padding: 0 16px;
@@ -1171,19 +1216,19 @@ main.invoice-main .section-body .control-section .actions-button button:active {
   height: 40px;
   width: 188px;
 }
-.content-order .panel-content .row-head .filter select {
+.content-order .panel-content .row-head .filter select, .content-invoice .panel-content .row-head .filter select {
   border: 1px solid gray;
   padding: 12px;
   height: 40px;
   width: 145px;
   border-radius: 16px;
 }
-.content-order .panel-content .content-card {
+.content-order .panel-content .content-card, .content-invoice .panel-content .content-card {
   height: 90%;
   overflow-y: scroll;
   padding: 4px;
 }
-.content-order .panel-content .content-card .row {
+.content-order .panel-content .content-card .row, .content-invoice .panel-content .content-card .row {
   display: flex;
   padding: 16px;
   gap: 30px;
@@ -1195,16 +1240,16 @@ main.invoice-main .section-body .control-section .actions-button button:active {
   position: relative;
   overflow-y: hidden;
 }
-.content-order .panel-content .content-card .row .menu {
+.content-order .panel-content .content-card .row .menu, .content-invoice .panel-content .content-card .row .menu {
   display: flex;
 }
-.content-order .panel-content .content-card .row .menu i {
+.content-order .panel-content .content-card .row .menu i, .content-invoice .panel-content .content-card .row .menu i {
   cursor: pointer;
   font-size: 2.4rem;
   height: 24px;
   position: relative;
 }
-.content-order .panel-content .content-card .row .menu i .content-menu-table {
+.content-order .panel-content .content-card .row .menu i .content-menu-table, .content-invoice .panel-content .content-card .row .menu i .content-menu-table {
   height: 184px;
   width: 200px;
   background-color: #dfdfdf;
@@ -1215,7 +1260,7 @@ main.invoice-main .section-body .control-section .actions-button button:active {
   padding: 10px;
   box-shadow: 0 0 12px 1px rgba(104, 104, 104, 0.5294117647);
 }
-.content-order .panel-content .content-card .row .menu i .content-menu-table .row-option {
+.content-order .panel-content .content-card .row .menu i .content-menu-table .row-option, .content-invoice .panel-content .content-card .row .menu i .content-menu-table .row-option {
   display: flex;
   align-items: center;
   column-gap: 10px;
@@ -1225,69 +1270,78 @@ main.invoice-main .section-body .control-section .actions-button button:active {
   transition: 0.4s;
   border-radius: 8px;
 }
-.content-order .panel-content .content-card .row .menu i .content-menu-table .row-option .ico i {
+.content-order .panel-content .content-card .row .menu i .content-menu-table .row-option .ico i, .content-invoice .panel-content .content-card .row .menu i .content-menu-table .row-option .ico i {
   font-size: 2rem;
   color: #57386b;
 }
-.content-order .panel-content .content-card .row .menu i .content-menu-table .row-option p {
+.content-order .panel-content .content-card .row .menu i .content-menu-table .row-option p, .content-invoice .panel-content .content-card .row .menu i .content-menu-table .row-option p {
   font-size: 1.8rem;
   color: gray;
 }
-.content-order .panel-content .content-card .row .menu i .content-menu-table .row-option:hover {
+.content-order .panel-content .content-card .row .menu i .content-menu-table .row-option:hover, .content-invoice .panel-content .content-card .row .menu i .content-menu-table .row-option:hover {
   background-color: rgba(110, 109, 109, 0.348);
 }
-.content-order .panel-content .content-card .row .down {
+.content-order .panel-content .content-card .row .down, .content-invoice .panel-content .content-card .row .down {
   position: absolute;
   bottom: 0;
   width: 98%;
   text-align: center;
 }
-.content-order .panel-content .content-card .row .down i {
+.content-order .panel-content .content-card .row .down i, .content-invoice .panel-content .content-card .row .down i {
   font-size: 1.4rem;
   padding: 10px;
   cursor: pointer;
   border-radius: 50%;
   transition: 0.2s;
 }
-.content-order .panel-content .content-card .row .down i:hover {
+.content-order .panel-content .content-card .row .down i:hover, .content-invoice .panel-content .content-card .row .down i:hover {
   background-color: rgba(147, 147, 147, 0.1098039216);
 }
-.content-order .panel-content .content-card .row .colum {
+.content-order .panel-content .content-card .row .colum, .content-invoice .panel-content .content-card .row .colum {
   width: 100%;
 }
-.content-order .panel-content .content-card .row .colum .head {
+.content-order .panel-content .content-card .row .colum .head, .content-invoice .panel-content .content-card .row .colum .head {
   font-size: 1.9rem;
   font-weight: 600;
   margin-bottom: 8px;
 }
-.content-order .panel-content .content-card .row .colum .check {
+.content-order .panel-content .content-card .row .colum .check, .content-invoice .panel-content .content-card .row .colum .check {
   width: 24px;
   height: 24px;
   cursor: pointer;
 }
-.content-order .panel-content .content-card .row .colum .text-center {
+.content-order .panel-content .content-card .row .colum .text-center, .content-invoice .panel-content .content-card .row .colum .text-center {
   text-align: center;
 }
-.content-order .panel-content .content-card .row .colum .text-right {
+.content-order .panel-content .content-card .row .colum .text-right, .content-invoice .panel-content .content-card .row .colum .text-right {
   text-align: end;
 }
-.content-order .panel-content .content-card .row .colum .tbody {
+.content-order .panel-content .content-card .row .colum .tbody, .content-invoice .panel-content .content-card .row .colum .tbody {
   font-size: 1.8rem;
   font-weight: 100;
 }
-.content-order .panel-content .content-card .row .colum .proceso {
+.content-order .panel-content .content-card .row .colum .proceso, .content-invoice .panel-content .content-card .row .colum .proceso {
   color: #3893cc;
   font-weight: 700;
 }
-.content-order .panel-content .content-card .row .colum .pedido {
+.content-order .panel-content .content-card .row .colum .pedido, .content-invoice .panel-content .content-card .row .colum .pedido {
   font-weight: 700;
   color: darkorange;
 }
-.content-order .panel-content .content-card .row .colum .recibido {
+.content-order .panel-content .content-card .row .colum .recibido, .content-invoice .panel-content .content-card .row .colum .recibido {
   font-weight: 700;
   color: green;
 }
-.content-order .panel-content .content-card .row .table-orders {
+.content-order .panel-content .content-card .row .colum input[type=number], .content-invoice .panel-content .content-card .row .colum input[type=number] {
+  width: 100%;
+  height: 30px;
+  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3137254902);
+  border-radius: 5px;
+  font-size: 1.6rem;
+  text-align: end;
+  padding: 0 12px;
+}
+.content-order .panel-content .content-card .row .table-orders, .content-invoice .panel-content .content-card .row .table-orders {
   position: absolute;
   font-size: 6rem;
   top: 103px;
@@ -1295,40 +1349,57 @@ main.invoice-main .section-body .control-section .actions-button button:active {
   padding: 10px;
   border-top: 1px solid gray;
 }
-.content-order .panel-content .content-card .row .table-orders .thead .tr {
+.content-order .panel-content .content-card .row .table-orders .thead .tr, .content-invoice .panel-content .content-card .row .table-orders .thead .tr {
   display: flex;
 }
-.content-order .panel-content .content-card .row .table-orders .thead .tr .th {
+.content-order .panel-content .content-card .row .table-orders .thead .tr .th, .content-invoice .panel-content .content-card .row .table-orders .thead .tr .th {
   width: 100%;
   font-weight: 700;
 }
-.content-order .panel-content .content-card .row .table-orders .thead .tr .text-center {
+.content-order .panel-content .content-card .row .table-orders .thead .tr .text-center, .content-invoice .panel-content .content-card .row .table-orders .thead .tr .text-center {
   text-align: center;
 }
-.content-order .panel-content .content-card .row .table-orders .thead .tr .text-right {
+.content-order .panel-content .content-card .row .table-orders .thead .tr .text-right, .content-invoice .panel-content .content-card .row .table-orders .thead .tr .text-right {
   text-align: end;
 }
-.content-order .panel-content .content-card .row .table-orders .tbody {
+.content-order .panel-content .content-card .row .table-orders .tbody, .content-invoice .panel-content .content-card .row .table-orders .tbody {
   margin-top: 16px;
 }
-.content-order .panel-content .content-card .row .table-orders .tbody .tr {
+.content-order .panel-content .content-card .row .table-orders .tbody .tr, .content-invoice .panel-content .content-card .row .table-orders .tbody .tr {
   display: flex;
   margin-bottom: 16px;
 }
-.content-order .panel-content .content-card .row .table-orders .tbody .tr .td {
+.content-order .panel-content .content-card .row .table-orders .tbody .tr .td, .content-invoice .panel-content .content-card .row .table-orders .tbody .tr .td {
   width: 100%;
 }
-.content-order .panel-content .content-card .row .table-orders .tbody .tr .td a {
+.content-order .panel-content .content-card .row .table-orders .tbody .tr .td a, .content-invoice .panel-content .content-card .row .table-orders .tbody .tr .td a {
   font-size: 1.8rem;
 }
-.content-order .panel-content .content-card .row .table-orders .tbody .tr .text-center {
+.content-order .panel-content .content-card .row .table-orders .tbody .tr .text-center, .content-invoice .panel-content .content-card .row .table-orders .tbody .tr .text-center {
   text-align: center;
 }
-.content-order .panel-content .content-card .row .table-orders .tbody .tr .text-right {
+.content-order .panel-content .content-card .row .table-orders .tbody .tr .text-right, .content-invoice .panel-content .content-card .row .table-orders .tbody .tr .text-right {
   text-align: end;
 }
-.content-order .panel-content .content-card .row:hover {
+.content-order .panel-content .content-card .row:hover, .content-invoice .panel-content .content-card .row:hover {
   background-color: rgba(147, 147, 147, 0.1098039216);
+}
+
+.card-opened {
+  height: 300px !important;
+}
+.card-opened i.open-card {
+  transform: rotate(180deg);
+}
+
+.content-invoice {
+  background-color: transparent;
+}
+.content-invoice .panel-content {
+  overflow: hidden;
+}
+.content-invoice .panel-content .content-card {
+  height: 85%;
 }
 
 /*# sourceMappingURL=factura.css.map */

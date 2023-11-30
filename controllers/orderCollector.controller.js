@@ -28,8 +28,34 @@ const getOrderCollected = async (_, res) => {
 
         //*Detalle
         let ordersCollectedDetails = await pool.query(`
-            select * from invoice.orderCollectionDetail
+            select 
+                a.collectionDetailId,
+                a.collectionId,
+                b.orderId,
+                a.orderAmount,
+                c.idCustomer,
+                c.nameCustomer,
+                d.total,
+                d.totalProducts
+            from invoice.orderCollectionDetail a
+            left join invoice.orders b
+            on a.orderId = b.orderId
+            left join invoice.customers c
+            on b.customerId = c.idCustomer
+            left join (
+            select 
+                a.orderId,
+                sum(total) total,
+                sum(productQuantity) totalProducts 
+            from invoice.orderDetails a
+            left join invoice.orderCollectionDetail b
+            on a.orderId = b.orderId
+            where b.collectionId = ${getOrderCollect.collectionId}
+            group by a.orderId
+            ) d
+            on b.orderId = d.orderId
             where collectionid = ${getOrderCollect.collectionId}
+
         `);
 
         ordersCollectedDetails = ordersCollectedDetails.recordset;

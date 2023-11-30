@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {{> head_links}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css" />
+    <link rel="stylesheet" href="./css/inventario.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/factura.css">
+
+</head>
+
+<body>
+    {{> tools}}
+    <div class="general-content">
+        {{> side_menu}}
+        <div class="main-content">
+            {{> head}}
+
+            <main>
+                <div class="button-content">
+                </div>
+                <div class="content-invoice">
+                    <div class="panel-content">
+                        <div class="row-head">
+                            <div class="search">
+                                <input type="text" placeholder="Buscar factura">
+                            </div>
+                        </div>
+                        <div class="content-card" id="contentCard">
+ 
+
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="./js/sales/sales.js" type="module"></script>
+    <script>
+        document.querySelector('a[href="/facturacion"]').classList.add('active')
+    </script>
+</body>
+
+</html>

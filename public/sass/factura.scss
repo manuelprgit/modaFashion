@@ -136,7 +136,7 @@ main.invoice-main {
                 button:active {
                     background-color: $strong-grey;
                 }
-            }
+            }   
         }
 
 
@@ -558,6 +558,16 @@ main.invoice-main {
                         font-weight: 700;
                         color: green;
                     }
+                    input[type="number"]{
+                        width: 100%;
+                        height: 30px;
+                        box-shadow: 1px 1px 2px 1px #00000050;
+                        border-radius: 5px;
+                        font-size: 1.6rem;
+                        text-align: end;
+                        padding: 0 12px;
+                    }
+        
                 }
 
                 .table-orders {
@@ -616,6 +626,23 @@ main.invoice-main {
             .row:hover {
                 background-color: #9393931c;
             }
+        }
+    }
+}
+
+.card-opened{
+    height: 300px !important;
+    i.open-card{
+        transform: rotate(180deg);
+    }
+}
+.content-invoice{
+    @extend .content-order;
+    background-color: transparent;
+    .panel-content{
+        overflow: hidden;
+        .content-card{
+            height: 85%;
         }
     }
 }
