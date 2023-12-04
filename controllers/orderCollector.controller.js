@@ -1,5 +1,5 @@
 import { getConnection } from "../database/dbconfig.js";
-
+//TODO: agregar la descripcion del estatus
 const getOrderCollected = async (_, res) => {
 
     let pool = await getConnection();
@@ -32,6 +32,7 @@ const getOrderCollected = async (_, res) => {
                 a.collectionDetailId,
                 a.collectionId,
                 b.orderId,
+                b.orderStatusId,
                 a.orderAmount,
                 c.idCustomer,
                 c.nameCustomer,
@@ -43,15 +44,15 @@ const getOrderCollected = async (_, res) => {
             left join invoice.customers c
             on b.customerId = c.idCustomer
             left join (
-            select 
-                a.orderId,
-                sum(total) total,
-                sum(productQuantity) totalProducts 
-            from invoice.orderDetails a
-            left join invoice.orderCollectionDetail b
-            on a.orderId = b.orderId
-            where b.collectionId = ${getOrderCollect.collectionId}
-            group by a.orderId
+                select 
+                    a.orderId,
+                    sum(total) total,
+                    sum(productQuantity) totalProducts 
+                from invoice.orderDetails a
+                left join invoice.orderCollectionDetail b
+                on a.orderId = b.orderId
+                where b.collectionId = ${getOrderCollect.collectionId}
+                group by a.orderId
             ) d
             on b.orderId = d.orderId
             where collectionid = ${getOrderCollect.collectionId}
@@ -66,7 +67,7 @@ const getOrderCollected = async (_, res) => {
 
     res.json(ordersDetailsList);
 }
-
+//TODO: agregar todas las propiedades que tiene el get al getbyid
 const getOrderCollectedById = async (req, res) => {
 
     let { collectionId } = req.params;
@@ -283,14 +284,32 @@ const postOrderCollected = async (req, res) => {
 
 const receiveOrderCollected = async (req,res) => {
 
-    let { orderCollectId } = req.body;
+    let { 
+        orderCollectId,
+        expenseAmount
+     } = req.body;
 
     let pool = await getConnection();
 
     try {
+        let orderStatus = await pool.query(`
+            select orderStatusId from invoice.orderCollection
+            where collectionId = ${orderCollectId}
+        `);
+
+        orderStatus = orderStatus.recordset[0].orderStatusId;
+
+        if(orderStatus != 2){
+            res.status(400).json({
+                msg:'El documento debe de estar en estatus "Pedido", verifique!',
+                error: 400
+            })
+            return;
+        }
+
         let orderList = await pool.query(`
-        select * from invoice.orderCollectionDetail
-        where collectionId = ${orderCollectId}
+            select * from invoice.orderCollectionDetail
+            where collectionId = ${orderCollectId}
         `);
 
         orderList = orderList.recordset;
@@ -303,7 +322,9 @@ const receiveOrderCollected = async (req,res) => {
                 select * from invoice.orders
                 where orderId = ${documentId}
             `);
-            let order = recordset[0]
+
+            let order = recordset[0];
+            
             if (order == undefined) {
                 res.status(400).json({
                     msg: "La orden no existe",
@@ -363,6 +384,13 @@ const receiveOrderCollected = async (req,res) => {
             `);
 
         }
+
+        await pool.query(`
+            update invoice.orderCollection
+            set expense = ${expenseAmount},
+                orderStatusId = 3
+            where collectionId = ${orderCollectId}
+        `);
 
         res.status(201).json({
             msg: "Las ordenes del pedido fueron recibidas con éxito",
