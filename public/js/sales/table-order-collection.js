@@ -211,28 +211,36 @@ const formatter = new Intl.NumberFormat('en-US', {
         }
     })
 
-    let listAllOrder = [];
-    let dataCollectionOrder = {};
     saveCollectionOrder.addEventListener('click',async e=>{
+        let dataCollectionOrder = {};
+        let listAllOrder = [];
+        let totalAmount = 0;
         contentCard.querySelectorAll('div[data-id]').forEach(tr=>{
             let check = tr.querySelector('input');
             let objDateOrder = {
-                "id": tr.querySelector('div[order-id]').getAttribute('order-id'),
-                "amount": tr.querySelector('div[data-amount]').getAttribute('data-amount'),
+                "id": Number(tr.querySelector('div[order-id]').getAttribute('order-id')),
+                "amount": Number(tr.querySelector('div[data-amount]').getAttribute('data-amount')),
             }
             if(check.checked){
+                totalAmount += objDateOrder.amount;
                 listAllOrder.push(objDateOrder)
+                console.log(objDateOrder.amount);
             }
             dataCollectionOrder = {
-                "date": new Date(),
+                "totalAmount": totalAmount,
                 "collectionDetail": listAllOrder 
             }
         })
-        console.log(listAllOrder.length);
+        console.log(dataCollectionOrder);
         if(listAllOrder.length > 0){
             let resConfirm = await showConfirmationModal('Guardar', 'Presione aceptar para guardar esta colección de pedidos');
             if(resConfirm){
-                showAlertBanner('success', 'Colección de ordenes guardad correctamente');
+                let resPost = await mainFunctions.sendDataByRequest('POST', dataCollectionOrder, 'api/ordersCollector');
+                console.log(resPost);
+                if(resPost){
+                    
+                }
+                // showAlertBanner('success', 'Colección de ordenes guardad correctamente');
             }
         }else{
             showAlertBanner('warning', 'Debe seleccionar al menos una orden');
