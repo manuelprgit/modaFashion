@@ -1250,7 +1250,7 @@ main.invoice-main .section-body .control-section .actions-button button:active {
   position: relative;
 }
 .content-order .panel-content .content-card .row .menu i .content-menu-table, .content-invoice .panel-content .content-card .row .menu i .content-menu-table {
-  height: 184px;
+  height: 200px;
   width: 200px;
   background-color: #dfdfdf;
   position: absolute;

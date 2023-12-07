@@ -15,12 +15,25 @@ const getOrderCollected = async (_, res) => {
     for (let ordersCollect of ordersCollected) {
 
         let getOrderCollect = await pool.query(`
-            select 
-                collectionId,
-                totalAmount,
-                collectionDate date,
-                orderStatusId
-            from invoice.orderCollection
+            select
+                a.collectionId,
+                a.totalAmount,
+                a.collectionDate date,
+                b.orderStatusId,
+                b.description,
+                b.nextStepId
+            from invoice.orderCollection A
+            left join (
+                select
+                    orderStatusId,
+                    description,
+                    case 
+                        when orderStatusId >= 4 then 0
+                        else orderStatusId + 1
+                    end nextStepId
+                from invoice.orderStatus
+            ) b
+            on a.orderStatusId = b.orderStatusId
             where collectionId = ${ordersCollect.collectionId}
         `);
         //*Cabecera

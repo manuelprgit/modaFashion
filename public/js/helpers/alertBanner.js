@@ -57,6 +57,9 @@ const showAlertBanner = (alertType, message) => {
     }, 500);
 }
  
+//TODO: alert banner confirmation
+    //?hear is the code
+//TODO: alert banner confirmation
 
 exitAlertBanner.addEventListener('click', e => {
     closeModal();

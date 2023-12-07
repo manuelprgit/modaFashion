@@ -29,7 +29,7 @@ export const mainFunctions = {
                     throw await err
                 })
         } catch (error) {
-            showAlertBanner('danger',error);
+            showAlertBanner('danger',error.message);
         }
     },
 
