@@ -212,23 +212,24 @@ const formatter = new Intl.NumberFormat('en-US', {
     })
 
     let listAllOrder = [];
-    let dataCollectionOrder = {};
+    let ordersCollectedDetails = {};
     saveCollectionOrder.addEventListener('click',async e=>{
         contentCard.querySelectorAll('div[data-id]').forEach(tr=>{
             let check = tr.querySelector('input');
             let objDateOrder = {
-                "id": tr.querySelector('div[order-id]').getAttribute('order-id'),
-                "amount": tr.querySelector('div[data-amount]').getAttribute('data-amount'),
+                "collectionId": tr.querySelector('div[order-id]').getAttribute('order-id'),
+                "totalAmount": tr.querySelector('div[data-amount]').getAttribute('data-amount'),
             }
-            if(check.checked){
-                listAllOrder.push(objDateOrder)
-            }
-            dataCollectionOrder = {
-                "date": new Date(),
-                "collectionDetail": listAllOrder 
+
+            if(check.checked) listAllOrder.push(objDateOrder);
+
+            ordersCollectedDetails = {
+                "date": new Date().toISOString().substring(0,10),
+                "collectionDetail": listAllOrder
             }
         })
-        console.log(listAllOrder.length);
+        console.log(ordersCollectedDetails);
+        
         if(listAllOrder.length > 0){
             let resConfirm = await showConfirmationModal('Guardar', 'Presione aceptar para guardar esta colección de pedidos');
             if(resConfirm){

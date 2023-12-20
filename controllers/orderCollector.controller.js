@@ -221,7 +221,6 @@ const updateOrderCollected = async (req, res) => {
 const postOrderCollected = async (req, res) => {
 
     let { orderCollectId } = req.body;
-
     let pool = await getConnection();
 
     let { recordset } = await pool.query(`
@@ -242,7 +241,7 @@ const postOrderCollected = async (req, res) => {
 
         if (currentOrder.orderStatusId != 1) {
             res.status(400).json({
-                msg: `El documento ${currentOrder.orderId} ya no puede ser modificado`,
+                msg: `El documento No.${currentOrder.orderId} ya no puede ser modificado`,
                 status: 400
             });
             return;

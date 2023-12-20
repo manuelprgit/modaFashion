@@ -21,16 +21,20 @@
 </div>
 
 {{!-- TODO: alert banner confirmatio --}}
-<div class="alert-banner-confirmation" id="loaderBarConfirmation">
+<div class="alert-banner confirmation-banner how" id="loaderBarConfirmation">
     <div class="object-content">
         <div class="content-icon">
-            <div id="contentIconAlert">
-                <i id="alertIcon"></i>
+            <div id="contentIconAlert" class="icon-container-warning">
+                <i id="alertIcon" class="fa-solid fa-exclamation"></i>
             </div>
         </div>
         <div class="message-content">
             <div class="message-alert">
-                <p id="alertMessage"></p>
+                <p id="alertMessage">El costo del pedido esta en cero. ¿seguro que desea continuar?</p>
+            </div>
+            <div class="confirmation-button-content">
+                <button class="btn btn-success btn-sm">Aceptar</button>
+                <button class="btn btn-danger btn-sm">Rechazar</button>
             </div>
         </div>
         <div class="exit-content" id="exitAlertBanner">
@@ -39,7 +43,7 @@
             </div>
         </div>
     </div>
-    <div id="loaderBarPorcent"></div>
+    <div id="loaderBarPorcent" class="loader-bar-warning"></div>
 </div>
 {{!-- TODO: alert banner confirmatio --}}
 

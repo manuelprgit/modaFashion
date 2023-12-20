@@ -269,7 +269,8 @@ body {
   justify-content: end;
   gap: 12px;
 }
-.button-content .btn {
+
+.btn {
   width: auto;
   padding: 10px 20px;
   display: flex;
@@ -280,47 +281,55 @@ body {
   font-size: 1.8rem;
   cursor: pointer;
 }
-.button-content .btn .icon-content i {
+.btn .icon-content i {
   font-size: 2rem;
 }
-.button-content .btn-success {
+
+.btn-success {
   background-color: #2ea667;
   color: #EEEEEE;
   height: 50px;
   width: 150px;
   border-radius: 8px;
 }
-.button-content .btn-success:hover {
+.btn-success:hover {
   background-color: #0e8849;
 }
-.button-content .btn-success:active {
+.btn-success:active {
   background-color: #07743c;
 }
-.button-content .btn-info {
+
+.btn-info {
   background-color: #3daae9;
   color: #EEEEEE;
   height: 50px;
   width: 150px;
   border-radius: 8px;
 }
-.button-content .btn-info:hover {
+.btn-info:hover {
   background-color: #1c87c5;
 }
-.button-content .btn-info:active {
+.btn-info:active {
   background-color: #126da1;
 }
-.button-content .btn-danger {
+
+.btn-danger {
   background-color: #b31914;
   color: #EEEEEE;
   height: 50px;
   width: 150px;
   border-radius: 8px;
 }
-.button-content .btn-danger:hover {
+.btn-danger:hover {
   background-color: #910e09;
 }
-.button-content .btn-danger:active {
+.btn-danger:active {
   background-color: #770a06;
+}
+
+.btn-sm {
+  height: 34px !important;
+  width: 100px !important;
 }
 
 .hidden {
@@ -739,6 +748,19 @@ body {
   top: 8px;
   left: 8px;
   cursor: pointer;
+}
+
+.confirmation-banner .message-alert p {
+  position: absolute;
+  top: 22px;
+}
+.confirmation-banner .confirmation-button-content {
+  position: absolute;
+  bottom: 11px;
+  right: 50%;
+  transform: translateX(50%);
+  display: flex;
+  gap: 26px;
 }
 
 .icon-container {
@@ -1250,7 +1272,7 @@ main.invoice-main .section-body .control-section .actions-button button:active {
   position: relative;
 }
 .content-order .panel-content .content-card .row .menu i .content-menu-table, .content-invoice .panel-content .content-card .row .menu i .content-menu-table {
-  height: 200px;
+  height: auto;
   width: 200px;
   background-color: #dfdfdf;
   position: absolute;

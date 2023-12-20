@@ -8,6 +8,34 @@ export const mainFunctions = {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     }),
+    
+    iconStatus:[
+        {
+            statusId: 1,
+            statusDescription:'En proceso',
+            statusIcon: 'fa-solid fa-bars-progress'
+        },
+        {
+            statusId: 2,
+            statusDescription:'Pedido',
+            statusIcon: 'fa-solid fa-boxes-packing'
+        },
+        {
+            statusId: 3,
+            statusDescription:'Recibido',
+            statusIcon: 'fa-solid fa-dolly'
+        },
+        {
+            statusId: 4,
+            statusDescription:'Entregado',
+            statusIcon: 'fa-solid fa-box-open'
+        },
+        {
+            statusId: 5,
+            statusDescription:'Rechazado',
+            statusIcon: 'fa-solid fa-rectangle-xmark'
+        },
+    ],
 
     /**
      * Esta funcion es para hacer un get
@@ -65,25 +93,24 @@ export const mainFunctions = {
         let url = (method.toUpperCase() === 'PUT')
             ? `${urlPath}/${dataId}`
             : urlPath
-
-        return await fetch(url, {
-            method: method,
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(async res => {
-                // if (res.status >= 400) {
-                //     if(method == 'POST') throw await res;
-                //     throw await res.text();
-                // };
-                return res;
+        try {
+            return await fetch(url, {
+                method: method,
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             })
-            .catch(err => {
-                
-                return err
-            })
+                .then(async res => {
+                    if (res.status >= 400) {
+                        throw await res.text();
+                    };
+                    return res;
+                })
+            
+        } catch (error) {
+            console.log(error);
+        }
     },
 
     /**

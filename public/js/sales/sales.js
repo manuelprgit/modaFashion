@@ -5,7 +5,10 @@ import loaderController from '../helpers/loader.js';
 
 (async () => {
     let contentCard = document.getElementById('contentCard');
+    let templateMenuTable = document.getElementById('templateMenuTable');
+    let subContextMenu = document.getElementById('subContextMenu');
 
+    let baseUrl = mainFunctions.mainUrl;
     let format = mainFunctions.formatter.format;
 
     let getOrdersCollected = [];
@@ -19,6 +22,7 @@ import loaderController from '../helpers/loader.js';
             getOrdersCollected = ordersCollected;
             getStatusOrders = orderStatus;
         });
+        
     console.log({ getOrdersCollected, getStatusOrders });
 
     const openCard = (card) => {
@@ -46,7 +50,7 @@ import loaderController from '../helpers/loader.js';
             </div>
         `;
         tableOrders.insertAdjacentHTML('afterbegin', head);
-        
+
         for (let order of ordersDetail) {
 
             let body = `
@@ -73,7 +77,7 @@ import loaderController from '../helpers/loader.js';
     }
 
     const buildHeaderCards = (headerData) => {
-
+        console.log(headerData);
         return `
             <div class="colum">
                 <div class="head text-center">Pedido No:</div>
@@ -85,7 +89,7 @@ import loaderController from '../helpers/loader.js';
             </div>
             <div class="colum">
                 <div class="head">Estatus</div>
-                <div class="body">${'Proceso'}</div>
+                <div class="body">${headerData.description}</div>
             </div>
             <div class="colum">
                 <div class="head text-center">Ordenes</div>
@@ -98,7 +102,7 @@ import loaderController from '../helpers/loader.js';
             <div class="colum">
                 <div class="head text-right">Gastos</div>
                 <div class="body text-right">
-                    <input type="number" class="btn">
+                    <input type="number" ${(headerData.orderStatusId == 1) ? 'disabled' : ''}>
                 </div>
             </div>
             <div class="menu text-center">
@@ -129,33 +133,51 @@ import loaderController from '../helpers/loader.js';
     }
 
     const openContextMenu = async (e) => {
-        let menu = e.target;
-        let key = menu.closest('[data-key]');
-        let status =getStatusOrders[key];
-        console.log(status);
+
+        let contextMenu = e.target;
+        let row = contextMenu.closest('[data-key]');
+        let key = row.getAttribute('data-key');
+        let order = getOrdersCollected[key];
+        let nextStepId = order.nextStepId;
+        let nextStepStatus = getStatusOrders.find(status => status.orderStatusId == nextStepId);
         let clone = templateMenuTable.cloneNode(true);
         clone = clone.content.firstElementChild;
-        menu.insertAdjacentElement('beforeend', clone);
-        openCard(card);
-
-        // let getOrderStatus = await mainFunctions.getDataFromAPI(`orders/status`);
-        // console.log(getOrderStatus);
+        contextMenu.insertAdjacentElement('beforeend', clone);
+        contextMenu.querySelector('#textStatus').textContent = nextStepStatus.description;
+        let icon = mainFunctions.iconStatus.find(iStatus => iStatus.statusId == nextStepStatus.orderStatusId);
+        contextMenu.querySelector('.ico i').className = '';
+        contextMenu.querySelector('.ico i').className = icon.statusIcon;
+        
     }
+
     contentCard.addEventListener('click', async e => {
         let card = e.target.closest('.row');
+
+        if(e.target.closest('#postDocument')){
+            let row = e.target.closest('[data-key');
+            let key = row.getAttribute('data-key');
+            let id = getOrdersCollected[key].collectionId;
+            
+            console.log(id);
+            let orderCreated = await mainFunctions.sendDataByRequest('POST',{ orderCollectId:id},`ordersCollector/postOrderCollected`);
+            console.log(orderCreated);
+        }
 
         if (e.target.closest('i.open-card')) {
             openCard(card);
         }
 
         if (e.target.closest('.open-context-menu')) {
-
+            console.log(card);
+            openCard(card);
             contentCard.querySelectorAll(`div.row[data-id]`).forEach(row => {
                 row.style.height = '100px';
             });
             contentCard.querySelectorAll('.content-menu-table').forEach(menu => menu.remove());
-            
+
             openContextMenu(e);
+        } else {
+            contentCard.querySelectorAll('.content-menu-table').forEach(menu => menu.remove());
         }
 
     });
@@ -169,7 +191,7 @@ import loaderController from '../helpers/loader.js';
 
             }
         }
-    })
+    }) 
 
     buildTableCards(getOrdersCollected);
 })()

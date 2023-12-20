@@ -340,73 +340,74 @@ body {
 
 .button-content {
     @include flex(end, null, null, 12px);
+}
 
-    .btn {
-        width: auto;
-        padding: 10px 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 12px;
-        border: none;
-        font-size: 1.8rem;
-        cursor: pointer;
+.btn {
+    width: auto;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
 
-        .icon-content {
-            i {
-                font-size: 2rem;
-            }
-        }
-    }
-
-    .btn-success {
-        background-color: $success;
-        color: #EEEEEE;
-        height: 50px;
-        width: 150px;
-        border-radius: 8px;
-
-        &:hover {
-            background-color: $success-hover
-        }
-
-        &:active {
-            background-color: $success-active
-        }
-    }
-
-    .btn-info {
-        background-color: $info;
-        color: #EEEEEE;
-        height: 50px;
-        width: 150px;
-        border-radius: 8px;
-
-        &:hover {
-            background-color: $info-hover
-        }
-
-        &:active {
-            background-color: $info-active
-        }
-    }
-    .btn-danger {
-        background-color: $danger;
-        color: #EEEEEE;
-        height: 50px;
-        width: 150px;
-        border-radius: 8px;
-
-        &:hover {
-            background-color: $danger-hover
-        }
-
-        &:active {
-            background-color: $danger-active
+    .icon-content {
+        i {
+            font-size: 2rem;
         }
     }
 }
+.btn-success {
+    background-color: $success;
+    color: #EEEEEE;
+    height: 50px;
+    width: 150px;
+    border-radius: 8px;
 
+    &:hover {
+        background-color: $success-hover
+    }
+
+    &:active {
+        background-color: $success-active
+    }
+}
+.btn-info {
+    background-color: $info;
+    color: #EEEEEE;
+    height: 50px;
+    width: 150px;
+    border-radius: 8px;
+
+    &:hover {
+        background-color: $info-hover
+    }
+
+    &:active {
+        background-color: $info-active
+    }
+}
+.btn-danger {
+    background-color: $danger;
+    color: #EEEEEE;
+    height: 50px;
+    width: 150px;
+    border-radius: 8px;
+
+    &:hover {
+        background-color: $danger-hover
+    }
+
+    &:active {
+        background-color: $danger-active
+    }
+}
+.btn-sm{
+    height: 34px !important;
+    width: 100px !important; 
+}
 .hidden{
     display: none !important;
 }
@@ -902,6 +903,26 @@ body {
 
             }
         }
+    }
+}
+
+.confirmation-banner{
+
+    .message-alert{
+        p{
+            position: absolute;
+            top: 22px;
+        }
+    }
+
+    .confirmation-button-content{
+        position: absolute;
+        bottom: 11px;
+        right: 50%;
+        transform: translateX(50%);
+        display: flex;
+        gap: 26px;
+        
     }
 }
 

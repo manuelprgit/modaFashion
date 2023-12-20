@@ -58,7 +58,7 @@ const showAlertBanner = (alertType, message) => {
 }
  
 //TODO: alert banner confirmation
-    //?hear is the code
+    //?here is the code
 //TODO: alert banner confirmation
 
 exitAlertBanner.addEventListener('click', e => {
