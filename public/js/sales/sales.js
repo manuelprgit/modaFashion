@@ -22,7 +22,7 @@ import loaderController from '../helpers/loader.js';
             getOrdersCollected = ordersCollected;
             getStatusOrders = orderStatus;
         });
-        
+
     console.log({ getOrdersCollected, getStatusOrders });
 
     const openCard = (card) => {
@@ -147,20 +147,36 @@ import loaderController from '../helpers/loader.js';
         let icon = mainFunctions.iconStatus.find(iStatus => iStatus.statusId == nextStepStatus.orderStatusId);
         contextMenu.querySelector('.ico i').className = '';
         contextMenu.querySelector('.ico i').className = icon.statusIcon;
-        
+
     }
 
     contentCard.addEventListener('click', async e => {
         let card = e.target.closest('.row');
 
-        if(e.target.closest('#postDocument')){
+        if (e.target.closest('#postDocument')) {
             let row = e.target.closest('[data-key');
             let key = row.getAttribute('data-key');
             let id = getOrdersCollected[key].collectionId;
-            
-            console.log(id);
-            let orderCreated = await mainFunctions.sendDataByRequest('POST',{ orderCollectId:id},`ordersCollector/postOrderCollected`);
-            console.log(orderCreated);
+            let orderResult;
+            if (getOrdersCollected[key].orderStatusId == 1) {
+                orderResult = await mainFunctions.sendDataByRequest('POST', { orderCollectId: id }, `ordersCollector/postOrderCollected`);
+                if(orderResult.status != 400){
+                    showAlertBanner('success','Se ha realizado el pedido con éxito');
+                }
+                return;
+            }
+            if (getOrdersCollected[key].orderStatusId == 2) {
+                let orderDataReceive = {
+                    orderCollectId: id,
+                    expenseAmount: getOrdersCollected[key].totalAmount
+                }
+                orderResult = await mainFunctions.sendDataByRequest('POST', orderDataReceive, `ordersCollector/recieveOrderCollected`);
+                if(orderResult.status != 400){
+                    showAlertBanner('success','Se ha recibido el pedido con éxito');
+                }
+                return;
+            }
+  
         }
 
         if (e.target.closest('i.open-card')) {
@@ -191,7 +207,7 @@ import loaderController from '../helpers/loader.js';
 
             }
         }
-    }) 
+    })
 
     buildTableCards(getOrdersCollected);
 })()

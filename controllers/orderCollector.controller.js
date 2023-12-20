@@ -141,15 +141,14 @@ const createOrderCollected = async (req, res) => {
 
     orderCollectedId = orderCollectedId.recordset[0].invoicesOrdes;
 
-    for (let ordersCollected of ordersCollectedDetails) {
+    for (let ordersCollected of ordersCollectedDetails) { 
 
         let { recordset } = await pool.query(`
-            select * from invoice.orders
-            where orderId = ${ordersCollected.orderId}
+                select * from invoice.orders
+                where orderId = ${ordersCollected.orderId}
         `);
 
-        let order = recordset[0];
-
+        let order = recordset[0]; 
         await pool.query(`
             insert into invoice.orderCollectionDetail(
                 collectionId,
