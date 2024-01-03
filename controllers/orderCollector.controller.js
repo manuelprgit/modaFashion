@@ -279,16 +279,40 @@ const postOrderCollected = async (req, res) => {
         `);
     }
 
-    await pool.query(`
+    let newOrderCollector = await pool.query(`
         update invoice.orderCollection
         set orderStatusId = 2
         where collectionId = ${orderCollectId}
+    
+        select
+        a.collectionId,
+        a.totalAmount,
+        a.collectionDate date,
+        b.orderStatusId,
+        b.description,
+        b.nextStepId
+        from invoice.orderCollection A
+        left join (
+            select
+                orderStatusId,
+                description,
+                case 
+            when orderStatusId >= 4 then 0
+            else orderStatusId + 1
+            end nextStepId
+        from invoice.orderStatus
+                ) b
+        on a.orderStatusId = b.orderStatusId
+        where collectionId = ${orderCollectId}
     `);
 
+    newOrderCollector = newOrderCollector.recordset[0];
+
+
     res.status(200).json({
-        msg: "El pedido fue posteado con exito",
+        msg: "El pedido fue posteado con éxito",
         status: 200,
-        data: orderCollectId
+        data: newOrderCollector
     });
 
 }
@@ -396,17 +420,40 @@ const receiveOrderCollected = async (req,res) => {
 
         }
 
-        await pool.query(`
+        let newOrderCollector = await pool.query(`
             update invoice.orderCollection
             set expense = ${expenseAmount},
                 orderStatusId = 3
             where collectionId = ${orderCollectId}
+                    
+            select
+                a.collectionId,
+                a.totalAmount,
+                a.collectionDate date,
+                b.orderStatusId,
+                b.description,
+                b.nextStepId
+                from invoice.orderCollection A
+                left join (
+                    select
+                        orderStatusId,
+                        description,
+                        case 
+                    when orderStatusId >= 4 then 0
+                    else orderStatusId + 1
+                    end nextStepId
+            from invoice.orderStatus
+                    ) b
+            on a.orderStatusId = b.orderStatusId
+            where collectionId = ${orderCollectId}
         `);
+
+        newOrderCollector = newOrderCollector.recordset[0];
 
         res.status(201).json({
             msg: "Las ordenes del pedido fueron recibidas con éxito",
             status: 201,
-            data: orderCollectId
+            data: newOrderCollector
         });
     }
     catch (error) {

@@ -76,8 +76,29 @@ import loaderController from '../helpers/loader.js';
         return tableOrders;
     }
 
-    const buildHeaderCards = (headerData) => {
-        console.log(headerData);
+    const setStatusStyle = (data) => {
+        let statusStyle;
+        switch (data.orderStatusId) {
+            case 1:
+                statusStyle = 'proceso';
+                break;
+            case 2:
+                statusStyle = 'pedido';
+                break;
+            case 3:
+                statusStyle = 'recibido';
+                break;
+            case 4:
+                statusStyle = 'rechazado';
+                break;
+        }
+        return statusStyle;
+    }
+
+    const buildHeaderCards = (headerData) => { 
+
+        let statusStyle = setStatusStyle(headerData);
+
         return `
             <div class="colum">
                 <div class="head text-center">Pedido No:</div>
@@ -89,7 +110,7 @@ import loaderController from '../helpers/loader.js';
             </div>
             <div class="colum">
                 <div class="head">Estatus</div>
-                <div class="body">${headerData.description}</div>
+                <div class="body ${statusStyle} ">${headerData.description}</div>
             </div>
             <div class="colum">
                 <div class="head text-center">Ordenes</div>
@@ -150,6 +171,17 @@ import loaderController from '../helpers/loader.js';
 
     }
 
+    const changeCardStatus = (card, newData) => {
+
+        let statusStyle = setStatusStyle(newData);
+
+        let row = card.querySelector('.colum:nth-child(3) .body');
+        row.textContent = newData.description;
+        row.className = 'body';
+        row.classList.add(statusStyle)
+
+    }
+
     contentCard.addEventListener('click', async e => {
         let card = e.target.closest('.row');
 
@@ -158,12 +190,14 @@ import loaderController from '../helpers/loader.js';
             let key = row.getAttribute('data-key');
             let id = getOrdersCollected[key].collectionId;
             let orderResult;
+            
             if (getOrdersCollected[key].orderStatusId == 1) {
                 orderResult = await mainFunctions.sendDataByRequest('POST', { orderCollectId: id }, `ordersCollector/postOrderCollected`);
-                if(orderResult.status != 400){
-                    showAlertBanner('success','Se ha realizado el pedido con éxito');
+                console.log(orderResult);
+                if (orderResult.status != 400) {
+                    showAlertBanner('success', 'Se ha realizado el pedido con éxito');
                 }
-                return;
+                // return;
             }
             if (getOrdersCollected[key].orderStatusId == 2) {
                 let orderDataReceive = {
@@ -171,12 +205,19 @@ import loaderController from '../helpers/loader.js';
                     expenseAmount: getOrdersCollected[key].totalAmount
                 }
                 orderResult = await mainFunctions.sendDataByRequest('POST', orderDataReceive, `ordersCollector/recieveOrderCollected`);
-                if(orderResult.status != 400){
-                    showAlertBanner('success','Se ha recibido el pedido con éxito');
+                console.log(orderResult);
+                if (orderResult.status != 400) {
+                    showAlertBanner('success', 'Se ha recibido el pedido con éxito');
                 }
-                return;
+                // return;
             }
-  
+
+            orderResult = await orderResult.json();
+            console.log(orderResult);
+            changeCardStatus(card, orderResult.data);
+
+            console.log(orderResult);
+
         }
 
         if (e.target.closest('i.open-card')) {
